@@ -1,0 +1,16 @@
+---
+mmdebstrap:
+  architectures:
+    - arm64
+  keyrings:
+    - /usr/share/keyrings/debian-archive-keyring.gpg
+  mode: sudo
+  packages:
+    - init
+    - libpam-systemd
+    - iproute2
+    - less
+    - locales
+    - openssh-server
+  suite: bullseye
+  variant: standard
