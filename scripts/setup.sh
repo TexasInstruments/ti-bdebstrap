@@ -1,0 +1,44 @@
+#!/bin/bash
+
+function setup_build_tools() {
+    if [ ! -d "${topdir}/tools/gcc-arm-9.2-2019.12-x86_64-arm-none-linux-gnueabihf/bin" ]; then
+        echo "> Arm Toolchain: checking .."
+        mkdir -p ${topdir}/tools/
+        cd ${topdir}/tools/
+
+        echo "> Arm Toolchain: not found. Downloading .." 
+        wget https://developer.arm.com/-/media/Files/downloads/gnu-a/9.2-2019.12/binrel/gcc-arm-9.2-2019.12-x86_64-arm-none-linux-gnueabihf.tar.xz
+        tar -Jxf gcc-arm-9.2-2019.12-x86_64-arm-none-linux-gnueabihf.tar.xz
+        rm gcc-arm-9.2-2019.12-x86_64-arm-none-linux-gnueabihf.tar.xz
+        echo "> Arm Toolchain: downloaded .." 
+    else
+        echo "> Arm Toolchain: available"
+    fi
+    export PATH=${topdir}/tools/gcc-arm-9.2-2019.12-x86_64-arm-none-linux-gnueabihf/bin:$PATH
+
+    if [ ! -d "${topdir}/tools/gcc-arm-9.2-2019.12-x86_64-aarch64-none-linux-gnu/bin" ]; then
+        mkdir -p ${topdir}/tools/
+        cd ${topdir}/tools/
+
+        echo "> Aarch64 Toolchain: not found. downloading .." 
+        wget https://developer.arm.com/-/media/Files/downloads/gnu-a/9.2-2019.12/binrel/gcc-arm-9.2-2019.12-x86_64-aarch64-none-linux-gnu.tar.xz
+        tar -Jxf gcc-arm-9.2-2019.12-x86_64-aarch64-none-linux-gnu.tar.xz
+        rm gcc-arm-9.2-2019.12-x86_64-aarch64-none-linux-gnu.tar.xz
+        echo "> Aarch64 Toolchain: downloaded .." 
+    else
+        echo "> Aarch64 Toolchain: available"
+    fi
+    export PATH=${topdir}/tools/gcc-arm-9.2-2019.12-x86_64-aarch64-none-linux-gnu/bin:$PATH
+}
+
+function setup_package_dependencies() {
+    echo "> Package dependencies: installing .."
+    apt install -y \
+        pigz expect \
+        binfmtc binfmt-support \
+        qemu-user qemu-user-static qemu-system-arm \
+        debian-archive-keyring \
+        bdebstrap
+    echo "> Package dependencies: installed"
+}
+

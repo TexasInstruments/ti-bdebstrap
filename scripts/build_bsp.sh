@@ -1,0 +1,166 @@
+#!/bin/bash
+
+function setup_bsp_build() {
+machine=$1
+
+    mkdir -p ${topdir}/build/bsp_sources; cd ${topdir}/build/bsp_sources
+
+    echo "> BSP sources: checking .."
+    if [ ! -d core-secdev-k3 ]; then
+        echo ">> core-secdev-k3: not found. cloning .."
+        git clone \
+            https://git.ti.com/git/security-development-tools/core-secdev-k3.git \
+            --single-branch \
+            --depth=1
+        echo ">> core-secdev-k3: cloned"
+    else
+        echo ">> core-secdev-k3: available"
+    fi
+    export TI_SECURE_DEV_PKG=${topdir}/build/bsp_sources/core-secdev-k3
+
+    if [ ! -d trusted-firmware-a ]; then
+        cd ${topdir}/build/bsp_sources
+        echo ">> atf: not found. cloning .."
+        atf_srcrev=`read_machine_config ${machine} atf_srcrev`
+
+        git clone https://git.trustedfirmware.org/TF-A/trusted-firmware-a.git
+
+        cd trusted-firmware-a
+        git checkout ${atf_srcrev}
+        cd ..
+        echo ">> atf: cloned"
+    else
+        echo ">> core-secdev-k3: available"
+    fi
+    export TFA_DIR=${topdir}/build/bsp_sources/trusted-firmware-a
+
+    if [ ! -d optee_os ]; then
+        cd ${topdir}/build/bsp_sources
+        echo ">> optee_os: not found. cloning .."
+        optee_srcrev=`read_machine_config ${machine} optee_srcrev`
+
+        git clone https://github.com/OP-TEE/optee_os.git
+
+        cd optee_os
+        git checkout ${optee_srcrev}
+        cd ..
+        echo ">> optee_os: cloned"
+    else
+        echo ">> optee_os: available"
+    fi
+    export OPTEE_DIR=${topdir}/build/bsp_sources/optee_os
+
+    if [ ! -d ti-u-boot ]; then
+        cd ${topdir}/build/bsp_sources
+        echo ">> ti-u-boot: not found. cloning .."
+        uboot_srcrev=`read_machine_config ${machine} uboot_srcrev`
+        git clone \
+            https://git.ti.com/git/ti-u-boot/ti-u-boot.git \
+            -b ${uboot_srcrev} \
+            --single-branch \
+            --depth=1
+        echo ">> ti-u-boot: cloned"
+    else
+        echo ">> ti-u-boot: available"
+    fi
+    export UBOOT_DIR=${topdir}/build/bsp_sources/ti-u-boot
+
+    if [ ! -d k3-image-gen ]; then
+        cd ${topdir}/build/bsp_sources
+        echo ">> k3-image-gen: not found. cloning .."
+        k3ig_srcrev=`read_machine_config ${machine} k3ig_srcrev`
+        git clone \
+            https://git.ti.com/git/k3-image-gen/k3-image-gen.git \
+            -b ${k3ig_srcrev} \
+            --single-branch \
+            --depth=1
+        echo ">> k3-image-gen: cloned"
+    else
+        echo ">> k3-image-gen: available"
+    fi
+    export K3IG_DIR=${topdir}/build/bsp_sources/k3-image-gen
+
+    if [ ! -d ti-linux-firmware ]; then
+        cd ${topdir}/build/bsp_sources
+        echo ">> ti-linux-firmware: not found. cloning .."
+        linux_fw_srcrev=`read_machine_config ${machine} linux_fw_srcrev`
+        git clone \
+            https://git.ti.com/git/processor-firmware/ti-linux-firmware.git \
+            -b ${linux_fw_srcrev} \
+            --single-branch \
+            --depth=1
+        echo ">> ti-linux-firmware: cloned"
+    else
+        echo ">> ti-linux-firmware: available"
+    fi
+    dmfw_machine=`read_machine_config ${machine} dmfw_machine`
+    export SYSFW_DIR=${topdir}/build/bsp_sources/ti-linux-firmware/ti-sysfw
+    export DMFW_DIR=${topdir}/build/bsp_sources/ti-linux-firmware/ti-dm/${dmfw_machine}
+
+    echo ">> FIXME: Clone and Build Linux"
+
+    echo "> BSP sources: cloned"
+
+    echo "> BSP sources: creating backup .."
+    cd ${topdir}/build
+    tar --use-compress-program="pigz --best --recursive | pv" -cf bsp_sources.tar.xz bsp_sources
+    echo "> BSP sources: backup created .."
+
+    mkdir boot_${machine}
+}
+
+function build_atf() {
+machine=$1
+    
+    cd $TFA_DIR
+    target_board=`read_machine_config ${machine} atf_target_board`
+
+    echo "> ATF: building .."
+    make -j`nproc` ARCH=aarch64 CROSS_COMPILE=aarch64-none-linux-gnu- PLAT=k3 TARGET_BOARD=${target_board} SPD=opteed
+
+    echo "> ATF: signing .."
+    ${TI_SECURE_DEV_PKG}/scripts/secure-binary-image.sh ${TFA_DIR}/build/k3/${target_board}/release/bl31.bin ${TFA_DIR}/build/k3/${target_board}/release/bl31.bin.signed
+}
+
+function build_optee() {
+machine=$1
+    
+    cd ${OPTEE_DIR}
+    platform=`read_machine_config ${machine} optee_platform`
+
+    echo "> optee: building .."
+    make -j`nproc` CROSS_COMPILE64=aarch64-none-linux-gnu- CROSS_COMPILE=arm-none-linux-gnueabihf- PLATFORM=${platform} CFG_ARM64_core=y
+
+    echo "> optee: signing .."
+    ${TI_SECURE_DEV_PKG}/scripts/secure-binary-image.sh ./out/arm-plat-k3/core/tee-pager_v2.bin ./out/arm-plat-k3/core/tee-pager_v2.bin.signed
+}
+
+function build_uboot() {
+machine=$1
+
+    uboot_r5_defconfig=`read_machine_config ${machine} uboot_r5_defconfig`
+    uboot_a53_defconfig=`read_machine_config ${machine} uboot_a53_defconfig`
+    sysfw_soc=`read_machine_config ${machine} sysfw_soc`
+    
+    echo "> dmfw: signing .."
+    ${TI_SECURE_DEV_PKG}/scripts/secure-binary-image.sh ${DMFW_DIR}/ipc_echo_testb_mcu1_0_release_strip.xer5f ${DMFW_DIR}/ipc_echo_testb_mcu1_0_release_strip.xer5f.signed
+
+    cd ${UBOOT_DIR}
+    echo "> uboot-r5: building .."
+    make -j`nproc` ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- ${uboot_r5_defconfig} O=${UBOOT_DIR}/out/r5
+    make -j`nproc` ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- O=${UBOOT_DIR}/out/r5
+
+    cd ${K3IG_DIR}
+    make -j`nproc` ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- SOC=${sysfw_soc} SOC_TYPE=hs-fs SBL=${UBOOT_DIR}/out/r5/spl/u-boot-spl.bin SYSFW_DIR=${SYSFW_DIR}
+    cp ${K3IG_DIR}/tiboot3.bin ${topdir}/build/boot_${machine}/
+    # TODO: Also build for GP and HS
+    # make -j`nproc` ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- SOC=${sysfw_soc} SOC_TYPE=gp SBL=${UBOOT_DIR}/out/r5/spl/u-boot-spl.bin SYSFW_DIR=${SYSFW_DIR}
+    # make -j`nproc` ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- SOC=${sysfw_soc} SOC_TYPE=hs SBL=${UBOOT_DIR}/out/r5/spl/u-boot-spl.bin SYSFW_DIR=${SYSFW_DIR}
+
+    cd ${UBOOT_DIR}
+    echo "> uboot-a53: building .."
+    make -j`nproc` ARCH=arm CROSS_COMPILE=aarch64-none-linux-gnu- ${uboot_a53_defconfig} O=${UBOOT_DIR}/out/a53
+    make -j`nproc` ARCH=arm CROSS_COMPILE=aarch64-none-linux-gnu- ATF=${TFA_DIR}/build/k3/lite/release/bl31.bin.signed TEE=${OPTEE_DIR}/out/arm-plat-k3/core/tee-pager_v2.bin.signed DM=${DMFW_DIR}/ipc_echo_testb_mcu1_0_release_strip.xer5f.signed O=${UBOOT_DIR}/out/a53
+    cp ${UBOOT_DIR}/out/a53/tispl.bin ${topdir}/build/boot_${machine}/
+    cp ${UBOOT_DIR}/out/a53/u-boot.img ${topdir}/build/boot_${machine}/
+}

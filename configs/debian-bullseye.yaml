@@ -4,7 +4,7 @@ mmdebstrap:
     - arm64
   keyrings:
     - /usr/share/keyrings/debian-archive-keyring.gpg
-  mode: sudo
+  mode: unshare
   packages:
     - init
     - libpam-systemd
@@ -12,5 +12,8 @@ mmdebstrap:
     - less
     - locales
     - openssh-server
+    - sudo
+    - neofetch
+    - vim
   suite: bullseye
   variant: standard
