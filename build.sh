@@ -47,8 +47,6 @@ do
     build_atf $machine
     build_optee $machine
     build_uboot $machine
-    # build_linux $machine
-    # build_km_gpu $machine
     cd ${topdir}/build
     tar --use-compress-program="pigz --best --recursive | pv" -cf boot_${machine}.tar.xz boot_${machine}
 done
@@ -80,6 +78,9 @@ do
         export ROOTFS_DIR=${topdir}/build/${distro}-${machine}-rootfs
 
         tar --use-compress-program="pigz --best --recursive | pv" -cf metadata-${distro}-${machine}.tar.xz metadata-${distro}-${machine}
+
+        build_kernel ${machine} ${ROOTFS_DIR}
+        build_ti_img_rogue_driver ${machine} ${ROOTFS_DIR} ${KERNEL_DIR}
 
         cd ${topdir}/build
 

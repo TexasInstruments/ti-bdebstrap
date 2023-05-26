@@ -60,6 +60,12 @@ machine=$1
             --single-branch \
             --depth=1
         echo ">> ti-u-boot: cloned"
+        if [ -d ${topdir}/patches/ti-u-boot ]; then
+            echo ">> ti-u-boot: patching .."
+            cd ti-u-boot
+            git apply ${topdir}/patches/ti-u-boot/*
+            cd ..
+        fi
     else
         echo ">> ti-u-boot: available"
     fi
@@ -97,10 +103,49 @@ machine=$1
     export SYSFW_DIR=${topdir}/build/bsp_sources/ti-linux-firmware/ti-sysfw
     export DMFW_DIR=${topdir}/build/bsp_sources/ti-linux-firmware/ti-dm/${dmfw_machine}
 
-    echo ">> FIXME: Clone and Build Linux"
+    if [ ! -d ti-linux-kernel ]; then
+        cd ${topdir}/build/bsp_sources
+        echo ">> ti-linux-kernel: not found. cloning .."
+        linux_kernel_srcrev=`read_machine_config ${machine} linux_kernel_srcrev`
+        git clone \
+            https://git.ti.com/git/ti-linux-kernel/ti-linux-kernel.git \
+            -b ${linux_kernel_srcrev} \
+            --single-branch \
+            --depth=1
+        echo ">> ti-linux-kernel: cloned"
+        if [ -d ${topdir}/patches/ti-linux-kernel ]; then
+            echo ">> ti-linux-kernel: patching .."
+            cd ti-linux-kernel
+            git apply ${topdir}/patches/ti-linux-kernel/*
+            cd ..
+        fi
+    else
+        echo ">> ti-linux-kernel: available"
+    fi
+    export KERNEL_DIR=${topdir}/build/bsp_sources/ti-linux-kernel
+
+    if [ ! -d ti-img-rogue-driver ]; then
+        cd ${topdir}/build/bsp_sources
+        echo ">> ti-img-rogue-driver: not found. cloning .."
+        img_rogue_driver_srcrev=`read_machine_config ${machine} img_rogue_driver_srcrev`
+        git clone \
+            https://git.ti.com/git/graphics/ti-img-rogue-driver.git \
+            -b ${img_rogue_driver_srcrev} \
+            --single-branch \
+            --depth=1
+        echo ">> ti-img-rogue-driver: cloned"
+        if [ -d ${topdir}/patches/ti-img-rogue-driver ]; then
+            echo ">> ti-img-rogue-driver: patching .."
+            cd ti-img-rogue-driver
+            git apply ${topdir}/patches/ti-img-rogue-driver/*
+            cd ..
+        fi
+    else
+        echo ">> ti-img-rogue-driver: available"
+    fi
+    export IMG_ROGUE_DRIVER_DIR=${topdir}/build/bsp_sources/ti-img-rogue-driver
 
     echo "> BSP sources: cloned"
-
     echo "> BSP sources: creating backup .."
     cd ${topdir}/build
     tar --use-compress-program="pigz --best --recursive | pv" -cf bsp_sources.tar.xz bsp_sources
@@ -111,7 +156,7 @@ machine=$1
 
 function build_atf() {
 machine=$1
-    
+
     cd $TFA_DIR
     target_board=`read_machine_config ${machine} atf_target_board`
 
@@ -124,7 +169,7 @@ machine=$1
 
 function build_optee() {
 machine=$1
-    
+
     cd ${OPTEE_DIR}
     platform=`read_machine_config ${machine} optee_platform`
 
@@ -132,7 +177,7 @@ machine=$1
     make -j`nproc` CROSS_COMPILE64=aarch64-none-linux-gnu- CROSS_COMPILE=arm-none-linux-gnueabihf- PLATFORM=${platform} CFG_ARM64_core=y
 
     echo "> optee: signing .."
-    ${TI_SECURE_DEV_PKG}/scripts/secure-binary-image.sh ./out/arm-plat-k3/core/tee-pager_v2.bin ./out/arm-plat-k3/core/tee-pager_v2.bin.signed
+    ${TI_SECURE_DEV_PKG}/scripts/secure-binary-image.sh ${OPTEE_DIR}/out/arm-plat-k3/core/tee-pager_v2.bin ${OPTEE_DIR}/out/arm-plat-k3/core/tee-pager_v2.bin.signed
 }
 
 function build_uboot() {
@@ -141,7 +186,7 @@ machine=$1
     uboot_r5_defconfig=`read_machine_config ${machine} uboot_r5_defconfig`
     uboot_a53_defconfig=`read_machine_config ${machine} uboot_a53_defconfig`
     sysfw_soc=`read_machine_config ${machine} sysfw_soc`
-    
+
     echo "> dmfw: signing .."
     ${TI_SECURE_DEV_PKG}/scripts/secure-binary-image.sh ${DMFW_DIR}/ipc_echo_testb_mcu1_0_release_strip.xer5f ${DMFW_DIR}/ipc_echo_testb_mcu1_0_release_strip.xer5f.signed
 
@@ -163,4 +208,51 @@ machine=$1
     make -j`nproc` ARCH=arm CROSS_COMPILE=aarch64-none-linux-gnu- ATF=${TFA_DIR}/build/k3/lite/release/bl31.bin.signed TEE=${OPTEE_DIR}/out/arm-plat-k3/core/tee-pager_v2.bin.signed DM=${DMFW_DIR}/ipc_echo_testb_mcu1_0_release_strip.xer5f.signed O=${UBOOT_DIR}/out/a53
     cp ${UBOOT_DIR}/out/a53/tispl.bin ${topdir}/build/boot_${machine}/
     cp ${UBOOT_DIR}/out/a53/u-boot.img ${topdir}/build/boot_${machine}/
+}
+
+function build_kernel() {
+machine=$1
+rootfs_dir=$2
+
+    cd ${KERNEL_DIR}
+
+    echo "kernel: generating defconfig .."
+    make -j`nproc` ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- defconfig ti_arm64_prune.config
+
+    echo "kernel: building Image .."
+    make -j`nproc` ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- Image
+
+    echo "kernel: building DTBs .."
+    make -j`nproc` ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- dtbs
+
+    echo "kernel: building modules .."
+    make -j`nproc` ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- modules
+
+    echo "kernel: installing Image .."
+    cp arch/arm64/boot/Image ${rootfs_dir}/boot/
+
+    echo "kernel: installing DTBs .."
+    mkdir -p ${rootfs_dir}/boot/dtb
+    cp -rf arch/arm64/boot/dts/ti ${rootfs_dir}/boot/dtb/
+
+    echo "kernel: installing modules .."
+    make ARCH=arm64  INSTALL_MOD_PATH=${rootfs_dir} modules_install
+}
+
+function build_ti_img_rogue_driver() {
+machine=$1
+rootfs_dir=$2
+kernel_dir=$3
+
+    pvr_target=`read_machine_config ${machine} pvr_target`
+    pvr_window_system=`read_machine_config ${machine} pvr_window_system`
+    cd ${IMG_ROGUE_DRIVER_DIR}
+
+    echo "ti-img-rogue-driver: building .."
+    make CROSS_COMPILE=aarch64-none-linux-gnu- ARCH=arm64 KERNELDIR=${kernel_dir} RGX_BVNC="33.15.11.3" BUILD=release PVR_BUILD_DIR=${pvr_target} WINDOW_SYSTEM=${pvr_window_system}
+
+    echo "ti-img-rogue-driver: installing .."
+    cd binary_am62_linux_wayland_release/target_aarch64/kbuild
+    make -C ${kernel_dir} ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- INSTALL_MOD_PATH=${rootfs_dir} INSTALL_MOD_STRIP=1 M=`pwd` modules_install
+
 }
