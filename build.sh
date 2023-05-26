@@ -4,23 +4,6 @@
 # Description: Script to build a Debian SD card image for TI Platforms
 ###############################################################################
 
-passwd=""
-for n in {1..3};
-do
-    read -s -p "[sudo] password for $USER: " passwd
-    if sudo -S -k echo <<< $passwd > /dev/null 2>&1 && [[ $? -eq 0 ]]; then
-        break
-    else
-        echo
-        if [ $n -eq 3 ]; then
-            echo "Incorrect Password"
-            exit 1
-        fi
-        echo "Sorry, try again."
-    fi
-done
-echo ""
-
 # set -x
 
 export topdir=$(git rev-parse --show-toplevel)
@@ -37,7 +20,6 @@ mkdir -p ${topdir}/build
 source ${topdir}/scripts/setup.sh
 
 setup_build_tools
-echo $passwd | sudo -k -S setup_package_dependencies
 
 source ${topdir}/scripts/build_bsp.sh
 
