@@ -1,0 +1,16 @@
+# This file describes various machine specific settings needed for the build
+
+[am62xx-evm]
+    # device config
+    hostname = "am62xx"
+    # u-boot config
+    atf_target_board = "lite"
+    optee_platform = "k3-am62x"
+    sysfw_soc = "am62x"
+    dmfw_machine = "am62xx"
+    uboot_r5_defconfig = "am62x_evm_r5_defconfig"
+    uboot_a53_defconfig = "am62x_evm_a53_defconfig"
+    # gpu driver config
+    pvr_target = "am62_linux"
+    pvr_window_system = "wayland"
+

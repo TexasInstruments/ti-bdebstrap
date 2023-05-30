@@ -1,0 +1,18 @@
+# This file describes the builds
+
+builds = [
+    "am62xx-evm_bookworm_standard_09.00.00.001",
+    "am62xx-evm_bullseye_standard_09.00.00.001",
+]
+
+
+[am62xx-evm_bookworm_standard_09.00.00.001]
+    machine = "am62xx-evm"
+    bsp_version = "09.00.00.001"
+    distro_variant = "bookworm-standard"
+
+[am62xx-evm_bullseye_standard_09.00.00.001]
+    machine = "am62xx-evm"
+    bsp_version = "09.00.00.001"
+    distro_variant = "bullseye-standard"
+
