@@ -29,23 +29,24 @@ jobs:
               bc u-boot-tools swig python3-pyelftools \
               gcc-aarch64-linux-gnu
           sudo apt install --fix-broken
+          sudo pip3 install toml-cli
 
       - name: Build
         run: |
           mkdir -p build
           sudo ./build.sh
 
-      - name: Upload AM62x artifacts
+      - name: Upload am62xx-evm_bookworm_standard_09.00.00.001
         uses: actions/upload-artifact@v3.1.2
         with:
-          path: build/*am62xx-evm*
-          name: am62xx-evm-artifacts
+          path: build/am62xx-evm_bookworm_standard_09.00.00.001.tar.xz
+          name: am62xx-evm_bookworm_standard_09.00.00.001
           if-no-files-found: error
 
-      - name: Upload BSP Sources package
+      - name: Upload am62xx-evm_bullseye_standard_09.00.00.001
         uses: actions/upload-artifact@v3.1.2
         with:
-          path: build/bsp_sources.tar.xz
-          name: bsp_sources_common
+          path: build/am62xx-evm_bullseye_standard_09.00.00.001.tar.xz
+          name: am62xx-evm_bullseye_standard_09.00.00.001
           if-no-files-found: error
 

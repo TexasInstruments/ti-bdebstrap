@@ -4,7 +4,7 @@ mmdebstrap:
     - arm64
   keyrings:
     - /usr/share/keyrings/debian-archive-keyring.gpg
-  mode: unshare
+  mode: auto
   packages:
     - init
     - libpam-systemd
@@ -15,5 +15,10 @@ mmdebstrap:
     - sudo
     - neofetch
     - vim
-  suite: bullseye
+  suite: unstable
   variant: standard
+  customize-hooks:
+    - chroot "$1" passwd --delete root
+  essential-hooks:
+    - sleep 10 # workaround for /proc resource busy unable to umount issue
+

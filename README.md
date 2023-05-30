@@ -36,6 +36,7 @@ sudo apt install -y \
         bison flex libssl-dev \
         bc u-boot-tools swig python3-pyelftools
 sudo apt install --fix-broken
+pip3 install toml-cli
 ```
 
 ## Usage
