@@ -1,0 +1,22 @@
+[09.00.00.001]
+    kernel_major_version = 6
+    uboot_method = "k3ig"
+    atf_srcrev = "2fcd408bb3a6756767a43c073c597cef06e7f2d5"
+    optee_srcrev = "8e74d47616a20eaa23ca692f4bbbf917a236ed94"
+    uboot_srcrev = "09.00.00.001"
+    k3ig_srcrev = "09.00.00.001"
+    linux_fw_srcrev = "09.00.00.001"
+    linux_kernel_srcrev = "09.00.00.001"
+    img_rogue_driver_srcrev = "linuxws/kirkstone/k6.1/23.1.6404501"
+
+[08.06.00.007]
+    kernel_major_version = 5
+    uboot_method = "k3ig"
+    atf_srcrev = "2fcd408bb3a6756767a43c073c597cef06e7f2d5"
+    optee_srcrev = "8e74d47616a20eaa23ca692f4bbbf917a236ed94"
+    uboot_srcrev = "08.06.00.007"
+    k3ig_srcrev = "08.06.00.007"
+    linux_fw_srcrev = "08.06.00.007"
+    linux_kernel_srcrev = "08.06.00.007"
+    img_rogue_driver_srcrev = "linuxws/dunfell/k5.10/1.15.6133109_unified_fw_pagesize"
+

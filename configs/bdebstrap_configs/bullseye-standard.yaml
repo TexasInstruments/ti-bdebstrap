@@ -1,0 +1,24 @@
+---
+mmdebstrap:
+  architectures:
+    - arm64
+  keyrings:
+    - /usr/share/keyrings/debian-archive-keyring.gpg
+  mode: auto
+  packages:
+    - init
+    - libpam-systemd
+    - iproute2
+    - less
+    - locales
+    - openssh-server
+    - sudo
+    - neofetch
+    - vim
+  suite: bullseye
+  variant: standard
+  customize-hooks:
+    - chroot "$1" passwd --delete root
+  essential-hooks:
+    - sleep 10
+

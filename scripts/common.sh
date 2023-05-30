@@ -1,20 +1,40 @@
 #!/bin/bash
 
-distros=($(basename -s ".yaml" -a `ls ${topdir}/configs/*.yaml`))
+builds=($(toml get builds --toml-path ${topdir}/builds.toml | tr -d "[],'"))
 
-machines=(`${topdir}/scripts/read-config.py ${topdir}/machines.ini`)
+function read_config() {
+    config_file=$1
+    section=$2
+    param=$3
 
-function read_machine_config() {
-    section=$1
-    param=$2
+    value=($(toml get ${section}.${param} --toml-path ${config_file}))
 
-    value=`${topdir}/scripts/read-config.py ${topdir}/machines.ini ${section} ${param}`
-
+    # Read from common section if not found in the provided section
     if [ "$value" == "" ]; then
-        value=`${topdir}/scripts/read-config.py ${topdir}/machines.ini "common" ${param}`
+        value=($(toml get common.${param} --toml-path ${config_file}))
     fi
 
     echo "${value}"
 }
 
+function read_machine_config() {
+machine=$1
+config=$2
+
+    read_config ${topdir}/configs/machines.toml $machine $config
+}
+
+function read_bsp_config() {
+bsp_version=$1
+config=$2
+
+    read_config ${topdir}/configs/bsp_sources.toml $bsp_version $config
+}
+
+function read_build_config() {
+build=$1
+config=$2
+
+    read_config ${topdir}/builds.toml $build $config
+}
 
