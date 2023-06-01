@@ -13,14 +13,8 @@ distro=$3
         --hostname "${hostname}" -f
 
     cd ${topdir}/build/
-    echo ">> mmdebstrap has issues with unmounting /proc and /dev/pts, etc. Umounting them manually .."
-    umount ./${build}/tisdk-${distro}-${machine}-rootfs/*
-    umount ./${build}/tisdk-${distro}-${machine}-rootfs/dev/*
-    umount ./${build}/tisdk-${distro}-${machine}-rootfs/*
-    umount ./${build}/tisdk-${distro}-${machine}-rootfs/dev/*
 
     ROOTFS_DIR=${topdir}/build/${build}/tisdk-${distro}-${machine}-rootfs
-
 }
 
 function package_and_clean() {
