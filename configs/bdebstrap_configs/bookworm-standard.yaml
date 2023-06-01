@@ -2,21 +2,30 @@
 mmdebstrap:
   architectures:
     - arm64
+  mode: auto
   keyrings:
     - /usr/share/keyrings/debian-archive-keyring.gpg
-  mode: auto
+  suite: bookworm
+  variant: standard
+  components:
+    - main
+    - contrib
+    - non-free-firmware
   packages:
+    - build-essential
+    - firmware-ti-connectivity
     - init
-    - libpam-systemd
     - iproute2
     - less
+    - libdrm-dev
+    - libpam-systemd
     - locales
+    - neofetch
+    - network-manager
+    - net-tools
     - openssh-server
     - sudo
-    - neofetch
     - vim
-  suite: unstable
-  variant: standard
   essential-hooks:
     # FIXME: Find a better workaround instead of sleep
     - 'sleep 10' # workaround for /proc resource busy unable to umount issue
@@ -24,6 +33,6 @@ mmdebstrap:
     - 'chroot "$1" passwd --delete root'
     - 'chroot "$1" chown -R man: /var/cache/man/'
     - 'chroot "$1" chown -R man: /var/cache/man/'
-    - 'chroot "$1" apt update'
+    - 'chroot "$1" apt-get update'
     - 'chroot "$1" cp /etc/skel/.bashrc ~/.bashrc'
 
