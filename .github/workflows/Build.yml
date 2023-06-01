@@ -2,18 +2,46 @@ name: Build
 
 on:
   push:
-    branches: [ "master", "dev" ]
+    branches: [ "master", "dev"]
   pull_request:
     branches: [ "master" ]
 
   workflow_dispatch:
 
 jobs:
+  # Job1: Prepare list of configrations for Job2
+  prepare-build:
+    runs-on: ubuntu-latest
+    outputs:
+      builds: ${{ steps.prepare-builds.outputs.builds }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Generate builds list
+        id: prepare-builds
+        run: |
+          pip3 install toml-cli
+          topdir=./ source scripts/common.sh
+          output_string="["
+          for build in ${builds[@]}
+          do
+            output_string="${output_string}""\"${build}\","
+          done
+          output_string="${output_string::-1}""]"
+          echo "builds=${output_string}" >> $GITHUB_OUTPUT
+
+  # Job2: Actual build job
   build:
     runs-on: ubuntu-latest
-
+    needs: prepare-build
+    strategy:
+      matrix:
+        builds: ${{ fromJson(needs.prepare-build.outputs.builds) }}
+    name: ${{ matrix.builds }}
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
       - name: Install dependencies
         run: |
@@ -31,22 +59,15 @@ jobs:
           sudo apt install --fix-broken
           sudo pip3 install toml-cli
 
-      - name: Build
+      - name: Build ${{ matrix.builds }}
         run: |
           mkdir -p build
-          sudo ./build.sh
+          sudo ./build.sh ${{ matrix.builds }}
 
-      - name: Upload am62xx-evm_bookworm_standard_09.00.00.001
+      - name: Upload ${{ matrix.builds }}
         uses: actions/upload-artifact@v3.1.2
         with:
-          path: build/am62xx-evm_bookworm_standard_09.00.00.001.tar.xz
-          name: am62xx-evm_bookworm_standard_09.00.00.001
-          if-no-files-found: error
-
-      - name: Upload am62xx-evm_bullseye_standard_09.00.00.001
-        uses: actions/upload-artifact@v3.1.2
-        with:
-          path: build/am62xx-evm_bullseye_standard_09.00.00.001.tar.xz
-          name: am62xx-evm_bullseye_standard_09.00.00.001
+          path: build/${{ matrix.builds }}.tar.xz
+          name: ${{ matrix.builds }}
           if-no-files-found: error
 
