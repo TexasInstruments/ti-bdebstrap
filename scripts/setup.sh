@@ -1,5 +1,16 @@
 #!/bin/bash
 
+function setup_log_file() {
+	# create the log directory if it doesn't already exist
+	LOG_DIR="${topdir}/logs"
+	mkdir -p "${LOG_DIR}"
+
+	# we want to create a different log file for each run. So name these files
+	# with timestamps.
+	export LOG_FILE="$LOG_DIR/run_$(date +"%Y-%m-%d_%H:%M:%S").log"
+	touch "${LOG_FILE}"
+}
+
 function setup_build_tools() {
     echo "> Arm Toolchain: checking .."
     if [ ! -d "${topdir}/tools/gcc-arm-9.2-2019.12-x86_64-arm-none-linux-gnueabihf/bin" ]; then
