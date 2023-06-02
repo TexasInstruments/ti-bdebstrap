@@ -1,8 +1,14 @@
 # This file describes the builds
 
 builds = [
+<<<<<<< HEAD
     "am62x_bookworm_09.00.00.001",
     "am62x_bullseye_09.00.00.001",
+=======
+    # "am62xx-evm_bookworm_standard_09.00.00.001",
+    # "am62xx-evm_bullseye_standard_09.00.00.001",
+    "j721s2-evm_bullseye_standard_binman",
+>>>>>>> f6b320e ([Draft] binman changes for j721s2)
 ]
 
 [am62x_bookworm_09.00.00.001]
@@ -14,4 +20,9 @@ builds = [
     machine = "am62xx-evm"
     bsp_version = "09.00.00.001"
     distro_variant = "bullseye-default"
+
+[j721s2-evm_bullseye_standard_binman]
+    machine = "j721s2-evm"
+    bsp_version = "binman"
+    distro_variant = "bullseye-standard"
 
