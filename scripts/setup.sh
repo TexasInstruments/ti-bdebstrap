@@ -1,8 +1,8 @@
 #!/bin/bash
 
 function setup_build_tools() {
+    echo "> Arm Toolchain: checking .."
     if [ ! -d "${topdir}/tools/gcc-arm-9.2-2019.12-x86_64-arm-none-linux-gnueabihf/bin" ]; then
-        echo "> Arm Toolchain: checking .."
         mkdir -p ${topdir}/tools/
         cd ${topdir}/tools/
 
@@ -16,6 +16,7 @@ function setup_build_tools() {
     fi
     export PATH=${topdir}/tools/gcc-arm-9.2-2019.12-x86_64-arm-none-linux-gnueabihf/bin:$PATH
 
+    echo "> Aarch64 Toolchain: checking .."
     if [ ! -d "${topdir}/tools/gcc-arm-9.2-2019.12-x86_64-aarch64-none-linux-gnu/bin" ]; then
         mkdir -p ${topdir}/tools/
         cd ${topdir}/tools/
