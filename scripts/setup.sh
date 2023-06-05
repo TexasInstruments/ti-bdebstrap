@@ -3,13 +3,19 @@
 source ${topdir}/scripts/common.sh
 
 function setup_log_file() {
+	build=$1
+
 	# create the log directory if it doesn't already exist
 	LOG_DIR="${topdir}/logs"
 	mkdir -p "${LOG_DIR}"
 
-	# we want to create a different log file for each run. So name these files
-	# with timestamps.
-	export LOG_FILE="$LOG_DIR/run_$(date +"%Y-%m-%d_%H:%M:%S").log"
+	export LOG_FILE="$LOG_DIR/${build}.log"
+
+	# if log file already exists, replace it with a new one for this build
+	if [ -f "$LOG_FILE" ]; then
+		rm -f "$LOG_FILE"
+	fi
+
 	touch "${LOG_FILE}"
 }
 
