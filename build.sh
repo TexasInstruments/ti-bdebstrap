@@ -27,7 +27,7 @@ source ${topdir}/scripts/build_distro.sh
 for build in "${builds[@]}"
 do
     echo "${build}"
-
+    
     machine=($(read_build_config ${build} machine))
     bsp_version=($(read_build_config ${build} bsp_version))
     distro_variant=($(read_build_config ${build} distro_variant))
@@ -40,7 +40,7 @@ do
     build_bsp ${build} ${machine} ${bsp_version}
     # FIXME: Kernel and IMG rogue driver should be .deb packages
     build_kernel ${machine} ${ROOTFS_DIR}
-    build_ti_img_rogue_driver ${machine} ${ROOTFS_DIR} ${KERNEL_DIR}
+    # build_ti_img_rogue_driver ${machine} ${ROOTFS_DIR} ${KERNEL_DIR}
     package_and_clean ${build}
 
 done

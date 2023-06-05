@@ -1,0 +1,352 @@
+> BSP sources: checking ..
+>> core-secdev-k3: available
+>> optee_os: available
+>> ti-u-boot: not found. cloning ..
+Traceback (most recent call last):
+
+  File "/usr/local/bin/toml", line 8, in <module>
+    sys.exit(main())
+
+  File "/usr/local/lib/python3.10/dist-packages/toml_cli/__init__.py", line 105, in main
+    app()
+
+  File "/usr/local/lib/python3.10/dist-packages/toml_cli/__init__.py", line 29, in get
+    toml_part = toml_part[key_part]
+
+  File "/usr/local/lib/python3.10/dist-packages/tomlkit/container.py", line 613, in __getitem__
+    raise NonExistentKey(key)
+
+tomlkit.exceptions.NonExistentKey: 'Key "uboot_srcrev" does not exist.'
+
+Traceback (most recent call last):
+
+  File "/usr/local/bin/toml", line 8, in <module>
+    sys.exit(main())
+
+  File "/usr/local/lib/python3.10/dist-packages/toml_cli/__init__.py", line 105, in main
+    app()
+
+  File "/usr/local/lib/python3.10/dist-packages/toml_cli/__init__.py", line 29, in get
+    toml_part = toml_part[key_part]
+
+  File "/usr/local/lib/python3.10/dist-packages/tomlkit/container.py", line 613, in __getitem__
+    raise NonExistentKey(key)
+
+tomlkit.exceptions.NonExistentKey: 'Key "common" does not exist.'
+
+Cloning into 'ti-u-boot'...
+warning: Could not find remote branch --single-branch to clone.
+fatal: Remote branch --single-branch not found in upstream origin
+>> ti-u-boot: cloned
+>> ti-linux-firmware: not found. cloning ..
+Traceback (most recent call last):
+
+  File "/usr/local/bin/toml", line 8, in <module>
+    sys.exit(main())
+
+  File "/usr/local/lib/python3.10/dist-packages/toml_cli/__init__.py", line 105, in main
+    app()
+
+  File "/usr/local/lib/python3.10/dist-packages/toml_cli/__init__.py", line 29, in get
+    toml_part = toml_part[key_part]
+
+  File "/usr/local/lib/python3.10/dist-packages/tomlkit/container.py", line 613, in __getitem__
+    raise NonExistentKey(key)
+
+tomlkit.exceptions.NonExistentKey: 'Key "linux_fw_srcrev" does not exist.'
+
+Traceback (most recent call last):
+
+  File "/usr/local/bin/toml", line 8, in <module>
+    sys.exit(main())
+
+  File "/usr/local/lib/python3.10/dist-packages/toml_cli/__init__.py", line 105, in main
+    app()
+
+  File "/usr/local/lib/python3.10/dist-packages/toml_cli/__init__.py", line 29, in get
+    toml_part = toml_part[key_part]
+
+  File "/usr/local/lib/python3.10/dist-packages/tomlkit/container.py", line 613, in __getitem__
+    raise NonExistentKey(key)
+
+tomlkit.exceptions.NonExistentKey: 'Key "common" does not exist.'
+
+Cloning into 'ti-linux-firmware'...
+warning: Could not find remote branch --single-branch to clone.
+fatal: Remote branch --single-branch not found in upstream origin
+>> ti-linux-firmware: cloned
+>> ti-linux-kernel: not found. cloning ..
+Traceback (most recent call last):
+
+  File "/usr/local/bin/toml", line 8, in <module>
+    sys.exit(main())
+
+  File "/usr/local/lib/python3.10/dist-packages/toml_cli/__init__.py", line 105, in main
+    app()
+
+  File "/usr/local/lib/python3.10/dist-packages/toml_cli/__init__.py", line 29, in get
+    toml_part = toml_part[key_part]
+
+  File "/usr/local/lib/python3.10/dist-packages/tomlkit/container.py", line 613, in __getitem__
+    raise NonExistentKey(key)
+
+tomlkit.exceptions.NonExistentKey: 'Key "linux_kernel_srcrev" does not exist.'
+
+Traceback (most recent call last):
+
+  File "/usr/local/bin/toml", line 8, in <module>
+    sys.exit(main())
+
+  File "/usr/local/lib/python3.10/dist-packages/toml_cli/__init__.py", line 105, in main
+    app()
+
+  File "/usr/local/lib/python3.10/dist-packages/toml_cli/__init__.py", line 29, in get
+    toml_part = toml_part[key_part]
+
+  File "/usr/local/lib/python3.10/dist-packages/tomlkit/container.py", line 613, in __getitem__
+    raise NonExistentKey(key)
+
+tomlkit.exceptions.NonExistentKey: 'Key "common" does not exist.'
+
+Cloning into 'ti-linux-kernel'...
+warning: Could not find remote branch --single-branch to clone.
+fatal: Remote branch --single-branch not found in upstream origin
+>> ti-linux-kernel: cloned
+>> ti-img-rogue-driver: not found. cloning ..
+Traceback (most recent call last):
+
+  File "/usr/local/bin/toml", line 8, in <module>
+    sys.exit(main())
+
+  File "/usr/local/lib/python3.10/dist-packages/toml_cli/__init__.py", line 105, in main
+    app()
+
+  File "/usr/local/lib/python3.10/dist-packages/toml_cli/__init__.py", line 29, in get
+    toml_part = toml_part[key_part]
+
+  File "/usr/local/lib/python3.10/dist-packages/tomlkit/container.py", line 613, in __getitem__
+    raise NonExistentKey(key)
+
+tomlkit.exceptions.NonExistentKey: 'Key "img_rogue_driver_srcrev" does not exist.'
+
+Traceback (most recent call last):
+
+  File "/usr/local/bin/toml", line 8, in <module>
+    sys.exit(main())
+
+  File "/usr/local/lib/python3.10/dist-packages/toml_cli/__init__.py", line 105, in main
+    app()
+
+  File "/usr/local/lib/python3.10/dist-packages/toml_cli/__init__.py", line 29, in get
+    toml_part = toml_part[key_part]
+
+  File "/usr/local/lib/python3.10/dist-packages/tomlkit/container.py", line 613, in __getitem__
+    raise NonExistentKey(key)
+
+tomlkit.exceptions.NonExistentKey: 'Key "common" does not exist.'
+
+Cloning into 'ti-img-rogue-driver'...
+warning: Could not find remote branch --single-branch to clone.
+fatal: Remote branch --single-branch not found in upstream origin
+>> ti-img-rogue-driver: cloned
+> BSP sources: cloned
+> BSP sources: creating backup ..
+> BSP sources: backup created ..
+Traceback (most recent call last):
+
+  File "/usr/local/bin/toml", line 8, in <module>
+    sys.exit(main())
+
+  File "/usr/local/lib/python3.10/dist-packages/toml_cli/__init__.py", line 105, in main
+    app()
+
+  File "/usr/local/lib/python3.10/dist-packages/toml_cli/__init__.py", line 29, in get
+    toml_part = toml_part[key_part]
+
+  File "/usr/local/lib/python3.10/dist-packages/tomlkit/container.py", line 613, in __getitem__
+    raise NonExistentKey(key)
+
+tomlkit.exceptions.NonExistentKey: 'Key "atf_target_board" does not exist.'
+
+Traceback (most recent call last):
+
+  File "/usr/local/bin/toml", line 8, in <module>
+    sys.exit(main())
+
+  File "/usr/local/lib/python3.10/dist-packages/toml_cli/__init__.py", line 105, in main
+    app()
+
+  File "/usr/local/lib/python3.10/dist-packages/toml_cli/__init__.py", line 29, in get
+    toml_part = toml_part[key_part]
+
+  File "/usr/local/lib/python3.10/dist-packages/tomlkit/container.py", line 613, in __getitem__
+    raise NonExistentKey(key)
+
+tomlkit.exceptions.NonExistentKey: 'Key "common" does not exist.'
+
+> ATF: building ..
+bash: [: =: unary operator expected
+bash: [: =: unary operator expected
+Including services/spd/opteed/opteed.mk
+plat/ti/k3/platform.mk:11: plat/ti/k3/board//board.mk: No such file or directory
+make: *** No rule to make target 'plat/ti/k3/board//board.mk'.  Stop.
+Traceback (most recent call last):
+
+  File "/usr/local/bin/toml", line 8, in <module>
+    sys.exit(main())
+
+  File "/usr/local/lib/python3.10/dist-packages/toml_cli/__init__.py", line 105, in main
+    app()
+
+  File "/usr/local/lib/python3.10/dist-packages/toml_cli/__init__.py", line 29, in get
+    toml_part = toml_part[key_part]
+
+  File "/usr/local/lib/python3.10/dist-packages/tomlkit/container.py", line 613, in __getitem__
+    raise NonExistentKey(key)
+
+tomlkit.exceptions.NonExistentKey: 'Key "optee_platform" does not exist.'
+
+Traceback (most recent call last):
+
+  File "/usr/local/bin/toml", line 8, in <module>
+    sys.exit(main())
+
+  File "/usr/local/lib/python3.10/dist-packages/toml_cli/__init__.py", line 105, in main
+    app()
+
+  File "/usr/local/lib/python3.10/dist-packages/toml_cli/__init__.py", line 29, in get
+    toml_part = toml_part[key_part]
+
+  File "/usr/local/lib/python3.10/dist-packages/tomlkit/container.py", line 613, in __getitem__
+    raise NonExistentKey(key)
+
+tomlkit.exceptions.NonExistentKey: 'Key "common" does not exist.'
+
+> optee: building ..
+bash: [: =: unary operator expected
+bash: [: =: unary operator expected
+  CHK     out/arm-plat-k3/conf.mk
+  CHK     out/arm-plat-k3/conf.cmake
+  CHK     out/arm-plat-k3/export-ta_arm32/mk/conf.mk
+  CHK     out/arm-plat-k3/export-ta_arm64/mk/conf.mk
+  CHK     pkcs11-ta-verify-helpers
+  CHK     out/arm-plat-k3/include/generated/conf.h
+  CC      out/arm-plat-k3/core/include/generated/.asm-defines.s
+bash: line 1: aarch64-linux-gnu-gcc: command not found
+  AS      out/arm-plat-k3/ldelf/start_a64.o
+make: *** [mk/compile.mk:252: out/arm-plat-k3/core/include/generated/.asm-defines.s] Error 127
+make: *** Waiting for unfinished jobs....
+bash: line 1: aarch64-linux-gnu-gcc: command not found
+make: *** [mk/compile.mk:165: out/arm-plat-k3/ldelf/start_a64.o] Error 127
+  AS      out/arm-plat-k3/ldelf/syscalls_a64.o
+bash: line 1: aarch64-linux-gnu-gcc: command not found
+  AS      out/arm-plat-k3/ldelf/tlsdesc_rel_a64.o
+make: *** [mk/compile.mk:165: out/arm-plat-k3/ldelf/syscalls_a64.o] Error 127
+bash: line 1: aarch64-linux-gnu-gcc: command not found
+make: *** [mk/compile.mk:165: out/arm-plat-k3/ldelf/tlsdesc_rel_a64.o] Error 127
+Traceback (most recent call last):
+
+  File "/usr/local/bin/toml", line 8, in <module>
+    sys.exit(main())
+
+  File "/usr/local/lib/python3.10/dist-packages/toml_cli/__init__.py", line 105, in main
+    app()
+
+  File "/usr/local/lib/python3.10/dist-packages/toml_cli/__init__.py", line 29, in get
+    toml_part = toml_part[key_part]
+
+  File "/usr/local/lib/python3.10/dist-packages/tomlkit/container.py", line 613, in __getitem__
+    raise NonExistentKey(key)
+
+tomlkit.exceptions.NonExistentKey: 'Key "uboot_r5_defconfig" does not exist.'
+
+Traceback (most recent call last):
+
+  File "/usr/local/bin/toml", line 8, in <module>
+    sys.exit(main())
+
+  File "/usr/local/lib/python3.10/dist-packages/toml_cli/__init__.py", line 105, in main
+    app()
+
+  File "/usr/local/lib/python3.10/dist-packages/toml_cli/__init__.py", line 29, in get
+    toml_part = toml_part[key_part]
+
+  File "/usr/local/lib/python3.10/dist-packages/tomlkit/container.py", line 613, in __getitem__
+    raise NonExistentKey(key)
+
+tomlkit.exceptions.NonExistentKey: 'Key "common" does not exist.'
+
+Traceback (most recent call last):
+
+  File "/usr/local/bin/toml", line 8, in <module>
+    sys.exit(main())
+
+  File "/usr/local/lib/python3.10/dist-packages/toml_cli/__init__.py", line 105, in main
+    app()
+
+  File "/usr/local/lib/python3.10/dist-packages/toml_cli/__init__.py", line 29, in get
+    toml_part = toml_part[key_part]
+
+  File "/usr/local/lib/python3.10/dist-packages/tomlkit/container.py", line 613, in __getitem__
+    raise NonExistentKey(key)
+
+tomlkit.exceptions.NonExistentKey: 'Key "uboot_a72_defconfig" does not exist.'
+
+Traceback (most recent call last):
+
+  File "/usr/local/bin/toml", line 8, in <module>
+    sys.exit(main())
+
+  File "/usr/local/lib/python3.10/dist-packages/toml_cli/__init__.py", line 105, in main
+    app()
+
+  File "/usr/local/lib/python3.10/dist-packages/toml_cli/__init__.py", line 29, in get
+    toml_part = toml_part[key_part]
+
+  File "/usr/local/lib/python3.10/dist-packages/tomlkit/container.py", line 613, in __getitem__
+    raise NonExistentKey(key)
+
+tomlkit.exceptions.NonExistentKey: 'Key "common" does not exist.'
+
+Traceback (most recent call last):
+
+  File "/usr/local/bin/toml", line 8, in <module>
+    sys.exit(main())
+
+  File "/usr/local/lib/python3.10/dist-packages/toml_cli/__init__.py", line 105, in main
+    app()
+
+  File "/usr/local/lib/python3.10/dist-packages/toml_cli/__init__.py", line 29, in get
+    toml_part = toml_part[key_part]
+
+  File "/usr/local/lib/python3.10/dist-packages/tomlkit/container.py", line 613, in __getitem__
+    raise NonExistentKey(key)
+
+tomlkit.exceptions.NonExistentKey: 'Key "sysfw_soc" does not exist.'
+
+Traceback (most recent call last):
+
+  File "/usr/local/bin/toml", line 8, in <module>
+    sys.exit(main())
+
+  File "/usr/local/lib/python3.10/dist-packages/toml_cli/__init__.py", line 105, in main
+    app()
+
+  File "/usr/local/lib/python3.10/dist-packages/toml_cli/__init__.py", line 29, in get
+    toml_part = toml_part[key_part]
+
+  File "/usr/local/lib/python3.10/dist-packages/tomlkit/container.py", line 613, in __getitem__
+    raise NonExistentKey(key)
+
+tomlkit.exceptions.NonExistentKey: 'Key "common" does not exist.'
+
+bash: [: =: unary operator expected
+bash: [: =: unary operator expected
+bash: [: =: unary operator expected
+bash: cd: /home/aarsh/ti-bdebstrap/build/j721s2/bsp_sources/ti-u-boot: No such file or directory
+> uboot-a72: building ..
+bash: [: =: unary operator expected
+bash: [: =: unary operator expected
+bash: [: =: unary operator expected
+cp: cannot stat '/home/aarsh/ti-bdebstrap/build/j721s2/bsp_sources/ti-u-boot/tispl.bin': No such file or directory
+cp: cannot stat '/home/aarsh/ti-bdebstrap/build/j721s2/bsp_sources/ti-u-boot/u-boot.img': No such file or directory

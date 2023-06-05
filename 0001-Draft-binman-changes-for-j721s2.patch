@@ -1,0 +1,253 @@
+From f6b320e63ee70003b153f4eed3d7c4120d592b61 Mon Sep 17 00:00:00 2001
+From: Aarsh Goyal <a-goyal@ti.com>
+Date: Fri, 2 Jun 2023 18:48:41 +0530
+Subject: [PATCH] [Draft] binman changes for j721s2
+
+---
+ builds.toml              |  10 +++-
+ configs/bsp_sources.toml |  11 ++++
+ configs/machines.toml    |  27 ++++++++++
+ scripts/build_bsp.sh     | 105 ++++++++++++++++++---------------------
+ 4 files changed, 94 insertions(+), 59 deletions(-)
+
+diff --git a/builds.toml b/builds.toml
+index 00021b8..b09c1f3 100644
+--- a/builds.toml
++++ b/builds.toml
+@@ -1,8 +1,9 @@
+ # This file describes the builds
+ 
+ builds = [
+-    "am62xx-evm_bookworm_standard_09.00.00.001",
+-    "am62xx-evm_bullseye_standard_09.00.00.001",
++    # "am62xx-evm_bookworm_standard_09.00.00.001",
++    # "am62xx-evm_bullseye_standard_09.00.00.001",
++    "j721s2-evm_bullseye_standard_binman",
+ ]
+ 
+ 
+@@ -16,3 +17,8 @@ builds = [
+     bsp_version = "09.00.00.001"
+     distro_variant = "bullseye-standard"
+ 
++[j721s2-evm_bullseye_standard_binman]
++    machine = "j721s2-evm"
++    bsp_version = "binman"
++    distro_variant = "bullseye-standard"
++
+diff --git a/configs/bsp_sources.toml b/configs/bsp_sources.toml
+index 329dca4..5756fd2 100644
+--- a/configs/bsp_sources.toml
++++ b/configs/bsp_sources.toml
+@@ -9,6 +9,17 @@
+     linux_kernel_srcrev = "09.00.00.001"
+     img_rogue_driver_srcrev = "linuxws/kirkstone/k6.1/23.1.6404501"
+ 
++[binman]
++    kernel_major_version = 6
++    uboot_method = "k3ig"
++    atf_srcrev = "2fcd408bb3a6756767a43c073c597cef06e7f2d5"
++    optee_srcrev = "8e74d47616a20eaa23ca692f4bbbf917a236ed94"
++    uboot_srcrev = "ti-u-boot-2023.04-next"
++    k3ig_srcrev = "09.00.00.001"
++    linux_fw_srcrev = "09.00.00.001"
++    linux_kernel_srcrev = "09.00.00.001"
++    img_rogue_driver_srcrev = "linuxws/kirkstone/k6.1/23.1.6404501"
++
+ [08.06.00.007]
+     kernel_major_version = 5
+     uboot_method = "k3ig"
+diff --git a/configs/machines.toml b/configs/machines.toml
+index d403283..2284b84 100644
+--- a/configs/machines.toml
++++ b/configs/machines.toml
+@@ -14,3 +14,30 @@
+     pvr_target = "am62_linux"
+     pvr_window_system = "wayland"
+ 
++[j721s2-evm]
++    hostname = "j721s2"
++    atf_target_board = "generic"
++    optee_platform = "k3-j784s4"
++    sysfw_soc = "j721s2" 
++    dmfw_dir = "j721s2"
++    uboot_r5_defconfig = "j721s2_evm_r5_defconfig"
++    uboot_a72_defconfig = "j721s2_evm_a72_defconfig"
++
++[j721e-evm]
++    hostname = "j721e"
++    atf_target_board = "generic"
++    optee_platform = "k3-j721e"
++    sysfw_soc = "j721e"
++    dmfw_dir = "j721e"
++    uboot_r5_defconfig = "j721e_evm_r5_defconfig" 
++    uboot_a72_defconfig = "j721e_evm_a72_defconfig"
++
++[j784s4-evm]
++    hostname = "j784s4" 
++    atf_target_board = "j784s4"
++    optee_platform = "k3-j784s4"
++    sysfw_soc = "j784s4"
++    dmfw_dir = "j784s4" 
++    uboot_r5_defconfig = "j784s4_evm_r5_defconfig"
++    uboot_a72_defconfig = "j784s4_evm_a72_defconfig"
++
+diff --git a/scripts/build_bsp.sh b/scripts/build_bsp.sh
+index ab0498a..53b62bf 100755
+--- a/scripts/build_bsp.sh
++++ b/scripts/build_bsp.sh
+@@ -20,18 +20,7 @@ bsp_version=$3
+     mkdir -p ${topdir}/build/${build}/bsp_sources; cd ${topdir}/build/${build}/bsp_sources
+ 
+     echo "> BSP sources: checking .."
+-    if [ ! -d core-secdev-k3 ]; then
+-        echo ">> core-secdev-k3: not found. cloning .."
+-        git clone \
+-            https://git.ti.com/git/security-development-tools/core-secdev-k3.git \
+-            --single-branch \
+-            --depth=1
+-        echo ">> core-secdev-k3: cloned"
+-    else
+-        echo ">> core-secdev-k3: available"
+-    fi
+-    TI_SECURE_DEV_PKG=${topdir}/build/${build}/bsp_sources/core-secdev-k3
+-
++    
+     if [ ! -d trusted-firmware-a ]; then
+         cd ${topdir}/build/${build}/bsp_sources
+         echo ">> atf: not found. cloning .."
+@@ -85,21 +74,7 @@ bsp_version=$3
+     fi
+     UBOOT_DIR=${topdir}/build/${build}/bsp_sources/ti-u-boot
+ 
+-    if [ ! -d k3-image-gen ]; then
+-        cd ${topdir}/build/${build}/bsp_sources
+-        echo ">> k3-image-gen: not found. cloning .."
+-        k3ig_srcrev=($(read_bsp_config ${bsp_version} k3ig_srcrev))
+-        git clone \
+-            https://git.ti.com/git/k3-image-gen/k3-image-gen.git \
+-            -b ${k3ig_srcrev} \
+-            --single-branch \
+-            --depth=1
+-        echo ">> k3-image-gen: cloned"
+-    else
+-        echo ">> k3-image-gen: available"
+-    fi
+-    K3IG_DIR=${topdir}/build/${build}/bsp_sources/k3-image-gen
+-
++    
+     if [ ! -d ti-linux-firmware ]; then
+         cd ${topdir}/build/${build}/bsp_sources
+         echo ">> ti-linux-firmware: not found. cloning .."
+@@ -113,10 +88,8 @@ bsp_version=$3
+     else
+         echo ">> ti-linux-firmware: available"
+     fi
+-    dmfw_machine=($(read_machine_config ${machine} dmfw_machine))
+-    SYSFW_DIR=${topdir}/build/${build}/bsp_sources/ti-linux-firmware/ti-sysfw
+-    DMFW_DIR=${topdir}/build/${build}/bsp_sources/ti-linux-firmware/ti-dm/${dmfw_machine}
+-
++    TI_LINUX_FIRMWARE_DIR=${topdir}/build/${build}/bsp_sources/ti-linux-firmware
++    
+     if [ ! -d ti-linux-kernel ]; then
+         cd ${topdir}/build/${build}/bsp_sources
+         echo ">> ti-linux-kernel: not found. cloning .."
+@@ -175,10 +148,12 @@ machine=$1
+     target_board=($(read_machine_config ${machine} atf_target_board))
+ 
+     echo "> ATF: building .."
+-    make -j`nproc` ARCH=aarch64 CROSS_COMPILE=aarch64-none-linux-gnu- PLAT=k3 TARGET_BOARD=${target_board} SPD=opteed
+-
+-    echo "> ATF: signing .."
+-    ${TI_SECURE_DEV_PKG}/scripts/secure-binary-image.sh ${TFA_DIR}/build/k3/${target_board}/release/bl31.bin ${TFA_DIR}/build/k3/${target_board}/release/bl31.bin.signed
++    if [ ${machine} = "j721s2-evm" ] || [ ${machine} = "j784s4-evm" ]; then
++        make -j`nproc` ARCH=aarch64 CROSS_COMPILE=aarch64-none-linux-gnu- PLAT=k3 TARGET_BOARD=${target_board} SPD=opteed K3_USART=0x8
++    else
++        make -j`nproc` ARCH=aarch64 CROSS_COMPILE=aarch64-none-linux-gnu- PLAT=k3 TARGET_BOARD=${target_board} SPD=opteed 
++    fi
++   
+ }
+ 
+ function build_optee() {
+@@ -188,40 +163,56 @@ machine=$1
+     platform=($(read_machine_config ${machine} optee_platform))
+ 
+     echo "> optee: building .."
+-    make -j`nproc` CROSS_COMPILE64=aarch64-none-linux-gnu- CROSS_COMPILE=arm-none-linux-gnueabihf- PLATFORM=${platform} CFG_ARM64_core=y
++    # make -j`nproc` CROSS_COMPILE64=aarch64-none-linux-gnu- CROSS_COMPILE=arm-none-linux-gnueabihf- PLATFORM=${platform} CFG_ARM64_core=y
+ 
+-    echo "> optee: signing .."
+-    ${TI_SECURE_DEV_PKG}/scripts/secure-binary-image.sh ${OPTEE_DIR}/out/arm-plat-k3/core/tee-pager_v2.bin ${OPTEE_DIR}/out/arm-plat-k3/core/tee-pager_v2.bin.signed
++    
++    if [ ${machine} = "j721s2-evm" ] || [ ${machine} = "j784s4-evm" ]; then
++        make -j`nproc` CROSS_COMPILE64=aarch64-none-linux-gnu- CROSS_COMPILE=arm-none-linux-gnueabihf- PLATFORM=k3 CFG_ARM64_core=y
++    else
++        make -j`nproc` PLATFORM=k3-j721e CFG_ARM64_core=y
++    fi 
++    
+ }
+ 
+ function build_uboot() {
+ machine=$1
+ 
+     uboot_r5_defconfig=($(read_machine_config ${machine} uboot_r5_defconfig))
+-    uboot_a53_defconfig=($(read_machine_config ${machine} uboot_a53_defconfig))
++    uboot_a72_defconfig=`read_machine_config ${machine} uboot_a72_defconfig`
+     sysfw_soc=($(read_machine_config ${machine} sysfw_soc))
+ 
+-    echo "> dmfw: signing .."
+-    ${TI_SECURE_DEV_PKG}/scripts/secure-binary-image.sh ${DMFW_DIR}/ipc_echo_testb_mcu1_0_release_strip.xer5f ${DMFW_DIR}/ipc_echo_testb_mcu1_0_release_strip.xer5f.signed
+-
++    
+     cd ${UBOOT_DIR}
+     echo "> uboot-r5: building .."
+-    make -j`nproc` ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- ${uboot_r5_defconfig} O=${UBOOT_DIR}/out/r5
+-    make -j`nproc` ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- O=${UBOOT_DIR}/out/r5
+-
+-    cd ${K3IG_DIR}
+-    make -j`nproc` ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- SOC=${sysfw_soc} SOC_TYPE=hs-fs SBL=${UBOOT_DIR}/out/r5/spl/u-boot-spl.bin SYSFW_DIR=${SYSFW_DIR}
+-    cp ${K3IG_DIR}/tiboot3.bin ${topdir}/build/${build}/tisdk-${distro}-${machine}-boot/
+-    # TODO: Also build for GP and HS
+-    # make -j`nproc` ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- SOC=${sysfw_soc} SOC_TYPE=gp SBL=${UBOOT_DIR}/out/r5/spl/u-boot-spl.bin SYSFW_DIR=${SYSFW_DIR}
+-    # make -j`nproc` ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- SOC=${sysfw_soc} SOC_TYPE=hs SBL=${UBOOT_DIR}/out/r5/spl/u-boot-spl.bin SYSFW_DIR=${SYSFW_DIR}
+-
++    # make -j`nproc` ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- ${uboot_r5_defconfig} O=${UBOOT_DIR}/out/r5
++    # make -j`nproc` ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- O=${UBOOT_DIR}/out/r5
++    if [ ${machine} = "j721s2-evm" ] 
++    then
++        
++        make -j`nproc` ARCH=arm ${uboot_r5_defconfig} 
++        make -j`nproc` ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- BINMAN_INDIRS=${topdir}/build/${build}/bsp_sources/ti-linux-firmware
++
++        cp ${UBOOT_DIR}/tiboot3.bin ${topdir}/build/${build}/tisdk-${distro}-${machine}-boot/
++    
++    fi 
++
++    
++    
+     cd ${UBOOT_DIR}
+-    echo "> uboot-a53: building .."
+-    make -j`nproc` ARCH=arm CROSS_COMPILE=aarch64-none-linux-gnu- ${uboot_a53_defconfig} O=${UBOOT_DIR}/out/a53
+-    make -j`nproc` ARCH=arm CROSS_COMPILE=aarch64-none-linux-gnu- ATF=${TFA_DIR}/build/k3/lite/release/bl31.bin.signed TEE=${OPTEE_DIR}/out/arm-plat-k3/core/tee-pager_v2.bin.signed DM=${DMFW_DIR}/ipc_echo_testb_mcu1_0_release_strip.xer5f.signed O=${UBOOT_DIR}/out/a53
+-    cp ${UBOOT_DIR}/out/a53/tispl.bin ${topdir}/build/${build}/tisdk-${distro}-${machine}-boot/
+-    cp ${UBOOT_DIR}/out/a53/u-boot.img ${topdir}/build/${build}/tisdk-${distro}-${machine}-boot/
++    echo "> uboot-a72: building .."
++    # make -j`nproc` ARCH=arm CROSS_COMPILE=aarch64-none-linux-gnu- ${uboot_a72_defconfig} O=${UBOOT_DIR}/out/a72
++    # make -j`nproc` ARCH=arm CROSS_COMPILE=aarch64-none-linux-gnu- ATF=${TFA_DIR}/build/k3/generic/release/bl31.bin TEE=${OPTEE_DIR}/out/arm-plat-k3/core/tee-pager_v2.bin DM=${DMFW_DIR}/ipc_echo_testb_mcu1_0_release_strip.xer5f O=${UBOOT_DIR}/out/a72
++    
++    if [ ${machine} = "j721s2-evm" ] 
++    then
++        make -j`nproc` ARCH=arm ${uboot_a72_defconfig}
++        make -j`nproc` ARCH=arm CROSS_COMPILE=aarch64-none-linux-gnu- BINMAN_INDIRS=${topdir}/build/${build}/bsp_sources/ti-linux-firmware BL31=${TFA_DIR}/build/k3/generic/release/bl31.bin TEE=${OPTEE_DIR}/out/arm-plat-k3/core/tee-pager_v2.bin
++    fi 
++    
++    
++    cp ${UBOOT_DIR}/tispl.bin ${topdir}/build/${build}/tisdk-${distro}-${machine}-boot/
++    cp ${UBOOT_DIR}/u-boot.img ${topdir}/build/${build}/tisdk-${distro}-${machine}-boot/
++
+ }
+ 
+ function build_kernel() {
+-- 
+2.34.1
+

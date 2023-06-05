@@ -1,0 +1,6 @@
+> Arm Toolchain: available
+> Aarch64 Toolchain: available
+j721s2-evm_bullseye_standard_09.00.00.001
+> Cleaning up j721s2-evm_bullseye_standard_09.00.00.001
+/home/aarsh/ti-bdebstrap/scripts/build_distro.sh: line 32: cd: tisdk--j721s2-evm-rootfs: No such file or directory
+/home/aarsh/ti-bdebstrap/scripts/build_distro.sh: line 37: cd: tisdk--j721s2-evm-boot: No such file or directory
