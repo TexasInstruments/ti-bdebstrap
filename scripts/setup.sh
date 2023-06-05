@@ -26,7 +26,7 @@ function setup_build_tools() {
 			tar -Jxf gcc-arm-9.2-2019.12-x86_64-arm-none-linux-gnueabihf.tar.xz &>>"${LOG_FILE}"
 			rm gcc-arm-9.2-2019.12-x86_64-arm-none-linux-gnueabihf.tar.xz
 		else
-			echo "> Arm Toolchain: could not download"
+			echo "> Arm Toolchain: Failed to download. Exit code: $?"
 		fi
     else
         echo "> Arm Toolchain: available"
@@ -45,7 +45,7 @@ function setup_build_tools() {
 			tar -Jxf gcc-arm-9.2-2019.12-x86_64-aarch64-none-linux-gnu.tar.xz  &>>"${LOG_FILE}"
 			rm gcc-arm-9.2-2019.12-x86_64-aarch64-none-linux-gnu.tar.xz
 		else
-			echo "> Aarch Toolchain: Could not download"
+			echo "> Aarch Toolchain: Failed to download. Exit code: $?"
 		fi
     else
         echo "> Aarch64 Toolchain: available"

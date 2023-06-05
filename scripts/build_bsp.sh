@@ -175,7 +175,7 @@ machine=$1
     target_board=($(read_machine_config ${machine} atf_target_board))
 
     echo "> ATF: building .."
-	make -j`nproc` ARCH=aarch64 CROSS_COMPILE=aarch64-none-linux-gnu- PLAT=k3 TARGET_BOARD=${target_board} SPD=opteed &>>"${LOG_FILE}"
+    make -j`nproc` ARCH=aarch64 CROSS_COMPILE=aarch64-none-linux-gnu- PLAT=k3 TARGET_BOARD=${target_board} SPD=opteed &>>"${LOG_FILE}"
 
     echo "> ATF: signing .."
     ${TI_SECURE_DEV_PKG}/scripts/secure-binary-image.sh ${TFA_DIR}/build/k3/${target_board}/release/bl31.bin ${TFA_DIR}/build/k3/${target_board}/release/bl31.bin.signed &>>"${LOG_FILE}"

@@ -8,11 +8,11 @@ machine=$2
 distro=$3
 
     hostname=($(read_machine_config ${machine} hostname))
-    (bdebstrap \
+    bdebstrap \
         -c ${topdir}/configs/bdebstrap_configs/${distro}.yaml \
         --name ${topdir}/build/${build} \
         --target tisdk-${distro}-${machine}-rootfs \
-		--hostname "${hostname}" -f) &>>"${LOG_FILE}"
+		--hostname "${hostname}" -f &>>"${LOG_FILE}"
 
     cd ${topdir}/build/
 
@@ -29,8 +29,7 @@ build=$1
 
     rm -rf tisdk-${distro}-${machine}-rootfs
 
-    tar --use-compress-program="pigz --best --recursive | pv" -cf &>>"${LOG_FILE}"
-	tisdk-${distro}-${machine}-boot.tar.xz tisdk-${distro}-${machine}-boot
+    tar --use-compress-program="pigz --best --recursive | pv" -cf tisdk-${distro}-${machine}-boot.tar.xz tisdk-${distro}-${machine}-boot &>>"${LOG_FILE}"
     rm -rf tisdk-${distro}-${machine}-boot
 
     rm -rf bsp_sources
