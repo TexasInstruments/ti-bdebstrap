@@ -3,6 +3,7 @@
 builds = [
     "am62x_bookworm_09.00.00.001",
     "am62x_bullseye_09.00.00.001",
+    "j721s2-evm_bullseye_binman",
 ]
 
 [am62x_bookworm_09.00.00.001]
@@ -13,5 +14,10 @@ builds = [
 [am62x_bullseye_09.00.00.001]
     machine = "am62xx-evm"
     bsp_version = "09.00.00.001"
+    distro_variant = "bullseye-default"
+
+[j721s2-evm_bullseye_binman]
+    machine = "j721s2-evm"
+    bsp_version = "binman"
     distro_variant = "bullseye-default"
 

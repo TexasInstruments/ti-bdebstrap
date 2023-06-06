@@ -149,8 +149,11 @@ machine=$1
 
     echo "> ATF: building .."
     
-    make -j`nproc` ARCH=aarch64 CROSS_COMPILE=aarch64-none-linux-gnu- PLAT=k3 TARGET_BOARD=${target_board} SPD=opteed 
-    
+    if [ ${machine} = "j721s2-evm" ] || [ ${machine} = "j784s4-evm" ]; then
+        make -j`nproc` ARCH=aarch64 CROSS_COMPILE=aarch64-none-linux-gnu- PLAT=k3 TARGET_BOARD=${target_board} SPD=opteed K3_USART=0x8
+    else 
+        make -j`nproc` ARCH=aarch64 CROSS_COMPILE=aarch64-none-linux-gnu- PLAT=k3 TARGET_BOARD=${target_board} SPD=opteed 
+    fi 
    
 }
 
@@ -253,6 +256,6 @@ kernel_dir=$3
     make CROSS_COMPILE=aarch64-none-linux-gnu- ARCH=arm64 KERNELDIR=${kernel_dir} RGX_BVNC="33.15.11.3" BUILD=release PVR_BUILD_DIR=${pvr_target} WINDOW_SYSTEM=${pvr_window_system}
 
     echo "ti-img-rogue-driver: installing .."
-    cd binary_am62_linux_wayland_release/target_aarch64/kbuild
+    cd binary_j721s2_linux_wayland_release/target_aarch64/kbuild
     make -C ${kernel_dir} ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- INSTALL_MOD_PATH=${rootfs_dir} INSTALL_MOD_STRIP=1 M=`pwd` modules_install
 }
