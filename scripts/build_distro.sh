@@ -12,7 +12,7 @@ distro=$3
         -c ${topdir}/configs/bdebstrap_configs/${distro}.yaml \
         --name ${topdir}/build/${build} \
         --target tisdk-${distro}-${machine}-rootfs \
-		--hostname "${hostname}" -f &>>"${LOG_FILE}"
+        --hostname "${hostname}" -f &>>"${LOG_FILE}"
 
     cd ${topdir}/build/
 
