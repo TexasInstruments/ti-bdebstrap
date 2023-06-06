@@ -3,6 +3,9 @@
 builds = [
     "am62x_bookworm_09.00.00.002",
     "am62x_bullseye_09.00.00.002",
+    "j721s2-evm_bullseye_09.00.00.002",
+    "j721e-evm_bullseye_09.00.00.002",
+    "j784s4-evm_bullseye_09.00.00.002",
 ]
 
 [am62x_bookworm_09.00.00.002]
@@ -14,4 +17,20 @@ builds = [
     machine = "am62xx-evm"
     bsp_version = "09.00.00.002"
     distro_variant = "bullseye-default"
+
+[j721s2-evm_bullseye_09.00.00.002]
+    machine = "j721s2-evm"
+    bsp_version = "09.00.00.002"
+    distro_variant = "bullseye-default"
+
+[j721e-evm_bullseye_09.00.00.002]
+    machine = "j721e-evm"
+    bsp_version = "09.00.00.002"
+    distro_variant = "bullseye-default"
+
+[j784s4-evm_bullseye_09.00.00.002]
+    machine = "j784s4-evm"
+    bsp_version = "09.00.00.002"
+    distro_variant = "bullseye-default"
+    
 

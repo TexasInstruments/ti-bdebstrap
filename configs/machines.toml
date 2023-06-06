@@ -14,3 +14,40 @@
     pvr_target = "am62_linux"
     pvr_window_system = "wayland"
 
+[j721s2-evm]
+    hostname = "j721s2"
+    atf_target_board = "generic"
+    optee_platform = "k3-j784s4"
+    sysfw_soc = "j721s2" 
+    dmfw_dir = "j721s2"
+    uboot_r5_defconfig = "j721s2_evm_r5_defconfig"
+    uboot_a72_defconfig = "j721s2_evm_a72_defconfig"
+    pvr_target = "j721s2_linux"
+    pvr_window_system = "wayland"
+    soc_type = "j721s2-hs-fs-evm"
+
+[j721e-evm]
+    hostname = "j721e"
+    atf_target_board = "generic"
+    optee_platform = "k3-j721e"
+    sysfw_soc = "j721e"
+    dmfw_dir = "j721e"
+    uboot_r5_defconfig = "j721e_evm_r5_defconfig" 
+    uboot_a72_defconfig = "j721e_evm_a72_defconfig"
+    pvr_target = "j721e_linux"
+    pvr_window_system = "wayland"
+    soc_type = "j721e-gp-evm"
+
+[j784s4-evm]
+    hostname = "j784s4" 
+    atf_target_board = "j784s4"
+    optee_platform = "k3-j784s4"
+    sysfw_soc = "j784s4"
+    dmfw_dir = "j784s4" 
+    uboot_r5_defconfig = "j784s4_evm_r5_defconfig"
+    uboot_a72_defconfig = "j784s4_evm_a72_defconfig"
+    pvr_target = "j784s4_linux"
+    pvr_window_system = "wayland"
+    soc_type = "j784s4-hs-fs-evm"
+
+
