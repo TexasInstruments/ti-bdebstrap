@@ -8,7 +8,10 @@
 
 export topdir=$(git rev-parse --show-toplevel)
 
+source ${topdir}/scripts/setup.sh
 source ${topdir}/scripts/common.sh
+source ${topdir}/scripts/build_bsp.sh
+source ${topdir}/scripts/build_distro.sh
 
 # Override the builds list if machine is passed as argument
 if [ "$#" -ne 0 ]; then
@@ -17,12 +20,8 @@ fi
 
 mkdir -p ${topdir}/build
 
-source ${topdir}/scripts/setup.sh
 setup_log_file "$1"
 setup_build_tools
-
-source ${topdir}/scripts/build_bsp.sh
-source ${topdir}/scripts/build_distro.sh
 
 for build in "${builds[@]}"
 do
