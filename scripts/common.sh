@@ -42,7 +42,7 @@ config=$2
 # cluttered by twice the number of "echo" statements, override the "echo"
 # command to call the original "echo" twice behind-the-scenes.
 echo() {
-	command echo "$@"
-	command echo "$@" >> "$LOG_FILE"
-	#run_cmd command echo "$@"
+    command echo "$@"
+    command echo "$@" >> "$LOG_FILE"
+    #run_cmd command echo "$@"
 }
