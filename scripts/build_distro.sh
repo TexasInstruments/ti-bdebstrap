@@ -24,7 +24,7 @@ build=$1
     
     cd ${topdir}/build/${build}
 
-    echo "> Cleaning up ${build}"
+    log "> Cleaning up ${build}"
     (tar --use-compress-program="pigz --best --recursive | pv" -cf tisdk-${distro}-${machine}-rootfs.tar.xz tisdk-${distro}-${machine}-rootfs) &>>"${LOG_FILE}"
 
     rm -rf tisdk-${distro}-${machine}-rootfs
@@ -36,7 +36,7 @@ build=$1
 
     cd ${topdir}/build/
 
-    echo "> Packaging ${build}"
+    log "> Packaging ${build}"
     tar --use-compress-program="pigz --best --recursive | pv" -cf ${build}.tar.xz ${build} &>>"${LOG_FILE}"
 }
 

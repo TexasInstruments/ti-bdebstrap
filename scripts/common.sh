@@ -38,11 +38,7 @@ config=$2
     read_config ${topdir}/builds.toml $build $config
 }
 
-# There are many echo statements in the scripts. To save the scripts from being
-# cluttered by twice the number of "echo" statements, override the "echo"
-# command to call the original "echo" twice behind-the-scenes.
-echo() {
+function log() {
     command echo "$@"
     command echo "$@" >> "$LOG_FILE"
-    #run_cmd command echo "$@"
 }
