@@ -25,7 +25,7 @@ bsp_version=$3
         git clone \
             https://git.ti.com/git/security-development-tools/core-secdev-k3.git \
             --single-branch \
-            --depth=1
+            --depth=1 &>>"${LOG_FILE}"
         echo ">> core-secdev-k3: cloned"
     else
         echo ">> core-secdev-k3: available"
@@ -37,10 +37,10 @@ bsp_version=$3
         echo ">> atf: not found. cloning .."
         atf_srcrev=($(read_bsp_config ${bsp_version} atf_srcrev))
 
-        git clone https://git.trustedfirmware.org/TF-A/trusted-firmware-a.git
+        git clone https://git.trustedfirmware.org/TF-A/trusted-firmware-a.git &>>"${LOG_FILE}"
 
         cd trusted-firmware-a
-        git checkout ${atf_srcrev}
+        git checkout ${atf_srcrev} &>>"${LOG_FILE}"
         cd ..
         echo ">> atf: cloned"
     else
@@ -53,10 +53,10 @@ bsp_version=$3
         echo ">> optee_os: not found. cloning .."
         optee_srcrev=($(read_bsp_config ${bsp_version} optee_srcrev))
 
-        git clone https://github.com/OP-TEE/optee_os.git
+        git clone https://github.com/OP-TEE/optee_os.git &>>"${LOG_FILE}"
 
         cd optee_os
-        git checkout ${optee_srcrev}
+        git checkout ${optee_srcrev} &>>"${LOG_FILE}"
         cd ..
         echo ">> optee_os: cloned"
     else
@@ -72,12 +72,12 @@ bsp_version=$3
             https://git.ti.com/git/ti-u-boot/ti-u-boot.git \
             -b ${uboot_srcrev} \
             --single-branch \
-            --depth=1
+            --depth=1 &>>"${LOG_FILE}"
         echo ">> ti-u-boot: cloned"
         if [ -d ${topdir}/patches/ti-u-boot ]; then
             echo ">> ti-u-boot: patching .."
             cd ti-u-boot
-            git apply ${topdir}/patches/ti-u-boot/*
+            git apply ${topdir}/patches/ti-u-boot/* &>>"${LOG_FILE}"
             cd ..
         fi
     else
@@ -93,7 +93,7 @@ bsp_version=$3
             https://git.ti.com/git/k3-image-gen/k3-image-gen.git \
             -b ${k3ig_srcrev} \
             --single-branch \
-            --depth=1
+            --depth=1 &>>"${LOG_FILE}"
         echo ">> k3-image-gen: cloned"
     else
         echo ">> k3-image-gen: available"
@@ -108,7 +108,7 @@ bsp_version=$3
             https://git.ti.com/git/processor-firmware/ti-linux-firmware.git \
             -b ${linux_fw_srcrev} \
             --single-branch \
-            --depth=1
+            --depth=1 &>>"${LOG_FILE}"
         echo ">> ti-linux-firmware: cloned"
     else
         echo ">> ti-linux-firmware: available"
@@ -125,7 +125,7 @@ bsp_version=$3
             https://git.ti.com/git/ti-linux-kernel/ti-linux-kernel.git \
             -b ${linux_kernel_srcrev} \
             --single-branch \
-            --depth=1
+            --depth=1 &>>"${LOG_FILE}"
         echo ">> ti-linux-kernel: cloned"
         if [ -d ${topdir}/patches/ti-linux-kernel ]; then
             echo ">> ti-linux-kernel: patching .."
@@ -146,12 +146,12 @@ bsp_version=$3
             https://git.ti.com/git/graphics/ti-img-rogue-driver.git \
             -b ${img_rogue_driver_srcrev} \
             --single-branch \
-            --depth=1
+            --depth=1 &>>"${LOG_FILE}"
         echo ">> ti-img-rogue-driver: cloned"
         if [ -d ${topdir}/patches/ti-img-rogue-driver ]; then
             echo ">> ti-img-rogue-driver: patching .."
             cd ti-img-rogue-driver
-            git apply ${topdir}/patches/ti-img-rogue-driver/*
+            git apply ${topdir}/patches/ti-img-rogue-driver/* &>>"${LOG_FILE}"
             cd ..
         fi
     else
@@ -162,7 +162,7 @@ bsp_version=$3
     echo "> BSP sources: cloned"
     echo "> BSP sources: creating backup .."
     cd ${topdir}/build/${build}
-    tar --use-compress-program="pigz --best --recursive | pv" -cf bsp_sources.tar.xz bsp_sources
+    tar --use-compress-program="pigz --best --recursive | pv" -cf bsp_sources.tar.xz bsp_sources &>>"${LOG_FILE}"
     echo "> BSP sources: backup created .."
 
     mkdir -p tisdk-${distro}-${machine}-boot
@@ -175,10 +175,10 @@ machine=$1
     target_board=($(read_machine_config ${machine} atf_target_board))
 
     echo "> ATF: building .."
-    make -j`nproc` ARCH=aarch64 CROSS_COMPILE=aarch64-none-linux-gnu- PLAT=k3 TARGET_BOARD=${target_board} SPD=opteed
+    make -j`nproc` ARCH=aarch64 CROSS_COMPILE=aarch64-none-linux-gnu- PLAT=k3 TARGET_BOARD=${target_board} SPD=opteed &>>"${LOG_FILE}"
 
     echo "> ATF: signing .."
-    ${TI_SECURE_DEV_PKG}/scripts/secure-binary-image.sh ${TFA_DIR}/build/k3/${target_board}/release/bl31.bin ${TFA_DIR}/build/k3/${target_board}/release/bl31.bin.signed
+    ${TI_SECURE_DEV_PKG}/scripts/secure-binary-image.sh ${TFA_DIR}/build/k3/${target_board}/release/bl31.bin ${TFA_DIR}/build/k3/${target_board}/release/bl31.bin.signed &>>"${LOG_FILE}"
 }
 
 function build_optee() {
@@ -188,10 +188,10 @@ machine=$1
     platform=($(read_machine_config ${machine} optee_platform))
 
     echo "> optee: building .."
-    make -j`nproc` CROSS_COMPILE64=aarch64-none-linux-gnu- CROSS_COMPILE=arm-none-linux-gnueabihf- PLATFORM=${platform} CFG_ARM64_core=y
+    make -j`nproc` CROSS_COMPILE64=aarch64-none-linux-gnu- CROSS_COMPILE=arm-none-linux-gnueabihf- PLATFORM=${platform} CFG_ARM64_core=y &>>"${LOG_FILE}"
 
     echo "> optee: signing .."
-    ${TI_SECURE_DEV_PKG}/scripts/secure-binary-image.sh ${OPTEE_DIR}/out/arm-plat-k3/core/tee-pager_v2.bin ${OPTEE_DIR}/out/arm-plat-k3/core/tee-pager_v2.bin.signed
+    ${TI_SECURE_DEV_PKG}/scripts/secure-binary-image.sh ${OPTEE_DIR}/out/arm-plat-k3/core/tee-pager_v2.bin ${OPTEE_DIR}/out/arm-plat-k3/core/tee-pager_v2.bin.signed &>>"${LOG_FILE}"
 }
 
 function build_uboot() {
@@ -202,15 +202,15 @@ machine=$1
     sysfw_soc=($(read_machine_config ${machine} sysfw_soc))
 
     echo "> dmfw: signing .."
-    ${TI_SECURE_DEV_PKG}/scripts/secure-binary-image.sh ${DMFW_DIR}/ipc_echo_testb_mcu1_0_release_strip.xer5f ${DMFW_DIR}/ipc_echo_testb_mcu1_0_release_strip.xer5f.signed
+    ${TI_SECURE_DEV_PKG}/scripts/secure-binary-image.sh ${DMFW_DIR}/ipc_echo_testb_mcu1_0_release_strip.xer5f ${DMFW_DIR}/ipc_echo_testb_mcu1_0_release_strip.xer5f.signed &>>"${LOG_FILE}"
 
     cd ${UBOOT_DIR}
     echo "> uboot-r5: building .."
-    TI_SECURE_DEV_PKG=${TI_SECURE_DEV_PKG} make -j`nproc` ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- ${uboot_r5_defconfig} O=${UBOOT_DIR}/out/r5
-    TI_SECURE_DEV_PKG=${TI_SECURE_DEV_PKG} make -j`nproc` ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- O=${UBOOT_DIR}/out/r5
+    TI_SECURE_DEV_PKG=${TI_SECURE_DEV_PKG} make -j`nproc` ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- ${uboot_r5_defconfig} O=${UBOOT_DIR}/out/r5 &>>"${LOG_FILE}"
+    TI_SECURE_DEV_PKG=${TI_SECURE_DEV_PKG} make -j`nproc` ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- O=${UBOOT_DIR}/out/r5 &>>"${LOG_FILE}"
 
     cd ${K3IG_DIR}
-    TI_SECURE_DEV_PKG=${TI_SECURE_DEV_PKG} make -j`nproc` ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- SOC=${sysfw_soc} SOC_TYPE=hs-fs SBL=${UBOOT_DIR}/out/r5/spl/u-boot-spl.bin SYSFW_DIR=${SYSFW_DIR}
+    TI_SECURE_DEV_PKG=${TI_SECURE_DEV_PKG} make -j`nproc` ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- SOC=${sysfw_soc} SOC_TYPE=hs-fs SBL=${UBOOT_DIR}/out/r5/spl/u-boot-spl.bin SYSFW_DIR=${SYSFW_DIR} &>>"${LOG_FILE}"
     cp ${K3IG_DIR}/tiboot3.bin ${topdir}/build/${build}/tisdk-${distro}-${machine}-boot/
     # TODO: Also build for GP and HS
     # make -j`nproc` ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- SOC=${sysfw_soc} SOC_TYPE=gp SBL=${UBOOT_DIR}/out/r5/spl/u-boot-spl.bin SYSFW_DIR=${SYSFW_DIR}
@@ -218,8 +218,8 @@ machine=$1
 
     cd ${UBOOT_DIR}
     echo "> uboot-a53: building .."
-    TI_SECURE_DEV_PKG=${TI_SECURE_DEV_PKG} make -j`nproc` ARCH=arm CROSS_COMPILE=aarch64-none-linux-gnu- ${uboot_a53_defconfig} O=${UBOOT_DIR}/out/a53
-    TI_SECURE_DEV_PKG=${TI_SECURE_DEV_PKG} make -j`nproc` ARCH=arm CROSS_COMPILE=aarch64-none-linux-gnu- ATF=${TFA_DIR}/build/k3/lite/release/bl31.bin.signed TEE=${OPTEE_DIR}/out/arm-plat-k3/core/tee-pager_v2.bin.signed DM=${DMFW_DIR}/ipc_echo_testb_mcu1_0_release_strip.xer5f.signed O=${UBOOT_DIR}/out/a53
+    TI_SECURE_DEV_PKG=${TI_SECURE_DEV_PKG} make -j`nproc` ARCH=arm CROSS_COMPILE=aarch64-none-linux-gnu- ${uboot_a53_defconfig} O=${UBOOT_DIR}/out/a53 &>>"${LOG_FILE}"
+    TI_SECURE_DEV_PKG=${TI_SECURE_DEV_PKG} make -j`nproc` ARCH=arm CROSS_COMPILE=aarch64-none-linux-gnu- ATF=${TFA_DIR}/build/k3/lite/release/bl31.bin.signed TEE=${OPTEE_DIR}/out/arm-plat-k3/core/tee-pager_v2.bin.signed DM=${DMFW_DIR}/ipc_echo_testb_mcu1_0_release_strip.xer5f.signed O=${UBOOT_DIR}/out/a53 &>>"${LOG_FILE}"
     cp ${UBOOT_DIR}/out/a53/tispl.bin ${topdir}/build/${build}/tisdk-${distro}-${machine}-boot/
     cp ${UBOOT_DIR}/out/a53/u-boot.img ${topdir}/build/${build}/tisdk-${distro}-${machine}-boot/
 }
@@ -231,16 +231,16 @@ rootfs_dir=$2
     cd ${KERNEL_DIR}
 
     echo "kernel: generating defconfig .."
-    make -j`nproc` ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- defconfig ti_arm64_prune.config
+    make -j`nproc` ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- defconfig ti_arm64_prune.config &>>"${LOG_FILE}"
 
     echo "kernel: building Image .."
-    make -j`nproc` ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- Image
+    make -j`nproc` ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- Image &>>"${LOG_FILE}"
 
     echo "kernel: building DTBs .."
-    make -j`nproc` ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- dtbs
+    make -j`nproc` ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- dtbs &>>"${LOG_FILE}"
 
     echo "kernel: building modules .."
-    make -j`nproc` ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- modules
+    make -j`nproc` ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- modules &>>"${LOG_FILE}"
 
     echo "kernel: installing Image .."
     cp arch/arm64/boot/Image ${rootfs_dir}/boot/
@@ -250,7 +250,7 @@ rootfs_dir=$2
     cp -rf arch/arm64/boot/dts/ti ${rootfs_dir}/boot/dtb/
 
     echo "kernel: installing modules .."
-    make ARCH=arm64  INSTALL_MOD_PATH=${rootfs_dir} modules_install
+    make ARCH=arm64  INSTALL_MOD_PATH=${rootfs_dir} modules_install &>>"${LOG_FILE}"
 }
 
 function build_ti_img_rogue_driver() {
@@ -263,9 +263,9 @@ kernel_dir=$3
     cd ${IMG_ROGUE_DRIVER_DIR}
 
     echo "ti-img-rogue-driver: building .."
-    make CROSS_COMPILE=aarch64-none-linux-gnu- ARCH=arm64 KERNELDIR=${kernel_dir} RGX_BVNC="33.15.11.3" BUILD=release PVR_BUILD_DIR=${pvr_target} WINDOW_SYSTEM=${pvr_window_system}
+    make CROSS_COMPILE=aarch64-none-linux-gnu- ARCH=arm64 KERNELDIR=${kernel_dir} RGX_BVNC="33.15.11.3" BUILD=release PVR_BUILD_DIR=${pvr_target} WINDOW_SYSTEM=${pvr_window_system} &>>"${LOG_FILE}"
 
     echo "ti-img-rogue-driver: installing .."
     cd binary_am62_linux_wayland_release/target_aarch64/kbuild
-    make -C ${kernel_dir} ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- INSTALL_MOD_PATH=${rootfs_dir} INSTALL_MOD_STRIP=1 M=`pwd` modules_install
+    make -C ${kernel_dir} ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- INSTALL_MOD_PATH=${rootfs_dir} INSTALL_MOD_STRIP=1 M=`pwd` modules_install &>>"${LOG_FILE}"
 }
