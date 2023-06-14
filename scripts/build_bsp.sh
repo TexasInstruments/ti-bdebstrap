@@ -20,17 +20,6 @@ bsp_version=$3
     mkdir -p ${topdir}/build/${build}/bsp_sources; cd ${topdir}/build/${build}/bsp_sources
 
     log "> BSP sources: checking .."
-    if [ ! -d core-secdev-k3 ]; then
-        log ">> core-secdev-k3: not found. cloning .."
-        git clone \
-            https://git.ti.com/git/security-development-tools/core-secdev-k3.git \
-            --single-branch \
-            --depth=1 &>>"${LOG_FILE}"
-        log ">> core-secdev-k3: cloned"
-    else
-        log ">> core-secdev-k3: available"
-    fi
-    TI_SECURE_DEV_PKG=${topdir}/build/${build}/bsp_sources/core-secdev-k3
 
     if [ ! -d trusted-firmware-a ]; then
         cd ${topdir}/build/${build}/bsp_sources
@@ -84,21 +73,6 @@ bsp_version=$3
         log ">> ti-u-boot: available"
     fi
     UBOOT_DIR=${topdir}/build/${build}/bsp_sources/ti-u-boot
-
-    if [ ! -d k3-image-gen ]; then
-        cd ${topdir}/build/${build}/bsp_sources
-        log ">> k3-image-gen: not found. cloning .."
-        k3ig_srcrev=($(read_bsp_config ${bsp_version} k3ig_srcrev))
-        git clone \
-            https://git.ti.com/git/k3-image-gen/k3-image-gen.git \
-            -b ${k3ig_srcrev} \
-            --single-branch \
-            --depth=1 &>>"${LOG_FILE}"
-        log ">> k3-image-gen: cloned"
-    else
-        log ">> k3-image-gen: available"
-    fi
-    K3IG_DIR=${topdir}/build/${build}/bsp_sources/k3-image-gen
 
     if [ ! -d ti-linux-firmware ]; then
         cd ${topdir}/build/${build}/bsp_sources
@@ -178,7 +152,6 @@ machine=$1
     make -j`nproc` ARCH=aarch64 CROSS_COMPILE=aarch64-none-linux-gnu- PLAT=k3 TARGET_BOARD=${target_board} SPD=opteed &>>"${LOG_FILE}"
 
     log "> ATF: signing .."
-    ${TI_SECURE_DEV_PKG}/scripts/secure-binary-image.sh ${TFA_DIR}/build/k3/${target_board}/release/bl31.bin ${TFA_DIR}/build/k3/${target_board}/release/bl31.bin.signed &>>"${LOG_FILE}"
 }
 
 function build_optee() {
@@ -191,7 +164,6 @@ machine=$1
     make -j`nproc` CROSS_COMPILE64=aarch64-none-linux-gnu- CROSS_COMPILE=arm-none-linux-gnueabihf- PLATFORM=${platform} CFG_ARM64_core=y &>>"${LOG_FILE}"
 
     log "> optee: signing .."
-    ${TI_SECURE_DEV_PKG}/scripts/secure-binary-image.sh ${OPTEE_DIR}/out/arm-plat-k3/core/tee-pager_v2.bin ${OPTEE_DIR}/out/arm-plat-k3/core/tee-pager_v2.bin.signed &>>"${LOG_FILE}"
 }
 
 function build_uboot() {
@@ -202,26 +174,23 @@ machine=$1
     sysfw_soc=($(read_machine_config ${machine} sysfw_soc))
 
     log "> dmfw: signing .."
-    ${TI_SECURE_DEV_PKG}/scripts/secure-binary-image.sh ${DMFW_DIR}/ipc_echo_testb_mcu1_0_release_strip.xer5f ${DMFW_DIR}/ipc_echo_testb_mcu1_0_release_strip.xer5f.signed &>>"${LOG_FILE}"
 
     cd ${UBOOT_DIR}
     log "> uboot-r5: building .."
-    TI_SECURE_DEV_PKG=${TI_SECURE_DEV_PKG} make -j`nproc` ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- ${uboot_r5_defconfig} O=${UBOOT_DIR}/out/r5 &>>"${LOG_FILE}"
-    TI_SECURE_DEV_PKG=${TI_SECURE_DEV_PKG} make -j`nproc` ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- O=${UBOOT_DIR}/out/r5 &>>"${LOG_FILE}"
+    make -j`nproc` ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- ${uboot_r5_defconfig} O=${UBOOT_DIR}/out/r5 &>>"${LOG_FILE}"
+    make -j`nproc` ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- O=${UBOOT_DIR}/out/r5 BINMAN_INDIRS=${topdir}/build/${build}/bsp_sources/ti-linux-firmware &>>"${LOG_FILE}"
+    cp ${UBOOT_DIR}/out/r5/tiboot3*.bin ${topdir}/build/${build}/tisdk-${distro}-${machine}-boot/ &>> ${LOG_FILE}
 
-    cd ${K3IG_DIR}
-    TI_SECURE_DEV_PKG=${TI_SECURE_DEV_PKG} make -j`nproc` ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- SOC=${sysfw_soc} SOC_TYPE=hs-fs SBL=${UBOOT_DIR}/out/r5/spl/u-boot-spl.bin SYSFW_DIR=${SYSFW_DIR} &>>"${LOG_FILE}"
-    cp ${K3IG_DIR}/tiboot3.bin ${topdir}/build/${build}/tisdk-${distro}-${machine}-boot/
     # TODO: Also build for GP and HS
     # make -j`nproc` ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- SOC=${sysfw_soc} SOC_TYPE=gp SBL=${UBOOT_DIR}/out/r5/spl/u-boot-spl.bin SYSFW_DIR=${SYSFW_DIR}
     # make -j`nproc` ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- SOC=${sysfw_soc} SOC_TYPE=hs SBL=${UBOOT_DIR}/out/r5/spl/u-boot-spl.bin SYSFW_DIR=${SYSFW_DIR}
 
     cd ${UBOOT_DIR}
     log "> uboot-a53: building .."
-    TI_SECURE_DEV_PKG=${TI_SECURE_DEV_PKG} make -j`nproc` ARCH=arm CROSS_COMPILE=aarch64-none-linux-gnu- ${uboot_a53_defconfig} O=${UBOOT_DIR}/out/a53 &>>"${LOG_FILE}"
-    TI_SECURE_DEV_PKG=${TI_SECURE_DEV_PKG} make -j`nproc` ARCH=arm CROSS_COMPILE=aarch64-none-linux-gnu- ATF=${TFA_DIR}/build/k3/lite/release/bl31.bin.signed TEE=${OPTEE_DIR}/out/arm-plat-k3/core/tee-pager_v2.bin.signed DM=${DMFW_DIR}/ipc_echo_testb_mcu1_0_release_strip.xer5f.signed O=${UBOOT_DIR}/out/a53 &>>"${LOG_FILE}"
-    cp ${UBOOT_DIR}/out/a53/tispl.bin ${topdir}/build/${build}/tisdk-${distro}-${machine}-boot/
-    cp ${UBOOT_DIR}/out/a53/u-boot.img ${topdir}/build/${build}/tisdk-${distro}-${machine}-boot/
+    make -j`nproc` ARCH=arm CROSS_COMPILE=aarch64-none-linux-gnu- ${uboot_a53_defconfig} O=${UBOOT_DIR}/out/a53 &>>"${LOG_FILE}"
+    make -j`nproc` ARCH=arm CROSS_COMPILE=aarch64-none-linux-gnu- BL31=${TFA_DIR}/build/k3/lite/release/bl31.bin TEE=${OPTEE_DIR}/out/arm-plat-k3/core/tee-pager_v2.bin O=${UBOOT_DIR}/out/a53 BINMAN_INDIRS=${topdir}/build/${build}/bsp_sources/ti-linux-firmware &>>"${LOG_FILE}"
+    cp ${UBOOT_DIR}/out/a53/tispl.bin ${topdir}/build/${build}/tisdk-${distro}-${machine}-boot/ &>> ${LOG_FILE}
+    cp ${UBOOT_DIR}/out/a53/u-boot.img ${topdir}/build/${build}/tisdk-${distro}-${machine}-boot/ &>> ${LOG_FILE}
 }
 
 function build_kernel() {
