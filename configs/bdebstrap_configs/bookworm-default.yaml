@@ -4,6 +4,7 @@ mmdebstrap:
     - arm64
   mode: auto
   keyrings:
+    - /usr/share/keyrings/ti-debpkgs.gpg
     - /usr/share/keyrings/debian-archive-keyring.gpg
   suite: bookworm
   variant: standard
@@ -13,6 +14,8 @@ mmdebstrap:
     - non-free-firmware
   packages:
     - build-essential
+    - gpg
+    - curl
     - firmware-ti-connectivity
     - init
     - iproute2
@@ -26,13 +29,20 @@ mmdebstrap:
     - openssh-server
     - sudo
     - vim
+    - k3conf
+  mirrors:
+    - http://deb.debian.org/debian
+  setup-hooks:
+    - 'mkdir -p $1/usr/share/keyrings'
+    - 'curl -s --compressed https://texasinstruments.github.io/ti-debpkgs/KEY.gpg | gpg --dearmor | tee $1/usr/share/keyrings/ti-debpkgs.gpg > /dev/null'
+    - 'echo "deb [signed-by=/usr/share/keyrings/ti-debpkgs.gpg] https://texasinstruments.github.io/ti-debpkgs/ ./" > $1/etc/apt/sources.list.d/ti-debpkgs.list'
   essential-hooks:
     # FIXME: Find a better workaround instead of sleep
     - 'sleep 10' # workaround for /proc resource busy unable to umount issue
   customize-hooks:
     - 'chroot "$1" passwd --delete root'
-    - 'chroot "$1" chown -R man: /var/cache/man/'
-    - 'chroot "$1" chown -R man: /var/cache/man/'
+    - 'chown -R man: $1/var/cache/man/'
+    - 'chown -R man: $1/var/cache/man/'
     - 'chroot "$1" apt-get update'
     - 'chroot "$1" cp /etc/skel/.bashrc ~/.bashrc'
 
