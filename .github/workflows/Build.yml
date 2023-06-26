@@ -55,9 +55,13 @@ jobs:
               build-essential autoconf automake \
               bison flex libssl-dev \
               bc u-boot-tools swig python3-pyelftools \
-              gcc-aarch64-linux-gnu
+              gcc-aarch64-linux-gnu \
+              gpg curl
           sudo apt install --fix-broken
           sudo pip3 install toml-cli
+          curl -s --compressed https://texasinstruments.github.io/ti-debpkgs/KEY.gpg | \
+              gpg --dearmor | \
+              sudo tee /usr/share/keyrings/ti-debpkgs.gpg > /dev/null
 
       - name: Build ${{ matrix.builds }}
         run: |
