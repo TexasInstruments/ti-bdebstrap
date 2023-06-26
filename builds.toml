@@ -1,17 +1,17 @@
 # This file describes the builds
 
 builds = [
-    "am62x_bookworm_09.00.00.002",
-    "am62x_bullseye_09.00.00.002",
+    "am62x_bookworm_09.00.00.004",
+    "am62x_bullseye_09.00.00.004",
 ]
 
-[am62x_bookworm_09.00.00.002]
+[am62x_bookworm_09.00.00.004]
     machine = "am62xx-evm"
-    bsp_version = "09.00.00.002"
+    bsp_version = "09.00.00.004"
     distro_variant = "bookworm-default"
 
-[am62x_bullseye_09.00.00.002]
+[am62x_bullseye_09.00.00.004]
     machine = "am62xx-evm"
-    bsp_version = "09.00.00.002"
+    bsp_version = "09.00.00.004"
     distro_variant = "bullseye-default"
 
