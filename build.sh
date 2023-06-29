@@ -13,19 +13,24 @@ source ${topdir}/scripts/common.sh
 source ${topdir}/scripts/build_bsp.sh
 source ${topdir}/scripts/build_distro.sh
 
-# Override the builds list if machine is passed as argument
+# exit if no arguments are passed
 if [ "$#" -ne 0 ]; then
-    builds=($1)
+    builds="$@"
+else
+    echo "build.sh: missing operand"
+    echo "Specify one or more builds from the \"builds.toml\" file."
+    exit 1
 fi
 
 mkdir -p ${topdir}/build
 
-setup_log_file "$1"
 setup_build_tools
 
-for build in "${builds[@]}"
+for build in ${builds}
 do
+
     echo "${build}"
+    setup_log_file "${build}"
 
     machine=($(read_build_config ${build} machine))
     bsp_version=($(read_build_config ${build} bsp_version))

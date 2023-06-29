@@ -3,13 +3,13 @@
 source ${topdir}/scripts/common.sh
 
 function setup_log_file() {
-    build=$1
+    filename=$1
 
     # create the log directory if it doesn't already exist
     LOG_DIR="${topdir}/logs"
     mkdir -p "${LOG_DIR}"
 
-    export LOG_FILE="$LOG_DIR/${build}.log"
+    LOG_FILE="$LOG_DIR/${filename}.log"
 
     # if log file already exists, replace it with a new one for this build
     if [ -f "$LOG_FILE" ]; then
@@ -20,6 +20,7 @@ function setup_log_file() {
 }
 
 function setup_build_tools() {
+    setup_log_file "setup"
     log "> Arm Toolchain: checking .."
     if [ ! -d "${topdir}/tools/gcc-arm-9.2-2019.12-x86_64-arm-none-linux-gnueabihf/bin" ]; then
         mkdir -p ${topdir}/tools/
