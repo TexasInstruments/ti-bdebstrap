@@ -1,7 +1,5 @@
 #!/bin/bash
 
-builds=($(toml get builds --toml-path ${topdir}/builds.toml | tr -d "[],'"))
-
 function read_config() {
     config_file=$1
     section=$2

@@ -22,7 +22,7 @@ jobs:
         id: prepare-builds
         run: |
           pip3 install toml-cli
-          topdir=./ source scripts/common.sh
+          builds=($(toml get builds --toml-path ./builds.toml | tr -d "[],'"))
           output_string="["
           for build in ${builds[@]}
           do
