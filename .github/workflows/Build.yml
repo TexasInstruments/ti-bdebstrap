@@ -75,3 +75,9 @@ jobs:
           name: ${{ matrix.builds }}
           if-no-files-found: error
 
+      - name: Upload ${{ matrix.builds }}.log
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          path: logs/${{ matrix.builds }}.log
+          name: ${{ matrix.builds }}.log
+          if-no-files-found: error
