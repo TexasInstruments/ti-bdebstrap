@@ -8,6 +8,7 @@ machine=$2
 distro=$3
 
     hostname=($(read_machine_config ${machine} hostname))
+    log "> Building rootfs .."
     bdebstrap \
         -c ${topdir}/configs/bdebstrap_configs/${distro}.yaml \
         --name ${topdir}/build/${build} \
