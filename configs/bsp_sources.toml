@@ -1,12 +1,12 @@
-[09.00.00.004]
+[09.00.00.005]
     kernel_major_version = 6
     uboot_method = "k3ig"
     atf_srcrev = "2fcd408bb3a6756767a43c073c597cef06e7f2d5"
     optee_srcrev = "8e74d47616a20eaa23ca692f4bbbf917a236ed94"
-    uboot_srcrev = "09.00.00.004"
-    k3ig_srcrev = "09.00.00.004"
-    linux_fw_srcrev = "09.00.00.004"
-    linux_kernel_srcrev = "09.00.00.004"
+    uboot_srcrev = "09.00.00.005"
+    k3ig_srcrev = "09.00.00.005"
+    linux_fw_srcrev = "09.00.00.005"
+    linux_kernel_srcrev = "09.00.00.005"
     img_rogue_driver_srcrev = "linuxws/kirkstone/k6.1/23.1.6404501"
 
 [08.06.00.007]
