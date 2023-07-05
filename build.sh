@@ -13,6 +13,12 @@ source ${topdir}/scripts/common.sh
 source ${topdir}/scripts/build_bsp.sh
 source ${topdir}/scripts/build_distro.sh
 
+if [ "$EUID" -ne 0 ] ; then
+    echo "Failed to run: requires root privileges"
+    echo "Exiting"
+    exit 1
+fi
+
 # exit if no arguments are passed
 if [ "$#" -ne 0 ]; then
     builds="$@"
