@@ -38,6 +38,8 @@ do
     echo "${build}"
     setup_log_file "${build}"
 
+    validate_section "Build" ${build} "${topdir}/builds.toml"
+
     machine=($(read_build_config ${build} machine))
     bsp_version=($(read_build_config ${build} bsp_version))
     distro_variant=($(read_build_config ${build} distro_variant))
@@ -45,6 +47,8 @@ do
     echo "machine: ${machine}"
     echo "bsp_version: ${bsp_version}"
     echo "distro_variant: ${distro_variant}"
+
+    validate_build ${machine} ${bsp_version} ${distro_variant}
 
     generate_rootfs ${build} ${machine} ${distro_variant}
     build_bsp ${build} ${machine} ${bsp_version}
