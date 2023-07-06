@@ -42,9 +42,6 @@ do
 
     generate_rootfs ${build} ${machine} ${distro_variant}
     build_bsp ${build} ${machine} ${bsp_version}
-    # FIXME: Kernel and IMG rogue driver should be .deb packages
-    build_kernel ${machine} ${ROOTFS_DIR}
-    build_ti_img_rogue_driver ${machine} ${ROOTFS_DIR} ${KERNEL_DIR}
     package_and_clean ${build}
 
 done

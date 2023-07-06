@@ -31,6 +31,36 @@ mmdebstrap:
     - vim
     - k3conf
     - weston
+    - libd3dadapter9-mesa-dev
+    - libd3dadapter9-mesa
+    - libegl-mesa0
+    - libegl1-mesa-dev
+    - libegl1-mesa
+    - libgbm-dev
+    - libgbm1
+    - libgl1-mesa-dev
+    - libgl1-mesa-dri
+    - libgl1-mesa-glx
+    - libglapi-mesa
+    - libgles2-mesa-dev
+    - libgles2-mesa
+    - libglx-mesa0
+    - libosmesa6-dev
+    - libosmesa6
+    - libpowervr-gl-am62x
+    - libti-rpmsg-char-dev
+    - libti-rpmsg-char
+    - libwayland-egl1-mesa
+    - linux-headers-6.1.33-dirty
+    - linux-image-6.1.33-dirty
+    - linux-libc-dev
+    - mesa-common-dev
+    - mesa-opencl-icd
+    - mesa-va-drivers
+    - mesa-vdpau-drivers
+    - mesa-vulkan-drivers
+    - ti-img-rogue-driver-dkms
+    - wl18xx-ti-utils
   mirrors:
     - http://deb.debian.org/debian
   setup-hooks:
