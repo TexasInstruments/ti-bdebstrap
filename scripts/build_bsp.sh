@@ -91,48 +91,6 @@ bsp_version=$3
     SYSFW_DIR=${topdir}/build/${build}/bsp_sources/ti-linux-firmware/ti-sysfw
     DMFW_DIR=${topdir}/build/${build}/bsp_sources/ti-linux-firmware/ti-dm/${dmfw_machine}
 
-    if [ ! -d ti-linux-kernel ]; then
-        cd ${topdir}/build/${build}/bsp_sources
-        log ">> ti-linux-kernel: not found. cloning .."
-        linux_kernel_srcrev=($(read_bsp_config ${bsp_version} linux_kernel_srcrev))
-        git clone \
-            https://git.ti.com/git/ti-linux-kernel/ti-linux-kernel.git \
-            -b ${linux_kernel_srcrev} \
-            --single-branch \
-            --depth=1 &>>"${LOG_FILE}"
-        log ">> ti-linux-kernel: cloned"
-        if [ -d ${topdir}/patches/ti-linux-kernel ]; then
-            log ">> ti-linux-kernel: patching .."
-            cd ti-linux-kernel
-            git apply ${topdir}/patches/ti-linux-kernel/*
-            cd ..
-        fi
-    else
-        log ">> ti-linux-kernel: available"
-    fi
-    KERNEL_DIR=${topdir}/build/${build}/bsp_sources/ti-linux-kernel
-
-    if [ ! -d ti-img-rogue-driver ]; then
-        cd ${topdir}/build/${build}/bsp_sources
-        log ">> ti-img-rogue-driver: not found. cloning .."
-        img_rogue_driver_srcrev=($(read_bsp_config ${bsp_version} img_rogue_driver_srcrev))
-        git clone \
-            https://git.ti.com/git/graphics/ti-img-rogue-driver.git \
-            -b ${img_rogue_driver_srcrev} \
-            --single-branch \
-            --depth=1 &>>"${LOG_FILE}"
-        log ">> ti-img-rogue-driver: cloned"
-        if [ -d ${topdir}/patches/ti-img-rogue-driver ]; then
-            log ">> ti-img-rogue-driver: patching .."
-            cd ti-img-rogue-driver
-            git apply ${topdir}/patches/ti-img-rogue-driver/* &>>"${LOG_FILE}"
-            cd ..
-        fi
-    else
-        log ">> ti-img-rogue-driver: available"
-    fi
-    IMG_ROGUE_DRIVER_DIR=${topdir}/build/${build}/bsp_sources/ti-img-rogue-driver
-
     log "> BSP sources: cloned"
     log "> BSP sources: creating backup .."
     cd ${topdir}/build/${build}
@@ -187,50 +145,4 @@ machine=$1
     make -j`nproc` ARCH=arm CROSS_COMPILE=aarch64-none-linux-gnu- BL31=${TFA_DIR}/build/k3/lite/release/bl31.bin TEE=${OPTEE_DIR}/out/arm-plat-k3/core/tee-pager_v2.bin O=${UBOOT_DIR}/out/a53 BINMAN_INDIRS=${topdir}/build/${build}/bsp_sources/ti-linux-firmware &>>"${LOG_FILE}"
     cp ${UBOOT_DIR}/out/a53/tispl.bin ${topdir}/build/${build}/tisdk-${distro}-${machine}-boot/ &>> ${LOG_FILE}
     cp ${UBOOT_DIR}/out/a53/u-boot.img ${topdir}/build/${build}/tisdk-${distro}-${machine}-boot/ &>> ${LOG_FILE}
-}
-
-function build_kernel() {
-machine=$1
-rootfs_dir=$2
-
-    cd ${KERNEL_DIR}
-
-    log "kernel: generating defconfig .."
-    make -j`nproc` ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- defconfig ti_arm64_prune.config &>>"${LOG_FILE}"
-
-    log "kernel: building Image .."
-    make -j`nproc` ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- Image &>>"${LOG_FILE}"
-
-    log "kernel: building DTBs .."
-    make -j`nproc` ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- dtbs &>>"${LOG_FILE}"
-
-    log "kernel: building modules .."
-    make -j`nproc` ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- modules &>>"${LOG_FILE}"
-
-    log "kernel: installing Image .."
-    cp arch/arm64/boot/Image ${rootfs_dir}/boot/
-
-    log "kernel: installing DTBs .."
-    mkdir -p ${rootfs_dir}/boot/dtb
-    cp -rf arch/arm64/boot/dts/ti ${rootfs_dir}/boot/dtb/
-
-    log "kernel: installing modules .."
-    make ARCH=arm64  INSTALL_MOD_PATH=${rootfs_dir} modules_install &>>"${LOG_FILE}"
-}
-
-function build_ti_img_rogue_driver() {
-machine=$1
-rootfs_dir=$2
-kernel_dir=$3
-
-    pvr_target=($(read_machine_config ${machine} pvr_target))
-    pvr_window_system=($(read_machine_config ${machine} pvr_window_system))
-    cd ${IMG_ROGUE_DRIVER_DIR}
-
-    log "ti-img-rogue-driver: building .."
-    make CROSS_COMPILE=aarch64-none-linux-gnu- ARCH=arm64 KERNELDIR=${kernel_dir} RGX_BVNC="33.15.11.3" BUILD=release PVR_BUILD_DIR=${pvr_target} WINDOW_SYSTEM=${pvr_window_system} &>>"${LOG_FILE}"
-
-    log "ti-img-rogue-driver: installing .."
-    cd binary_am62_linux_wayland_release/target_aarch64/kbuild
-    make -C ${kernel_dir} ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- INSTALL_MOD_PATH=${rootfs_dir} INSTALL_MOD_STRIP=1 M=`pwd` modules_install &>>"${LOG_FILE}"
 }
