@@ -18,6 +18,22 @@ distro=$3
     cd ${topdir}/build/
 
     ROOTFS_DIR=${topdir}/build/${build}/tisdk-${distro}-${machine}-rootfs
+
+    setup_target_configs ${ROOTFS_DIR}
+}
+
+function setup_target_configs() {
+ROOTFS_DIR=$1
+
+    case ${machine} in
+        "am62xx-evm")
+            cp "${topdir}/target/weston/weston.service" "${ROOTFS_DIR}/etc/systemd/system/"
+            cp "${topdir}/target/weston/weston.socket" "${ROOTFS_DIR}/etc/systemd/system/"
+            cp "${topdir}/target/weston/weston" "${ROOTFS_DIR}/etc/default/"
+            mkdir -p "${ROOTFS_DIR}/etc/systemd/multi-user.target.wants/"
+            ln -s "/etc/systemd/system/weston.service" "${ROOTFS_DIR}/etc/systemd/multi-user.target.wants/weston.service"
+            ;;
+    esac
 }
 
 function package_and_clean() {
