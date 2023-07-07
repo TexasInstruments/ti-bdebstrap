@@ -81,9 +81,4 @@ mmdebstrap:
     - 'chroot "$1" apt-get update'
       # Setup .bashrc for clean command-line experience
     - 'chroot "$1" cp /etc/skel/.bashrc ~/.bashrc'
-      # Weston Service and Config Files
-    - 'copy-in target/weston/weston.service /etc/systemd/system/'
-    - 'copy-in target/weston/weston.socket /etc/systemd/system/'
-    - 'copy-in target/weston/weston /etc/default/'
-    - '$BDEBSTRAP_HOOKS/enable-units "$1" weston'
 
