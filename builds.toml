@@ -3,6 +3,7 @@
 builds = [
     "am62x_bookworm_09.00.00.005",
     "am62x_bullseye_09.00.00.005",
+    "am64x_bookworm_09.00.00.005",
 ]
 
 [am62x_bookworm_09.00.00.005]
@@ -15,3 +16,7 @@ builds = [
     bsp_version = "09.00.00.005"
     distro_variant = "bullseye-default"
 
+[am64x_bookworm_09.00.00.005]
+    machine = "am64xx-evm"
+    bsp_version = "09.00.00.005"
+    distro_variant = "bookworm-am64x"
