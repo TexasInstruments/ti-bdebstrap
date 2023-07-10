@@ -31,8 +31,8 @@ mmdebstrap:
     - k3conf
     - libti-rpmsg-char-dev
     - libti-rpmsg-char
-    - linux-headers-6.1.33-dirty
-    - linux-image-6.1.33-dirty
+    - linux-headers-6.1.26
+    - linux-image-6.1.26
     - linux-libc-dev
     - wl18xx-ti-utils
   mirrors:

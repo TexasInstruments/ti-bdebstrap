@@ -56,8 +56,8 @@ mmdebstrap:
     - libpowervr-gl-am62x
     - libti-rpmsg-char-dev
     - libti-rpmsg-char
-    - linux-headers-6.1.33-dirty
-    - linux-image-6.1.33-dirty
+    - linux-headers-6.1.26
+    - linux-image-6.1.26
     - linux-libc-dev
     - ti-img-rogue-driver-dkms
     - wl18xx-ti-utils
