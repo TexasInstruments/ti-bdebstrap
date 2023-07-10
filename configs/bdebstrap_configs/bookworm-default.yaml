@@ -59,7 +59,7 @@ mmdebstrap:
     - linux-headers-6.1.26
     - linux-image-6.1.26
     - linux-libc-dev
-    - ti-img-rogue-driver-dkms
+    - ti-img-rogue-driver
     - wl18xx-ti-utils
   mirrors:
     - http://deb.debian.org/debian
