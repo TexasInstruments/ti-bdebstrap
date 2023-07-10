@@ -24,7 +24,7 @@ bsp_version=$3
     if [ ! -d trusted-firmware-a ]; then
         cd ${topdir}/build/${build}/bsp_sources
         log ">> atf: not found. cloning .."
-        atf_srcrev=($(read_bsp_config ${bsp_version} atf_srcrev))
+        atf_srcrev="2fcd408bb3a6756767a43c073c597cef06e7f2d5"
 
         git clone https://git.trustedfirmware.org/TF-A/trusted-firmware-a.git &>>"${LOG_FILE}"
 
@@ -40,7 +40,7 @@ bsp_version=$3
     if [ ! -d optee_os ]; then
         cd ${topdir}/build/${build}/bsp_sources
         log ">> optee_os: not found. cloning .."
-        optee_srcrev=($(read_bsp_config ${bsp_version} optee_srcrev))
+        optee_srcrev="8e74d47616a20eaa23ca692f4bbbf917a236ed94"
 
         git clone https://github.com/OP-TEE/optee_os.git &>>"${LOG_FILE}"
 
