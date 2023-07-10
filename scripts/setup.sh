@@ -22,41 +22,41 @@ function setup_log_file() {
 function setup_build_tools() {
     setup_log_file "setup"
     log "> Arm Toolchain: checking .."
-    if [ ! -d "${topdir}/tools/gcc-arm-9.2-2019.12-x86_64-arm-none-linux-gnueabihf/bin" ]; then
+    if [ ! -d "${topdir}/tools/arm-gnu-toolchain-11.3.rel1-x86_64-arm-none-linux-gnueabihf/bin" ]; then
         mkdir -p ${topdir}/tools/
         cd ${topdir}/tools/
 
         log "> Arm Toolchain: not found. Downloading .." 
-        wget https://developer.arm.com/-/media/Files/downloads/gnu-a/9.2-2019.12/binrel/gcc-arm-9.2-2019.12-x86_64-arm-none-linux-gnueabihf.tar.xz &>>/dev/null
+        wget https://developer.arm.com/-/media/Files/downloads/gnu/11.3.rel1/binrel/arm-gnu-toolchain-11.3.rel1-x86_64-arm-none-linux-gnueabihf.tar.xz &>>/dev/null
         if [ $? -eq 0 ]; then
             log "> Arm Toolchain: downloaded .."
-            tar -Jxf gcc-arm-9.2-2019.12-x86_64-arm-none-linux-gnueabihf.tar.xz &>>"${LOG_FILE}"
-            rm gcc-arm-9.2-2019.12-x86_64-arm-none-linux-gnueabihf.tar.xz
+            tar -Jxf arm-gnu-toolchain-11.3.rel1-x86_64-arm-none-linux-gnueabihf.tar.xz &>>"${LOG_FILE}"
+            rm arm-gnu-toolchain-11.3.rel1-x86_64-arm-none-linux-gnueabihf.tar.xz
         else
             log "> Arm Toolchain: Failed to download. Exit code: $?"
         fi
     else
         log "> Arm Toolchain: available"
     fi
-    export PATH=${topdir}/tools/gcc-arm-9.2-2019.12-x86_64-arm-none-linux-gnueabihf/bin:$PATH
+    export PATH=${topdir}/tools/arm-gnu-toolchain-11.3.rel1-x86_64-arm-none-linux-gnueabihf/bin:$PATH
 
     log "> Aarch64 Toolchain: checking .."
-    if [ ! -d "${topdir}/tools/gcc-arm-9.2-2019.12-x86_64-aarch64-none-linux-gnu/bin" ]; then
+    if [ ! -d "${topdir}/tools/arm-gnu-toolchain-11.3.rel1-x86_64-aarch64-none-linux-gnu/bin" ]; then
         mkdir -p ${topdir}/tools/
         cd ${topdir}/tools/
 
         log "> Aarch64 Toolchain: not found. downloading .." 
-        wget https://developer.arm.com/-/media/Files/downloads/gnu-a/9.2-2019.12/binrel/gcc-arm-9.2-2019.12-x86_64-aarch64-none-linux-gnu.tar.xz &>>/dev/null
+        wget https://developer.arm.com/-/media/Files/downloads/gnu/11.3.rel1/binrel/arm-gnu-toolchain-11.3.rel1-x86_64-aarch64-none-linux-gnu.tar.xz &>>/dev/null
         if [ $? -eq 0 ]; then
             log "> Aarch64 Toolchain: downloaded .." 
-            tar -Jxf gcc-arm-9.2-2019.12-x86_64-aarch64-none-linux-gnu.tar.xz  &>>"${LOG_FILE}"
-            rm gcc-arm-9.2-2019.12-x86_64-aarch64-none-linux-gnu.tar.xz
+            tar -Jxf arm-gnu-toolchain-11.3.rel1-x86_64-aarch64-none-linux-gnu.tar.xz &>>"${LOG_FILE}"
+            rm arm-gnu-toolchain-11.3.rel1-x86_64-aarch64-none-linux-gnu.tar.xz
         else
             log "> Aarch Toolchain: Failed to download. Exit code: $?"
         fi
     else
         log "> Aarch64 Toolchain: available"
     fi
-    export PATH=${topdir}/tools/gcc-arm-9.2-2019.12-x86_64-aarch64-none-linux-gnu/bin:$PATH
+    export PATH=${topdir}/tools/arm-gnu-toolchain-11.3.rel1-x86_64-aarch64-none-linux-gnu/bin:$PATH
 }
 
