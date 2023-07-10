@@ -42,6 +42,9 @@ mmdebstrap:
     - 'mkdir -p $1/usr/share/keyrings'
     - 'curl -s --compressed https://texasinstruments.github.io/ti-debpkgs/KEY.gpg | gpg --dearmor | tee $1/usr/share/keyrings/ti-debpkgs.gpg > /dev/null'
     - 'echo "deb [signed-by=/usr/share/keyrings/ti-debpkgs.gpg] https://texasinstruments.github.io/ti-debpkgs/ ./" > $1/etc/apt/sources.list.d/ti-debpkgs.list'
+    - 'mkdir -p $1/etc/kernel/postinst.d/'
+    - 'echo "PWD = $PWD"'
+    - 'upload target/kernel/postinst.d/cp-kernel-and-overlays /etc/kernel/postinst.d/cp-kernel-and-overlays'
   essential-hooks:
     # FIXME: Find a better workaround instead of sleep
     - 'sleep 10' # workaround for /proc resource busy unable to umount issue
