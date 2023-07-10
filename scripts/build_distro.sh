@@ -7,6 +7,8 @@ build=$1
 machine=$2
 distro=$3
 
+    cd ${topdir}
+
     hostname=($(read_machine_config ${machine} hostname))
     log "> Building rootfs .."
     bdebstrap \
@@ -18,32 +20,15 @@ distro=$3
     cd ${topdir}/build/
 
     ROOTFS_DIR=${topdir}/build/${build}/tisdk-${distro}-${machine}-rootfs
-
-    setup_target_configs ${ROOTFS_DIR}
-}
-
-function setup_target_configs() {
-ROOTFS_DIR=$1
-
-    case ${machine} in
-        "am62xx-evm")
-            cp "${topdir}/target/weston/weston.service" "${ROOTFS_DIR}/etc/systemd/system/"
-            cp "${topdir}/target/weston/weston.socket" "${ROOTFS_DIR}/etc/systemd/system/"
-            cp "${topdir}/target/weston/weston" "${ROOTFS_DIR}/etc/default/"
-            mkdir -p "${ROOTFS_DIR}/etc/systemd/multi-user.target.wants/"
-            ln -s "/etc/systemd/system/weston.service" "${ROOTFS_DIR}/etc/systemd/multi-user.target.wants/weston.service"
-            ;;
-    esac
 }
 
 function package_and_clean() {
 build=$1
-    
+
     cd ${topdir}/build/${build}
 
     log "> Cleaning up ${build}"
-    (tar --use-compress-program="pigz --best --recursive | pv" -cf tisdk-${distro}-${machine}-rootfs.tar.xz tisdk-${distro}-${machine}-rootfs) &>>"${LOG_FILE}"
-
+    tar --use-compress-program="pigz --best --recursive | pv" -cf tisdk-${distro}-${machine}-rootfs.tar.xz tisdk-${distro}-${machine}-rootfs &>>"${LOG_FILE}"
     rm -rf tisdk-${distro}-${machine}-rootfs
 
     tar --use-compress-program="pigz --best --recursive | pv" -cf tisdk-${distro}-${machine}-boot.tar.xz tisdk-${distro}-${machine}-boot &>>"${LOG_FILE}"

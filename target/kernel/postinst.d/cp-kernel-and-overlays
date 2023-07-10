@@ -1,0 +1,24 @@
+#!/bin/sh -e
+
+version="$1"
+
+# passing the kernel version is required
+if [ -z "${version}" ] ; then
+    echo >&2 "W: cp-kernel-and-overlays: ${DPKG_MAINTSCRIPT_PACKAGE:-kernel package} did not pass a version number"
+    exit 2
+fi
+
+if [ -f /boot/vmlinuz-${version} ] ; then
+    rm -f /boot/dtb/ti/*
+    echo "Updating: Device Trees"
+    mkdir -p /boot/dtb/ti/
+    cp -v /usr/lib/linux-image-${version}/ti/k3-*.dtb /boot/dtb/ti/ || true
+    cp -v /usr/lib/linux-image-${version}/ti/*.dtbo /boot/dtb/ti/ || true
+
+    rm -f /boot/Image || true
+    echo "Updating: /boot/Image"
+    cat /boot/vmlinuz-${version} | gunzip -d > /boot/Image
+
+    echo "cp-kernel-and-overlays: Updated Kernel Image and Overlays for: [${version}]"
+fi
+
