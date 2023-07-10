@@ -31,34 +31,34 @@ mmdebstrap:
     - vim
     - k3conf
     - weston
-    - libd3dadapter9-mesa-dev
-    - libd3dadapter9-mesa
-    - libegl-mesa0
-    - libegl1-mesa-dev
-    - libegl1-mesa
-    - libgbm-dev
-    - libgbm1
-    - libgl1-mesa-dev
-    - libgl1-mesa-dri
-    - libgl1-mesa-glx
-    - libglapi-mesa
-    - libgles2-mesa-dev
-    - libgles2-mesa
-    - libglx-mesa0
-    - libosmesa6-dev
-    - libosmesa6
+    - libd3dadapter9-mesa-dev=22.3.5-1.git20230331.2-0~bookworm+20230420
+    - libd3dadapter9-mesa=22.3.5-1.git20230331.2-0~bookworm+20230420
+    - libegl-mesa0=22.3.5-1.git20230331.2-0~bookworm+20230420
+    - libegl1-mesa-dev=22.3.5-1.git20230331.2-0~bookworm+20230420
+    - libegl1-mesa=22.3.5-1.git20230331.2-0~bookworm+20230420
+    - libgbm-dev=22.3.5-1.git20230331.2-0~bookworm+20230420
+    - libgbm1=22.3.5-1.git20230331.2-0~bookworm+20230420
+    - libgl1-mesa-dev=22.3.5-1.git20230331.2-0~bookworm+20230420
+    - libgl1-mesa-dri=22.3.5-1.git20230331.2-0~bookworm+20230420
+    - libgl1-mesa-glx=22.3.5-1.git20230331.2-0~bookworm+20230420
+    - libglapi-mesa=22.3.5-1.git20230331.2-0~bookworm+20230420
+    - libgles2-mesa-dev=22.3.5-1.git20230331.2-0~bookworm+20230420
+    - libgles2-mesa=22.3.5-1.git20230331.2-0~bookworm+20230420
+    - libglx-mesa0=22.3.5-1.git20230331.2-0~bookworm+20230420
+    - libosmesa6-dev=22.3.5-1.git20230331.2-0~bookworm+20230420
+    - libosmesa6=22.3.5-1.git20230331.2-0~bookworm+20230420
+    - libwayland-egl1-mesa=22.3.5-1.git20230331.2-0~bookworm+20230420
+    - mesa-common-dev=22.3.5-1.git20230331.2-0~bookworm+20230420
+    - mesa-opencl-icd=22.3.5-1.git20230331.2-0~bookworm+20230420
+    - mesa-va-drivers=22.3.5-1.git20230331.2-0~bookworm+20230420
+    - mesa-vdpau-drivers=22.3.5-1.git20230331.2-0~bookworm+20230420
+    - mesa-vulkan-drivers=22.3.5-1.git20230331.2-0~bookworm+20230420
     - libpowervr-gl-am62x
     - libti-rpmsg-char-dev
     - libti-rpmsg-char
-    - libwayland-egl1-mesa
     - linux-headers-6.1.33-dirty
     - linux-image-6.1.33-dirty
     - linux-libc-dev
-    - mesa-common-dev
-    - mesa-opencl-icd
-    - mesa-va-drivers
-    - mesa-vdpau-drivers
-    - mesa-vulkan-drivers
     - ti-img-rogue-driver-dkms
     - wl18xx-ti-utils
   mirrors:
