@@ -45,6 +45,7 @@ mmdebstrap:
     - 'mkdir -p $1/etc/kernel/postinst.d/'
     - 'echo "PWD = $PWD"'
     - 'upload target/kernel/postinst.d/cp-kernel-and-overlays /etc/kernel/postinst.d/cp-kernel-and-overlays'
+    - 'chmod a+x $1/etc/kernel/postinst.d/cp-kernel-and-overlays'
   essential-hooks:
     # FIXME: Find a better workaround instead of sleep
     - 'sleep 10' # workaround for /proc resource busy unable to umount issue
