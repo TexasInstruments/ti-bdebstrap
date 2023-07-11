@@ -53,8 +53,8 @@ mmdebstrap:
       # Remove passwd for weston user
     - 'chroot "$1" passwd --delete root'
       # Fix apt install mandb permission issue
-    - 'chown -R man: $1/var/cache/man/'
-    - 'chown -R man: $1/var/cache/man/'
+    - 'chroot "$1" chown -R man: /var/cache/man/'
+    - 'chroot "$1" chmod -R 755 /var/cache/man/'
       # update packages to avoid mandatory update after first boot
     - 'chroot "$1" apt-get update'
       # Setup .bashrc for clean command-line experience
