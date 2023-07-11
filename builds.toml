@@ -1,14 +1,14 @@
 # This file describes the builds
 
 builds = [
-    "am62x_bookworm_09.00.00.006",
+    "am62x_bookworm-no-km_09.00.00.006",
     "am64x_bookworm_09.00.00.006",
 ]
 
-[am62x_bookworm_09.00.00.006]
+[am62x_bookworm-no-km_09.00.00.006]
     machine = "am62xx-evm"
     bsp_version = "09.00.00.006"
-    distro_variant = "bookworm-default"
+    distro_variant = "bookworm-default-no-km"
 
 [am64x_bookworm_09.00.00.006]
     machine = "am64xx-evm"
