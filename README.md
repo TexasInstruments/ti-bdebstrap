@@ -70,8 +70,34 @@ For example, the following command builds a Bookworm Debian image for am62xx-evm
 machine, where the BSP version is 09.00.00.005.
 
 ```bash
-sudo ./build.sh am62x_bookworm_09.00.00.005
+sudo ./build.sh am62x_bookworm-no-km_09.00.00.005
 ```
 
 The output will be generated at `build/`. The log file will be
-`logs/am62x_bookworm_09.00.00.005.log`.
+`logs/am62x_bookworm-no-km_09.00.00.005.log`.
+
+## Post-Build:
+
+During the build, a tar file is stored in `build/`. Untar it and flash the
+rootfs and boot partitions into a SD card.
+
+Following that, you should have a basic Debian system set up. However, this
+system does not yet contain any out-of-tree kernel modules. Therefore they need
+to be installed after booting in.
+
+At the very least, you should install the `ti-img-rogue-driver` to enable
+display. Use the following command:
+
+```bash
+apt install ti-img-rogue-driver
+```
+
+To load the driver, reboot.
+
+Once rebooted, the driver should work. To verify that it is loaded, type:
+
+```bash
+lsmod | grep pvr
+```
+If you see output of pvrsrvkm driver, it means that the driver has loaded
+correctly.
