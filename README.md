@@ -75,3 +75,20 @@ sudo ./build.sh am62x_bookworm_09.00.00.005
 
 The output will be generated at `build/`. The log file will be
 `logs/am62x_bookworm_09.00.00.005.log`.
+
+## Flashing Image to SD Card
+
+To flash the image to the SD card, use the `create-sdcard.sh` script.
+Syntax:
+
+```bash
+sudo ./create-sdcard.sh <build>
+```
+
+Continuing the example above, if you built `am62x_bookworm_09.00.00.006`, type:
+
+```bash
+sudo ./create-sdcard.sh am62x_bookworm_09.00.00.006
+```
+
+This command will flash `am62x_bookworm_09.00.00.006` image to the SD card.
