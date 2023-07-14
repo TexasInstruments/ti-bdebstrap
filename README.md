@@ -67,26 +67,44 @@ Each successful build is placed in `build/` directory. Logs for each build are
 placed in the `logs/` directory.
 
 For example, the following command builds a Bookworm Debian image for am62xx-evm
-machine, where the BSP version is 09.00.00.005.
+machine, where the BSP version is 09.00.00.006.
 
 ```bash
-sudo ./build.sh am62x_bookworm-no-km_09.00.00.005
+sudo ./build.sh am62x_bookworm-no-km_09.00.00.006
 ```
 
+**NOTE:** If you are building on the target platform which is already running Debian, 
+then you can use the config without `-no-km`. This will give you an image which 
+already has the out of tree kernel modules installed.
+
 The output will be generated at `build/`. The log file will be
-`logs/am62x_bookworm-no-km_09.00.00.005.log`.
+`logs/am62x_bookworm-no-km_09.00.00.006.log`.
+
+## Flashing Image to SD Card
+
+To flash the image to the SD card, use the `create-sdcard.sh` script.
+Syntax:
+
+```bash
+sudo ./create-sdcard.sh <build>
+```
+
+Continuing the example above, if you built `am62x_bookworm-no-km_09.00.00.006`, type:
+
+```bash
+sudo ./create-sdcard.sh am62x_bookworm-no-km_09.00.00.006
+```
+
+This command will flash `am62x_bookworm-no-km_09.00.00.006` image to the SD card.
 
 ## Post-Build:
 
-During the build, a tar file is stored in `build/`. Untar it and flash the
-rootfs and boot partitions into a SD card.
-
-Following that, you should have a basic Debian system set up. However, this
+Following the above, you should have a basic Debian system set up. However, this
 system does not yet contain any out-of-tree kernel modules. Therefore they need
 to be installed after booting in.
 
 At the very least, you should install the `ti-img-rogue-driver` to enable
-display. Use the following command:
+GPU. Use the following command:
 
 ```bash
 apt install ti-img-rogue-driver
