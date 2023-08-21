@@ -33,7 +33,7 @@ bsp_version=$3
         cd ..
         log ">> atf: cloned"
     else
-        log ">> core-secdev-k3: available"
+        log ">> atf: available"
     fi
     TFA_DIR=${topdir}/build/${build}/bsp_sources/trusted-firmware-a
 
