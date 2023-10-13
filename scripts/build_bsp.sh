@@ -87,9 +87,7 @@ bsp_version=$3
     else
         log ">> ti-linux-firmware: available"
     fi
-    dmfw_machine=($(read_machine_config ${machine} dmfw_machine))
-    SYSFW_DIR=${topdir}/build/${build}/bsp_sources/ti-linux-firmware/ti-sysfw
-    DMFW_DIR=${topdir}/build/${build}/bsp_sources/ti-linux-firmware/ti-dm/${dmfw_machine}
+    FW_DIR=${topdir}/build/${build}/bsp_sources/ti-linux-firmware
 
     log "> BSP sources: cloned"
     log "> BSP sources: creating backup .."
@@ -132,12 +130,11 @@ machine=$1
     uboot_r5_defconfig=($(read_machine_config ${machine} uboot_r5_defconfig))
     uboot_r5_defconfig=`echo $uboot_r5_defconfig | tr ',' ' '`
     uboot_a53_defconfig=($(read_machine_config ${machine} uboot_a53_defconfig))
-    sysfw_soc=($(read_machine_config ${machine} sysfw_soc))
 
     cd ${UBOOT_DIR}
     log "> uboot-r5: building .."
     make -j`nproc` ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- ${uboot_r5_defconfig} O=${UBOOT_DIR}/out/r5 &>>"${LOG_FILE}"
-    make -j`nproc` ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- O=${UBOOT_DIR}/out/r5 BINMAN_INDIRS=${topdir}/build/${build}/bsp_sources/ti-linux-firmware &>>"${LOG_FILE}"
+    make -j`nproc` ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- O=${UBOOT_DIR}/out/r5 BINMAN_INDIRS=${FW_DIR} &>>"${LOG_FILE}"
     cp ${UBOOT_DIR}/out/r5/tiboot3*.bin ${topdir}/build/${build}/tisdk-${distro}-${machine}-boot/ &>> ${LOG_FILE}
 
     cd ${UBOOT_DIR}
