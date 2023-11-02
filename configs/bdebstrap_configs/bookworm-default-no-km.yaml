@@ -30,6 +30,8 @@ mmdebstrap:
     - sudo
     - vim
     - k3conf
+    - alsa-utils
+    - libasound2-plugins
     - weston
     - libd3dadapter9-mesa-dev=22.3.5-1.git20230331.2-0~bookworm+20230420
     - libd3dadapter9-mesa=22.3.5-1.git20230331.2-0~bookworm+20230420
