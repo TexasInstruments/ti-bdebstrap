@@ -2,33 +2,36 @@
 
 # Builds for GitHub Actions
 builds = [
-    "am62x_bookworm-no-km_09.00.00.006",
-    "am62x-lp_bookworm-no-km_09.00.00.006",
-    "am64x_bookworm_09.00.00.006",
+    "am62pxx-evm_bookworm-cc_09.01.00.002",
+    "am62xx-evm_bookworm-cc_09.01.00.002",
+    "am62xx-lp-evm_bookworm-cc_09.01.00.002",
+    "am62xxsip-evm_bookworm-cc_09.01.00.002",
+    "am64xx-evm_bookworm-cc_09.01.00.002",
 ]
 
 # List of all valid builds
-[am62x_bookworm-no-km_09.00.00.006]
+[am62pxx-evm_bookworm-cc_09.01.00.002]
+    machine = "am62pxx-evm"
+    bsp_version = "09.01.00.002"
+    distro_variant = "bookworm-am62-cc"
+
+[am62xx-evm_bookworm-cc_09.01.00.002]
     machine = "am62xx-evm"
-    bsp_version = "09.00.00.006"
-    distro_variant = "bookworm-default-no-km"
+    bsp_version = "09.01.00.002"
+    distro_variant = "bookworm-am62-cc"
 
-[am62x-lp_bookworm-no-km_09.00.00.006]
+[am62xx-lp-evm_bookworm-cc_09.01.00.002]
     machine = "am62xx-lp-evm"
-    bsp_version = "09.00.00.006"
-    distro_variant = "bookworm-default-no-km"
+    bsp_version = "09.01.00.002"
+    distro_variant = "bookworm-am62-cc"
 
-[am62x_bookworm_09.00.00.006]
-    machine = "am62xx-evm"
-    bsp_version = "09.00.00.006"
-    distro_variant = "bookworm-default"
+[am62xxsip-evm_bookworm-cc_09.01.00.002]
+    machine = "am62xxsip-evm"
+    bsp_version = "09.01.00.002"
+    distro_variant = "bookworm-am62-cc"
 
-[am62x-lp_bookworm_09.00.00.006]
-    machine = "am62xx-lp-evm"
-    bsp_version = "09.00.00.006"
-    distro_variant = "bookworm-default"
-
-[am64x_bookworm_09.00.00.006]
+[am64xx-evm_bookworm-cc_09.01.00.002]
     machine = "am64xx-evm"
-    bsp_version = "09.00.00.006"
-    distro_variant = "bookworm-am64x"
+    bsp_version = "09.01.00.002"
+    distro_variant = "bookworm-am64-cc"
+
