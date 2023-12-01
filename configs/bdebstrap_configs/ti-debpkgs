@@ -1,0 +1,4 @@
+Package: *
+Pin: origin TexasInstruments.github.io
+Pin-Priority: 1001
+

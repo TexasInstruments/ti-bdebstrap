@@ -4,7 +4,8 @@
 builds = [
     "am62x_bookworm-no-km_09.00.00.006",
     "am62x-lp_bookworm-no-km_09.00.00.006",
-    "am64x_bookworm_09.00.00.006",
+    "am64x_bookworm_cc_09.01.00.006",
+    "am64x_rt_bookworm_cc_09.01.00.006",
 ]
 
 # List of all valid builds
@@ -28,7 +29,12 @@ builds = [
     bsp_version = "09.00.00.006"
     distro_variant = "bookworm-default"
 
-[am64x_bookworm_09.00.00.006]
+[am64x_bookworm_cc_09.01.00.006]
     machine = "am64xx-evm"
-    bsp_version = "09.00.00.006"
-    distro_variant = "bookworm-am64x"
+    bsp_version = "09.01.00.006"
+    distro_variant = "bookworm-am64x-cc"
+
+[am64x_rt_bookworm_cc_09.01.00.006]
+    machine = "am64xx-evm"
+    bsp_version = "09.01.00.006"
+    distro_variant = "bookworm-am64x-rt-cc"

@@ -1,3 +1,10 @@
+[09.01.00.006]
+    kernel_major_version = 6
+    atf_srcrev = "d7a7135d32a8c7da004c0c19b75bd4e2813f9759"
+    optee_srcrev = "2a5b1d1232f582056184367fb58a425ac7478ec6"
+    uboot_srcrev = "09.01.00.006"
+    linux_fw_srcrev = "09.01.00.006"
+
 [09.00.00.006]
     kernel_major_version = 6
     uboot_method = "k3ig"
