@@ -1,11 +1,26 @@
 # This file describes various machine specific settings needed for the build
 
-[am62xx-evm]
+[am62pxx-evm]
     # device config
-    hostname = "am62xx"
+    hostname = "am62pxx-evm"
     # u-boot config
     atf_target_board = "lite"
+    atf_make_args="TFA_K3_SYSTEM_SUSPEND=1"
     optee_platform = "k3-am62x"
+    optee_make_args = "CFG_WITH_SOFTWARE_PRNG=y"
+    sysfw_soc = "am62px"
+    dmfw_machine = "am62pxx"
+    uboot_r5_defconfig = "am62px_evm_r5_defconfig"
+    uboot_a53_defconfig = "am62px_evm_a53_defconfig"
+
+[am62xx-evm]
+    # device config
+    hostname = "am62xx-evm"
+    # u-boot config
+    atf_target_board = "lite"
+    atf_make_args="TFA_K3_SYSTEM_SUSPEND=1"
+    optee_platform = "k3-am62x"
+    optee_make_args = "."
     sysfw_soc = "am62x"
     dmfw_machine = "am62xx"
     uboot_r5_defconfig = "am62x_evm_r5_defconfig"
@@ -13,21 +28,38 @@
 
 [am62xx-lp-evm]
     # device config
-    hostname = "am62xx-lp"
+    hostname = "am62xx-lp-evm"
     # u-boot config
     atf_target_board = "lite"
+    atf_make_args="TFA_K3_SYSTEM_SUSPEND=1"
     optee_platform = "k3-am62x"
+    optee_make_args = "."
     sysfw_soc = "am62x"
     dmfw_machine = "am62xx"
     uboot_r5_defconfig = "am62x_lpsk_r5_defconfig"
     uboot_a53_defconfig = "am62x_lpsk_a53_defconfig"
 
-[am64xx-evm]
+[am62xxsip-evm]
     # device config
-    hostname = "am64xx"
+    hostname = "am62xxsip-evm"
     # u-boot config
     atf_target_board = "lite"
+    atf_make_args="TFA_K3_SYSTEM_SUSPEND=1"
+    optee_platform = "k3-am62x"
+    optee_make_args = "."
+    sysfw_soc = "am62x"
+    dmfw_machine = "am62xx"
+    uboot_r5_defconfig = "am62x_evm_r5_defconfig am62xsip_sk_r5.config"
+    uboot_a53_defconfig = "am62x_evm_a53_defconfig"
+
+[am64xx-evm]
+    # device config
+    hostname = "am64xx-evm"
+    # u-boot config
+    atf_target_board = "lite"
+    atf_make_args="TFA_K3_SYSTEM_SUSPEND=1"
     optee_platform = "k3-am64x"
+    optee_make_args = "."
     sysfw_soc = "am64x"
     dmfw_machine = "am64xx"
     uboot_r5_defconfig = "am64x_evm_r5_defconfig"

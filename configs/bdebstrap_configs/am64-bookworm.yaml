@@ -4,7 +4,6 @@ mmdebstrap:
     - arm64
   mode: auto
   keyrings:
-    - /usr/share/keyrings/ti-debpkgs.gpg
     - /usr/share/keyrings/debian-archive-keyring.gpg
   suite: bookworm
   variant: standard
@@ -20,6 +19,7 @@ mmdebstrap:
     - init
     - iproute2
     - less
+    - libdrm-dev
     - libpam-systemd
     - locales
     - neofetch
@@ -29,19 +29,25 @@ mmdebstrap:
     - sudo
     - vim
     - k3conf
-    - libti-rpmsg-char-dev
-    - libti-rpmsg-char
-    - linux-headers-6.1.26
-    - linux-image-6.1.26
+    - weston
+    - linux-image-6.1.46-k3
+    - linux-headers-6.1.46-k3
     - linux-libc-dev
-    - wl18xx-ti-utils
+    - cryptodev-linux-dkms
+    - firmware-ti-ipc-am64
+    - firmware-cnm-wave
+    - libti-rpmsg-char
+    - libti-rpmsg-char-dev
   mirrors:
     - http://deb.debian.org/debian
   setup-hooks:
       # Setup TI Debian Package Repository
-    - 'mkdir -p $1/usr/share/keyrings'
-    - 'curl -s --compressed https://texasinstruments.github.io/ti-debpkgs/KEY.gpg | gpg --dearmor | tee $1/usr/share/keyrings/ti-debpkgs.gpg > /dev/null'
-    - 'echo "deb [signed-by=/usr/share/keyrings/ti-debpkgs.gpg] https://texasinstruments.github.io/ti-debpkgs/ ./" > $1/etc/apt/sources.list.d/ti-debpkgs.list'
+    - 'mkdir -p $1/etc/apt/sources.list.d/'
+    - 'wget https://raw.githubusercontent.com/TexasInstruments/ti-debpkgs/main/ti-debpkgs.sources -P $1/etc/apt/sources.list.d/'
+      # Setup Apt repository preferences
+    - 'mkdir -p $1/etc/apt/preferences.d/'
+    - 'printf "Package: *\nPin: origin TexasInstruments.github.io\nPin-Priority: 1001" >> $1/etc/apt/preferences.d/ti-debpkgs'
+      # Setup Kernel post-install scripts
     - 'mkdir -p $1/etc/kernel/postinst.d/'
     - 'echo "PWD = $PWD"'
     - 'upload target/kernel/postinst.d/cp-kernel-and-overlays /etc/kernel/postinst.d/cp-kernel-and-overlays'
@@ -50,7 +56,7 @@ mmdebstrap:
     # FIXME: Find a better workaround instead of sleep
     - 'sleep 10' # workaround for /proc resource busy unable to umount issue
   customize-hooks:
-      # Remove passwd for weston user
+      # Remove passwd for root user
     - 'chroot "$1" passwd --delete root'
       # Fix apt install mandb permission issue
     - 'chroot "$1" chown -R man: /var/cache/man/'
@@ -59,4 +65,7 @@ mmdebstrap:
     - 'chroot "$1" apt-get update'
       # Setup .bashrc for clean command-line experience
     - 'chroot "$1" cp /etc/skel/.bashrc ~/.bashrc'
+      # Enable ssh to root user without password
+    - 'chroot "$1" echo "PermitRootLogin yes" >> $1/etc/ssh/sshd_config'
+    - 'chroot "$1" echo "PermitEmptyPasswords yes" >> $1/etc/ssh/sshd_config'
 
