@@ -105,11 +105,10 @@ machine=$1
 
     cd $TFA_DIR
     target_board=($(read_machine_config ${machine} atf_target_board))
+    make_args=($(read_machine_config ${machine} atf_make_args))
 
     log "> ATF: building .."
-    make -j`nproc` ARCH=aarch64 CROSS_COMPILE=aarch64-none-linux-gnu- PLAT=k3 TARGET_BOARD=${target_board} SPD=opteed &>>"${LOG_FILE}"
-
-    log "> ATF: signing .."
+    make -j`nproc` ARCH=aarch64 CROSS_COMPILE=${cross_compile} PLAT=k3 TARGET_BOARD=${target_board} SPD=opteed ${make_args} &>>"${LOG_FILE}"
 }
 
 function build_optee() {
@@ -117,11 +116,14 @@ machine=$1
 
     cd ${OPTEE_DIR}
     platform=($(read_machine_config ${machine} optee_platform))
+    make_args=($(read_machine_config ${machine} optee_make_args))
+    # Workaround for toml not supporting empty values
+    if [ ${make_args} == "." ]; then
+        make_args=""
+    fi
 
     log "> optee: building .."
-    make -j`nproc` CROSS_COMPILE64=aarch64-none-linux-gnu- CROSS_COMPILE=arm-none-linux-gnueabihf- PLATFORM=${platform} CFG_ARM64_core=y &>>"${LOG_FILE}"
-
-    log "> optee: signing .."
+    make -j`nproc` CROSS_COMPILE64=${cross_compile} CROSS_COMPILE=arm-none-linux-gnueabihf- PLATFORM=${platform} CFG_ARM64_core=y ${make_args} &>>"${LOG_FILE}"
 }
 
 function build_uboot() {
@@ -131,8 +133,6 @@ machine=$1
     uboot_a53_defconfig=($(read_machine_config ${machine} uboot_a53_defconfig))
     sysfw_soc=($(read_machine_config ${machine} sysfw_soc))
 
-    log "> dmfw: signing .."
-
     cd ${UBOOT_DIR}
     log "> uboot-r5: building .."
     make -j`nproc` ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- ${uboot_r5_defconfig} O=${UBOOT_DIR}/out/r5 &>>"${LOG_FILE}"
@@ -141,8 +141,8 @@ machine=$1
 
     cd ${UBOOT_DIR}
     log "> uboot-a53: building .."
-    make -j`nproc` ARCH=arm CROSS_COMPILE=aarch64-none-linux-gnu- ${uboot_a53_defconfig} O=${UBOOT_DIR}/out/a53 &>>"${LOG_FILE}"
-    make -j`nproc` ARCH=arm CROSS_COMPILE=aarch64-none-linux-gnu- BL31=${TFA_DIR}/build/k3/lite/release/bl31.bin TEE=${OPTEE_DIR}/out/arm-plat-k3/core/tee-pager_v2.bin O=${UBOOT_DIR}/out/a53 BINMAN_INDIRS=${topdir}/build/${build}/bsp_sources/ti-linux-firmware &>>"${LOG_FILE}"
+    make -j`nproc` ARCH=arm CROSS_COMPILE=${cross_compile} ${uboot_a53_defconfig} O=${UBOOT_DIR}/out/a53 &>>"${LOG_FILE}"
+    make -j`nproc` ARCH=arm CROSS_COMPILE=${cross_compile} BL31=${TFA_DIR}/build/k3/lite/release/bl31.bin TEE=${OPTEE_DIR}/out/arm-plat-k3/core/tee-pager_v2.bin O=${UBOOT_DIR}/out/a53 BINMAN_INDIRS=${topdir}/build/${build}/bsp_sources/ti-linux-firmware &>>"${LOG_FILE}"
     cp ${UBOOT_DIR}/out/a53/tispl.bin ${topdir}/build/${build}/tisdk-${distro}-${machine}-boot/ &>> ${LOG_FILE}
     cp ${UBOOT_DIR}/out/a53/u-boot.img ${topdir}/build/${build}/tisdk-${distro}-${machine}-boot/ &>> ${LOG_FILE}
 }

@@ -30,13 +30,10 @@ fi
 
 mkdir -p ${topdir}/build
 
-setup_build_tools
-
 for build in ${builds}
 do
 
     echo "${build}"
-    setup_log_file "${build}"
 
     validate_section "Build" ${build} "${topdir}/builds.toml"
 
@@ -44,9 +41,22 @@ do
     bsp_version=($(read_build_config ${build} bsp_version))
     distro_variant=($(read_build_config ${build} distro_variant))
 
+    export host_arch=`uname -m`
+    export native_build=false
+    export cross_compile=aarch64-none-linux-gnu-
+    if [ "$host_arch" == "aarch64" ]; then
+        native_build=true
+        cross_compile=
+    fi
+
     echo "machine: ${machine}"
     echo "bsp_version: ${bsp_version}"
     echo "distro_variant: ${distro_variant}"
+    echo "host_arch: ${host_arch}"
+
+    setup_build_tools
+
+    setup_log_file "${build}"
 
     validate_build ${machine} ${bsp_version} ${distro_variant}
 
