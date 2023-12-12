@@ -49,7 +49,7 @@
     optee_make_args = "."
     sysfw_soc = "am62x"
     dmfw_machine = "am62xx"
-    uboot_r5_defconfig = "am62x_evm_r5_defconfig am62xsip_sk_r5.config"
+    uboot_r5_defconfig = "am62x_evm_r5_defconfig,am62xsip_sk_r5.config"
     uboot_a53_defconfig = "am62x_evm_a53_defconfig"
 
 [am64xx-evm]

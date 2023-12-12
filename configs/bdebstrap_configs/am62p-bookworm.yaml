@@ -99,6 +99,7 @@ mmdebstrap:
     - 'chroot "$1" mkdir -p /etc/default/'
     - 'upload target/weston/weston /etc/default/weston'
     - '$BDEBSTRAP_HOOKS/enable-units "$1" weston'
+    - 'chroot "$1" echo "export WAYLAND_DISPLAY=wayland-1" >> $1/etc/profile'
       # Enable ssh to root user without password
     - 'chroot "$1" echo "PermitRootLogin yes" >> $1/etc/ssh/sshd_config'
     - 'chroot "$1" echo "PermitEmptyPasswords yes" >> $1/etc/ssh/sshd_config'
