@@ -28,7 +28,7 @@ builds = [
 [am62sip-bookworm-09.01.00.008]
     machine = "am62xxsip-evm"
     bsp_version = "09.01.00.008"
-    distro_variant = "am62sip-bookworm"
+    distro_variant = "am62-bookworm"
 
 [am64-bookworm-09.01.00.008]
     machine = "am64xx-evm"
