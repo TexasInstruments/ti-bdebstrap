@@ -32,6 +32,11 @@ mmdebstrap:
     - weston
     - alsa-utils
     - libasound2-plugins
+    - gstreamer1.0-tools
+    - gstreamer1.0-plugins-base
+    - gstreamer1.0-plugins-good
+    - gstreamer1.0-plugins-bad
+    - i2c-tools
     - linux-image-6.1.46-k3
     - linux-headers-6.1.46-k3
     - linux-libc-dev
