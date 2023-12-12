@@ -30,6 +30,8 @@ mmdebstrap:
     - vim
     - k3conf
     - weston
+    - alsa-utils
+    - libasound2-plugins
     - linux-image-6.1.46-k3
     - linux-headers-6.1.46-k3
     - linux-libc-dev
