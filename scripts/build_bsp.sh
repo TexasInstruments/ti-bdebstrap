@@ -130,6 +130,7 @@ function build_uboot() {
 machine=$1
 
     uboot_r5_defconfig=($(read_machine_config ${machine} uboot_r5_defconfig))
+    uboot_r5_defconfig=`echo $uboot_r5_defconfig | tr ',' ' '`
     uboot_a53_defconfig=($(read_machine_config ${machine} uboot_a53_defconfig))
     sysfw_soc=($(read_machine_config ${machine} sysfw_soc))
 
