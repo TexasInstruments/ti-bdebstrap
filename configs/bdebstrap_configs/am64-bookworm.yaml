@@ -36,6 +36,9 @@ mmdebstrap:
     - cryptodev-linux-dkms
     - firmware-ti-ipc-am64
     - firmware-cnm-wave
+    - firmware-ti-prueth-am64
+    - firmware-ti-pruhsr-am64
+    - firmware-ti-prusw-am64
     - libti-rpmsg-char
     - libti-rpmsg-char-dev
   mirrors:
