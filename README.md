@@ -41,7 +41,7 @@ sudo apt install -y \
         bison flex libssl-dev \
         bc u-boot-tools swig python3-pyelftools
 sudo apt install --fix-broken
-pip3 install toml-cli
+sudo pip3 install toml-cli
 ```
 
 ## Usage
@@ -67,18 +67,14 @@ Each successful build is placed in `build/` directory. Logs for each build are
 placed in the `logs/` directory.
 
 For example, the following command builds a Bookworm Debian image for am62xx-evm
-machine, where the BSP version is 09.00.00.006.
+machine, where the BSP version is 09.01.00.008.
 
 ```bash
-sudo ./build.sh am62x_bookworm-no-km_09.00.00.006
+sudo ./build.sh am62-bookworm-09.01.00.008
 ```
 
-**NOTE:** If you are building on the target platform which is already running Debian, 
-then you can use the config without `-no-km`. This will give you an image which 
-already has the out of tree kernel modules installed.
-
 The output will be generated at `build/`. The log file will be
-`logs/am62x_bookworm-no-km_09.00.00.006.log`.
+`logs/am62-bookworm-09.01.00.008.log`.
 
 ## Flashing Image to SD Card
 
@@ -89,33 +85,13 @@ Syntax:
 sudo ./create-sdcard.sh <build>
 ```
 
-Continuing the example above, if you built `am62x_bookworm-no-km_09.00.00.006`, type:
+Continuing the example above, if you built `am62-bookworm-09.01.00.008`, type:
 
 ```bash
-sudo ./create-sdcard.sh am62x_bookworm-no-km_09.00.00.006
+sudo ./create-sdcard.sh am62-bookworm-09.01.00.008
 ```
 
-This command will flash `am62x_bookworm-no-km_09.00.00.006` image to the SD card.
+This command will flash `am62-bookworm-09.01.00.008` image to the SD card.
 
-## Post-Build:
+Following the above, you should have a basic Debian system set up. 
 
-Following the above, you should have a basic Debian system set up. However, this
-system does not yet contain any out-of-tree kernel modules. Therefore they need
-to be installed after booting in.
-
-At the very least, you should install the `ti-img-rogue-driver` to enable
-GPU. Use the following command:
-
-```bash
-apt install ti-img-rogue-driver
-```
-
-To load the driver, reboot.
-
-Once rebooted, the driver should work. To verify that it is loaded, type:
-
-```bash
-lsmod | grep pvr
-```
-If you see output of pvrsrvkm driver, it means that the driver has loaded
-correctly.
