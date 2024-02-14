@@ -39,7 +39,9 @@ sudo apt install -y \
         debian-archive-keyring bdebstrap \
         build-essential autoconf automake \
         bison flex libssl-dev \
-        bc u-boot-tools swig python3-pyelftools
+        bc git wget u-boot-tools swig \
+        python3-pyelftools python3-pip python3-dev \
+        python3-yaml python3-jsonschema python3-cryptography
 sudo apt install --fix-broken
 sudo pip3 install toml-cli
 ```
