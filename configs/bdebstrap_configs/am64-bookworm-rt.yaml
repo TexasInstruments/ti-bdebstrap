@@ -41,6 +41,8 @@ mmdebstrap:
     - firmware-ti-prusw-am64
     - libti-rpmsg-char
     - libti-rpmsg-char-dev
+    - libpru-pssp-dev
+    - pru-pssp
   mirrors:
     - http://deb.debian.org/debian
   setup-hooks:
