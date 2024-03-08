@@ -5,7 +5,7 @@
     hostname = "am62pxx-evm"
     # u-boot config
     atf_target_board = "lite"
-    atf_make_args="TFA_K3_SYSTEM_SUSPEND=1"
+    atf_make_args="K3_PM_SYSTEM_SUSPEND=1"
     optee_platform = "k3-am62x"
     optee_make_args = "CFG_WITH_SOFTWARE_PRNG=y"
     sysfw_soc = "am62px"
@@ -18,7 +18,7 @@
     hostname = "am62xx-evm"
     # u-boot config
     atf_target_board = "lite"
-    atf_make_args="TFA_K3_SYSTEM_SUSPEND=1"
+    atf_make_args="K3_PM_SYSTEM_SUSPEND=1"
     optee_platform = "k3-am62x"
     optee_make_args = "."
     sysfw_soc = "am62x"
@@ -31,7 +31,7 @@
     hostname = "am62xx-lp-evm"
     # u-boot config
     atf_target_board = "lite"
-    atf_make_args="TFA_K3_SYSTEM_SUSPEND=1"
+    atf_make_args="K3_PM_SYSTEM_SUSPEND=1"
     optee_platform = "k3-am62x"
     optee_make_args = "."
     sysfw_soc = "am62x"
@@ -44,7 +44,7 @@
     hostname = "am62xxsip-evm"
     # u-boot config
     atf_target_board = "lite"
-    atf_make_args="TFA_K3_SYSTEM_SUSPEND=1"
+    atf_make_args="K3_PM_SYSTEM_SUSPEND=1"
     optee_platform = "k3-am62x"
     optee_make_args = "."
     sysfw_soc = "am62x"
@@ -57,7 +57,7 @@
     hostname = "am64xx-evm"
     # u-boot config
     atf_target_board = "lite"
-    atf_make_args="TFA_K3_SYSTEM_SUSPEND=1"
+    atf_make_args="K3_PM_SYSTEM_SUSPEND=1"
     optee_platform = "k3-am64x"
     optee_make_args = "."
     sysfw_soc = "am64x"
