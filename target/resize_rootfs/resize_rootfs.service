@@ -1,0 +1,14 @@
+[Unit]
+Description=Expand the rootfs partition to full size of the boot device.
+
+[Service]
+ExecStart=/usr/bin/resize_rootfs.sh
+Type=oneshot
+RemainAfterExit=yes
+TimeoutStopSec=20
+KillMode=process
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+
