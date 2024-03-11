@@ -43,6 +43,8 @@ mmdebstrap:
     - libti-rpmsg-char-dev
     - libpru-pssp-dev
     - pru-pssp
+    - parted
+    - e2fsprogs
   mirrors:
     - http://deb.debian.org/debian
   setup-hooks:
@@ -73,4 +75,10 @@ mmdebstrap:
       # Enable ssh to root user without password
     - 'chroot "$1" echo "PermitRootLogin yes" >> $1/etc/ssh/sshd_config'
     - 'chroot "$1" echo "PermitEmptyPasswords yes" >> $1/etc/ssh/sshd_config'
+      # Resize Rootfs Service
+    - 'chroot "$1" mkdir -p /usr/bin'
+    - 'upload target/resize_rootfs/resize_rootfs.sh /usr/bin/resize_rootfs.sh'
+    - 'chroot "$1" mkdir -p /etc/systemd/system/'
+    - 'upload target/resize_rootfs/resize_rootfs.service /etc/systemd/system/resize_rootfs.service'
+    - '$BDEBSTRAP_HOOKS/enable-units "$1" resize_rootfs'
 
