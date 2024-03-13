@@ -78,14 +78,15 @@ The output will be generated at `build/`. The log file will be
 
 ## Flashing Image to SD Card
 
-To flash the image to the SD card, use the `create-sdcard.sh` script.
+If you just want to flash the built image to the SD card, use the
+`create-sdcard.sh` script.
 Syntax:
 
 ```bash
 sudo ./create-sdcard.sh <build>
 ```
 
-Continuing the example above, if you built `am62-bookworm-09.01.00.008`, type:
+Continuing the example above, if you've built `am62-bookworm-09.01.00.008`, type:
 
 ```bash
 sudo ./create-sdcard.sh am62-bookworm-09.01.00.008
@@ -93,5 +94,27 @@ sudo ./create-sdcard.sh am62-bookworm-09.01.00.008
 
 This command will flash `am62-bookworm-09.01.00.008` image to the SD card.
 
-Following the above, you should have a basic Debian system set up. 
+Following the above, you should have a basic Debian SD Card set up.
+
+## Creating SD Card Image
+
+To create a shareable SD card Image to flash with tools like balena-etcher, use
+`create-wic.sh` script.
+Syntax:
+
+```bash
+sudo ./create-wic.sh <build>
+```
+
+This command will generate a `tisdk-debian-bookworm-<machine>.wic.xz` image at
+`<ti-bdebstrap>/build/<build>/`
+
+Continuing the example above, if you've built `am62-bookworm-09.01.00.008`, type:
+
+```bash
+sudo ./create-wic.sh am62-bookworm-09.01.00.008
+```
+
+This command will generate a `tisdk-debian-bookworm-am62xx-evm.wic.xz` image at
+ `<ti-bdebstrap>/build/am62-bookworm-09.01.00.008/`
 
