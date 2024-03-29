@@ -1,3 +1,16 @@
+[09.02.00.009]
+    atf_srcrev = "00f1ec6b8740ccd403e641131e294aabacf2a48b"
+    optee_srcrev = "012cdca49db398693903e05c42a254a3a0c0d8f2"
+    uboot_srcrev = "09.02.00.009"
+    linux_fw_srcrev = "09.02.00.009"
+
+[09.02.00.009-rt]
+    atf_srcrev = "00f1ec6b8740ccd403e641131e294aabacf2a48b"
+    optee_srcrev = "012cdca49db398693903e05c42a254a3a0c0d8f2"
+    uboot_srcrev = "09.02.00.009"
+    linux_fw_srcrev = "09.02.00.009"
+
+
 [09.02.00.008]
     atf_srcrev = "00f1ec6b8740ccd403e641131e294aabacf2a48b"
     optee_srcrev = "012cdca49db398693903e05c42a254a3a0c0d8f2"
