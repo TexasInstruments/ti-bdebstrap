@@ -30,8 +30,8 @@ mmdebstrap:
     - vim
     - k3conf
     - weston
-    - linux-image-6.1.80-rt26-k3-rt
-    - linux-headers-6.1.80-rt26-k3-rt
+    - linux-image-6.1.83-k3-rt
+    - linux-headers-6.1.83-k3-rt
     - linux-libc-dev
     - cryptodev-linux-dkms
     - firmware-ti-ipc-am64
