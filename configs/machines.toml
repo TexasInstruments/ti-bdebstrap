@@ -7,7 +7,7 @@
     atf_target_board = "lite"
     atf_make_args="K3_PM_SYSTEM_SUSPEND=1"
     optee_platform = "k3-am62x"
-    optee_make_args = "CFG_WITH_SOFTWARE_PRNG=y"
+    optee_make_args = "CFG_WITH_SOFTWARE_PRNG=y CFG_TEE_CORE_LOG_LEVEL=1"
     uboot_r5_defconfig = "am62px_evm_r5_defconfig"
     uboot_a53_defconfig = "am62px_evm_a53_defconfig"
 
@@ -18,7 +18,7 @@
     atf_target_board = "lite"
     atf_make_args="K3_PM_SYSTEM_SUSPEND=1"
     optee_platform = "k3-am62x"
-    optee_make_args = "."
+    optee_make_args = "CFG_TEE_CORE_LOG_LEVEL=1"
     uboot_r5_defconfig = "am62x_evm_r5_defconfig"
     uboot_a53_defconfig = "am62x_evm_a53_defconfig"
 
@@ -29,7 +29,7 @@
     atf_target_board = "lite"
     atf_make_args="K3_PM_SYSTEM_SUSPEND=1"
     optee_platform = "k3-am62x"
-    optee_make_args = "."
+    optee_make_args = "CFG_TEE_CORE_LOG_LEVEL=1"
     uboot_r5_defconfig = "am62x_lpsk_r5_defconfig"
     uboot_a53_defconfig = "am62x_lpsk_a53_defconfig"
 
@@ -40,7 +40,7 @@
     atf_target_board = "lite"
     atf_make_args="K3_PM_SYSTEM_SUSPEND=1"
     optee_platform = "k3-am62x"
-    optee_make_args = "."
+    optee_make_args = "CFG_TEE_CORE_LOG_LEVEL=1"
     uboot_r5_defconfig = "am62x_evm_r5_defconfig,am62xsip_sk_r5.config"
     uboot_a53_defconfig = "am62x_evm_a53_defconfig"
 
