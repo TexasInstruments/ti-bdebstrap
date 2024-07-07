@@ -6,11 +6,10 @@ machine=$2
 bsp_version=$3
 
     setup_bsp_build ${build} ${machine} ${bsp_version}
-    build_atf $machine
-    build_optee $machine
-    build_uboot $machine
+    build_atf $machine ${bsp_version}
+    build_optee $machine ${bsp_version}
+    build_uboot $machine ${bsp_version}
 }
-
 
 function setup_bsp_build() {
 build=$1
@@ -95,15 +94,16 @@ bsp_version=$3
     tar --use-compress-program="pigz --best --recursive | pv" -cf bsp_sources.tar.xz bsp_sources &>>"${LOG_FILE}"
     log "> BSP sources: backup created .."
 
-    mkdir -p tisdk-${distro}-${machine}-boot
+    mkdir -p tisdk-debian-${distro}-boot
 }
 
 function build_atf() {
 machine=$1
+bsp_version=$2
 
     cd $TFA_DIR
-    target_board=($(read_machine_config ${machine} atf_target_board))
-    make_args=($(read_machine_config ${machine} atf_make_args))
+    target_board=($(read_machine_config ${machine} atf_target_board ${bsp_version}))
+    make_args=($(read_machine_config ${machine} atf_make_args ${bsp_version}))
 
     log "> ATF: building .."
     make -j`nproc` ARCH=aarch64 CROSS_COMPILE=${cross_compile} PLAT=k3 TARGET_BOARD=${target_board} SPD=opteed ${make_args} &>>"${LOG_FILE}"
@@ -111,10 +111,11 @@ machine=$1
 
 function build_optee() {
 machine=$1
+bsp_version=$2
 
     cd ${OPTEE_DIR}
-    platform=($(read_machine_config ${machine} optee_platform))
-    make_args=($(read_machine_config ${machine} optee_make_args))
+    platform=($(read_machine_config ${machine} optee_platform ${bsp_version}))
+    make_args=($(read_machine_config ${machine} optee_make_args ${bsp_version}))
     # Workaround for toml not supporting empty values
     if [ ${make_args} == "." ]; then
         make_args=""
@@ -126,27 +127,28 @@ machine=$1
 
 function build_uboot() {
 machine=$1
+bsp_version=$2
 
-    uboot_r5_defconfig=($(read_machine_config ${machine} uboot_r5_defconfig))
+    uboot_r5_defconfig=($(read_machine_config ${machine} uboot_r5_defconfig ${bsp_version}))
     uboot_r5_defconfig=`echo $uboot_r5_defconfig | tr ',' ' '`
-    uboot_a53_defconfig=($(read_machine_config ${machine} uboot_a53_defconfig))
+    uboot_a53_defconfig=($(read_machine_config ${machine} uboot_a53_defconfig ${bsp_version}))
 
     cd ${UBOOT_DIR}
     log "> uboot-r5: building .."
     make -j`nproc` ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- ${uboot_r5_defconfig} O=${UBOOT_DIR}/out/r5 &>>"${LOG_FILE}"
     make -j`nproc` ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- O=${UBOOT_DIR}/out/r5 BINMAN_INDIRS=${FW_DIR} &>>"${LOG_FILE}"
-    cp ${UBOOT_DIR}/out/r5/tiboot3*.bin ${topdir}/build/${build}/tisdk-${distro}-${machine}-boot/ &>> ${LOG_FILE}
+    cp ${UBOOT_DIR}/out/r5/tiboot3*.bin ${topdir}/build/${build}/tisdk-debian-${distro}-boot/ &>> ${LOG_FILE}
 
     cd ${UBOOT_DIR}
     log "> uboot-a53: building .."
     make -j`nproc` ARCH=arm CROSS_COMPILE=${cross_compile} ${uboot_a53_defconfig} O=${UBOOT_DIR}/out/a53 &>>"${LOG_FILE}"
     make -j`nproc` ARCH=arm CROSS_COMPILE=${cross_compile} BL31=${TFA_DIR}/build/k3/lite/release/bl31.bin TEE=${OPTEE_DIR}/out/arm-plat-k3/core/tee-pager_v2.bin O=${UBOOT_DIR}/out/a53 BINMAN_INDIRS=${topdir}/build/${build}/bsp_sources/ti-linux-firmware &>>"${LOG_FILE}"
-    cp ${UBOOT_DIR}/out/a53/tispl.bin ${topdir}/build/${build}/tisdk-${distro}-${machine}-boot/ &>> ${LOG_FILE}
-    cp ${UBOOT_DIR}/out/a53/u-boot.img ${topdir}/build/${build}/tisdk-${distro}-${machine}-boot/ &>> ${LOG_FILE}
+    cp ${UBOOT_DIR}/out/a53/tispl.bin ${topdir}/build/${build}/tisdk-debian-${distro}-boot/ &>> ${LOG_FILE}
+    cp ${UBOOT_DIR}/out/a53/u-boot.img ${topdir}/build/${build}/tisdk-debian-${distro}-boot/ &>> ${LOG_FILE}
 
 	case ${machine} in
 		am62pxx-evm | am62xx-evm | am62xx-lp-evm | am62xxsip-evm)
-			cp ${UBOOT_DIR}/tools/logos/ti_logo_414x97_32bpp.bmp.gz ${topdir}/build/${build}/tisdk-${distro}-${machine}-boot/ &>> ${LOG_FILE}
+			cp ${UBOOT_DIR}/tools/logos/ti_logo_414x97_32bpp.bmp.gz ${topdir}/build/${build}/tisdk-debian-${distro}-boot/ &>> ${LOG_FILE}
 			;;
 	esac
 }

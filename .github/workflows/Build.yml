@@ -59,6 +59,7 @@ jobs:
               gpg curl
           sudo apt install --fix-broken
           sudo pip3 install toml-cli
+          sudo pip3 install yamllint
           curl -s --compressed https://texasinstruments.github.io/ti-debpkgs/KEY.gpg | \
               gpg --dearmor | \
               sudo tee /usr/share/keyrings/ti-debpkgs.gpg > /dev/null
