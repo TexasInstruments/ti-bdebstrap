@@ -1,0 +1,87 @@
+---
+mmdebstrap:
+  architectures:
+    - arm64
+  mode: auto
+  keyrings:
+    - /usr/share/keyrings/debian-archive-keyring.gpg
+  suite: trixie
+  variant: standard
+  hostname: am64xx-evm
+  components:
+    - main
+    - contrib
+    - non-free-firmware
+  packages:
+    - build-essential
+    - gpg
+    - curl
+    - firmware-ti-connectivity
+    - init
+    - iproute2
+    - less
+    - libdrm-dev
+    - libpam-systemd
+    - locales
+    - neofetch
+    - network-manager
+    - net-tools
+    - openssh-server
+    - sudo
+    - vim
+    - k3conf
+    - weston
+    - linux-image-6.6.32-k3-rt
+    - linux-headers-6.6.32-k3-rt
+    - linux-libc-dev
+    - cryptodev-linux-dkms
+    - firmware-ti-ipc-am64
+    - firmware-cnm-wave
+    - firmware-ti-prueth-am64
+    - firmware-ti-pruhsr-am64
+    - firmware-ti-prusw-am64
+    - libti-rpmsg-char
+    - libti-rpmsg-char-dev
+    - libpru-pssp-dev
+    - pru-pssp
+    - parted
+    - e2fsprogs
+  mirrors:
+    - http://deb.debian.org/debian
+  setup-hooks:
+      # Setup TI Debian Package Repository
+    - 'mkdir -p $1/etc/apt/sources.list.d/'
+    - 'wget https://raw.githubusercontent.com/TexasInstruments/ti-debpkgs/main/ti-debpkgs.sources -P $1/etc/apt/sources.list.d/'
+    - 'sed -i "s/bookworm/trixie/g" $1/etc/apt/sources.list.d/ti-debpkgs.sources'
+      # Setup Apt repository preferences
+    - 'mkdir -p $1/etc/apt/preferences.d/'
+    - 'printf "Package: *\nPin: origin TexasInstruments.github.io\nPin-Priority: 1001" >> $1/etc/apt/preferences.d/ti-debpkgs'
+      # Setup Kernel post-install scripts
+    - 'mkdir -p $1/etc/kernel/postinst.d/'
+    - 'echo "PWD = $PWD"'
+    - 'upload target/kernel/postinst.d/cp-kernel-and-overlays /etc/kernel/postinst.d/cp-kernel-and-overlays'
+    - 'chmod a+x $1/etc/kernel/postinst.d/cp-kernel-and-overlays'
+  essential-hooks:
+    # FIXME: Find a better workaround instead of sleep
+    - 'sleep 10' # workaround for /proc resource busy unable to umount issue
+  customize-hooks:
+      # Remove passwd for root user
+    - 'chroot "$1" passwd --delete root'
+      # Fix apt install mandb permission issue
+    - 'chroot "$1" chown -R man: /var/cache/man/'
+    - 'chroot "$1" chmod -R 755 /var/cache/man/'
+      # update packages to avoid mandatory update after first boot
+    - 'chroot "$1" apt-get update'
+      # Setup .bashrc for clean command-line experience
+    - 'chroot "$1" cp /etc/skel/.bashrc ~/.bashrc'
+      # Enable ssh to root user without password
+    - 'chroot "$1" echo "PermitRootLogin yes" >> $1/etc/ssh/sshd_config'
+    - 'chroot "$1" echo "PermitEmptyPasswords yes" >> $1/etc/ssh/sshd_config'
+      # Resize Rootfs Service
+    - 'chroot "$1" mkdir -p /usr/bin'
+    - 'upload target/resize_rootfs/resize_rootfs.sh /usr/bin/resize_rootfs.sh'
+    - 'chroot "$1" chmod a+x /usr/bin/resize_rootfs.sh'
+    - 'chroot "$1" mkdir -p /etc/systemd/system/'
+    - 'upload target/resize_rootfs/resize_rootfs.service /etc/systemd/system/resize_rootfs.service'
+    - '$BDEBSTRAP_HOOKS/enable-units "$1" resize_rootfs'
+

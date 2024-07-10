@@ -7,6 +7,7 @@ mmdebstrap:
     - /usr/share/keyrings/debian-archive-keyring.gpg
   suite: bookworm
   variant: standard
+  hostname: am64xx-evm
   components:
     - main
     - contrib
@@ -30,41 +31,17 @@ mmdebstrap:
     - vim
     - k3conf
     - weston
-    - alsa-utils
-    - libasound2-plugins
-    - gstreamer1.0-tools
-    - gstreamer1.0-plugins-base
-    - gstreamer1.0-plugins-good
-    - gstreamer1.0-plugins-bad
-    - i2c-tools
-    - linux-image-6.1.83-k3-rt
-    - linux-headers-6.1.83-k3-rt
+    - linux-image-6.1.83-k3
+    - linux-headers-6.1.83-k3
     - linux-libc-dev
     - cryptodev-linux-dkms
-    - ti-img-rogue-driver-am62-dkms
-    - ti-img-rogue-firmware-am62
-    - ti-img-rogue-tools-am62
-    - ti-img-rogue-umlibs-am62
-    - firmware-ti-ipc-am62
+    - firmware-ti-ipc-am64
     - firmware-cnm-wave
+    - firmware-ti-prueth-am64
+    - firmware-ti-pruhsr-am64
+    - firmware-ti-prusw-am64
     - libti-rpmsg-char
     - libti-rpmsg-char-dev
-    - libd3dadapter9-mesa-dev
-    - libd3dadapter9-mesa
-    - libegl-mesa0
-    - libegl1-mesa
-    - libgbm1
-    - libgl1-mesa-dri
-    - libgl1-mesa-glx
-    - libglapi-mesa
-    - libgles2-mesa
-    - libglx-mesa0
-    - libosmesa6
-    - libwayland-egl1-mesa
-    - mesa-opencl-icd
-    - mesa-va-drivers
-    - mesa-vdpau-drivers
-    - mesa-vulkan-drivers
     - libpru-pssp-dev
     - pru-pssp
     - parted
@@ -96,14 +73,6 @@ mmdebstrap:
     - 'chroot "$1" apt-get update'
       # Setup .bashrc for clean command-line experience
     - 'chroot "$1" cp /etc/skel/.bashrc ~/.bashrc'
-      # Weston Service and Config Files
-    - 'chroot "$1" mkdir -p /etc/systemd/system/'
-    - 'upload target/weston/weston.service /etc/systemd/system/weston.service'
-    - 'upload target/weston/weston.socket /etc/systemd/system/weston.socket'
-    - 'chroot "$1" mkdir -p /etc/default/'
-    - 'upload target/weston/weston /etc/default/weston'
-    - '$BDEBSTRAP_HOOKS/enable-units "$1" weston'
-    - 'chroot "$1" echo "export WAYLAND_DISPLAY=wayland-1" >> $1/etc/profile'
       # Enable ssh to root user without password
     - 'chroot "$1" echo "PermitRootLogin yes" >> $1/etc/ssh/sshd_config'
     - 'chroot "$1" echo "PermitEmptyPasswords yes" >> $1/etc/ssh/sshd_config'

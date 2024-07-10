@@ -47,7 +47,8 @@ EXE=`echo $0 | sed s=$PWD==`
 EXEPATH="$PWD"/"$EXE"
 clear
 
-PARSEPATH=./build/$1
+build=${1}
+PARSEPATH=./build/${build}
 
 cat << EOM
 
@@ -689,8 +690,8 @@ sync
 sync
 sync
 
-BOOTFILEPATH="$PARSEPATH/tisdk*boot.tar.xz"
-ROOTFILEPATH="$PARSEPATH/tisdk*rootfs.tar.xz"
+BOOTFILEPATH="$PARSEPATH/tisdk-debian-${build}-boot.tar.xz"
+ROOTFILEPATH="$PARSEPATH/tisdk-debian-${build}-rootfs.tar.xz"
 
 cat << EOM
 ################################################################################

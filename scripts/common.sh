@@ -18,8 +18,9 @@ function read_config() {
 function read_machine_config() {
 machine=$1
 config=$2
+bsp_version=${3}
 
-    read_config ${topdir}/configs/machines.toml $machine $config
+    read_config ${topdir}/configs/machines/${bsp_version}.yaml $machine $config
 }
 
 function read_bsp_config() {
@@ -50,13 +51,13 @@ config=$3
 function validate_build() {
 machine=$1
 bsp_version=$2
-distro_variant=$3
+distro_file=$3
 
-    validate_section "Machine" ${machine} "${topdir}/configs/machines.toml"
     validate_section "BSP Version" ${bsp_version} "${topdir}/configs/bsp_sources.toml"
+    validate_section "Machine" ${machine} "${topdir}/configs/machines/${bsp_version}.yaml"
 
-    if [ ! -f "${topdir}/configs/bdebstrap_configs/${distro_variant}.yaml" ] ; then
-        log "Distro Variant \"${distro_variant}\" does not exist. Exiting."
+    if [ ! -f "${topdir}/configs/bdebstrap_configs/${distro_file}" ] ; then
+        log "Distro Variant \"${distro_file}\" does not exist. Exiting."
         exit 1
     fi
 }

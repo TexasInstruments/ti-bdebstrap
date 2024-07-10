@@ -44,6 +44,7 @@ sudo apt install -y \
         python3-yaml python3-jsonschema python3-cryptography
 sudo apt install --fix-broken
 sudo pip3 install toml-cli
+sudo pip3 install yamllint
 ```
 
 ## Usage

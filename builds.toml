@@ -2,66 +2,127 @@
 
 # Builds for GitHub Actions
 builds = [
-    "am62p-bookworm-09.02.01.010",
-    "am62p-bookworm-09.02.01.010-rt",
-    "am62-bookworm-09.02.01.010",
-    "am62-bookworm-09.02.01.010-rt",
-    "am62lp-bookworm-09.02.01.010",
-    "am62lp-bookworm-09.02.01.010-rt",
-    "am62sip-bookworm-09.02.01.010",
-    "am62sip-bookworm-09.02.01.010-rt",
-    "am64-bookworm-09.02.01.010",
-    "am64-bookworm-09.02.01.010-rt",
+    "trixie-am62pxx-evm",
+    "trixie-rt-am62pxx-evm",
+    "trixie-am62xx-evm",
+    "trixie-rt-am62xx-evm",
+    "trixie-am62xx-lp-evm",
+    "trixie-rt-am62xx-lp-evm",
+    "trixie-am62xxsip-evm",
+    "trixie-rt-am62xxsip-evm",
+    "trixie-am64xx-evm",
+    "trixie-rt-am64xx-evm",
+    "bookworm-am62pxx-evm",
+    "bookworm-rt-am62pxx-evm",
+    "bookworm-am62xx-evm",
+    "bookworm-rt-am62xx-evm",
+    "bookworm-am62xx-lp-evm",
+    "bookworm-rt-am62xx-lp-evm",
+    "bookworm-am62xxsip-evm",
+    "bookworm-rt-am62xxsip-evm",
+    "bookworm-am64xx-evm",
+    "bookworm-rt-am64xx-evm",
 ]
 
-# List of all valid builds
-[am62p-bookworm-09.02.01.010]
+# List of all valid trixie builds
+[trixie-am62pxx-evm]
     machine = "am62pxx-evm"
-    bsp_version = "09.02.00.010"
-    distro_variant = "am62p-bookworm"
+    distro_codename = "trixie"
+    rt_linux = "false"
 
-[am62p-bookworm-09.02.01.010-rt]
+[trixie-rt-am62pxx-evm]
     machine = "am62pxx-evm"
-    bsp_version = "09.02.00.010-rt"
-    distro_variant = "am62p-bookworm-rt"
+    distro_codename = "trixie"
+    rt_linux = "true"
 
-[am62-bookworm-09.02.01.010]
+[trixie-am62xx-evm]
     machine = "am62xx-evm"
-    bsp_version = "09.02.00.010"
-    distro_variant = "am62-bookworm"
+    distro_codename = "trixie"
+    rt_linux = "false"
 
-[am62-bookworm-09.02.01.010-rt]
+[trixie-rt-am62xx-evm]
     machine = "am62xx-evm"
-    bsp_version = "09.02.00.010-rt"
-    distro_variant = "am62-bookworm-rt"
+    distro_codename = "trixie"
+    rt_linux = "true"
 
-[am62lp-bookworm-09.02.01.010]
+[trixie-am62xx-lp-evm]
     machine = "am62xx-lp-evm"
-    bsp_version = "09.02.00.010"
-    distro_variant = "am62-bookworm"
+    distro_codename = "trixie"
+    rt_linux = "false"
 
-[am62lp-bookworm-09.02.01.010-rt]
+[trixie-rt-am62xx-lp-evm]
     machine = "am62xx-lp-evm"
-    bsp_version = "09.02.00.010-rt"
-    distro_variant = "am62-bookworm-rt"
+    distro_codename = "trixie"
+    rt_linux = "true"
 
-[am62sip-bookworm-09.02.01.010]
+[trixie-am62xxsip-evm]
     machine = "am62xxsip-evm"
-    bsp_version = "09.02.00.010"
-    distro_variant = "am62-bookworm"
+    distro_codename = "trixie"
+    rt_linux = "false"
 
-[am62sip-bookworm-09.02.01.010-rt]
+[trixie-rt-am62xxsip-evm]
     machine = "am62xxsip-evm"
-    bsp_version = "09.02.00.010-rt"
-    distro_variant = "am62-bookworm-rt"
+    distro_codename = "trixie"
+    rt_linux = "true"
 
-[am64-bookworm-09.02.01.010]
+[trixie-am64xx-evm]
     machine = "am64xx-evm"
-    bsp_version = "09.02.00.010"
-    distro_variant = "am64-bookworm"
+    distro_codename = "trixie"
+    rt_linux = "false"
 
-[am64-bookworm-09.02.01.010-rt]
+[trixie-rt-am64xx-evm]
     machine = "am64xx-evm"
-    bsp_version = "09.02.00.010-rt"
-    distro_variant = "am64-bookworm-rt"
+    distro_codename = "trixie"
+    rt_linux = "true"
+
+# List of all valid bookworm builds
+[bookworm-am62pxx-evm]
+    machine = "am62pxx-evm"
+    distro_codename = "bookworm"
+    rt_linux = "false"
+
+[bookworm-rt-am62pxx-evm]
+    machine = "am62pxx-evm"
+    distro_codename = "bookworm"
+    rt_linux = "true"
+
+[bookworm-am62xx-evm]
+    machine = "am62xx-evm"
+    distro_codename = "bookworm"
+    rt_linux = "false"
+
+[bookworm-rt-am62xx-evm]
+    machine = "am62xx-evm"
+    distro_codename = "bookworm"
+    rt_linux = "true"
+
+[bookworm-am62xx-lp-evm]
+    machine = "am62xx-lp-evm"
+    distro_codename = "bookworm"
+    rt_linux = "false"
+
+[bookworm-rt-am62xx-lp-evm]
+    machine = "am62xx-lp-evm"
+    distro_codename = "bookworm"
+    rt_linux = "true"
+
+[bookworm-am62xxsip-evm]
+    machine = "am62xxsip-evm"
+    distro_codename = "bookworm"
+    rt_linux = "false"
+
+[bookworm-rt-am62xxsip-evm]
+    machine = "am62xxsip-evm"
+    distro_codename = "bookworm"
+    rt_linux = "true"
+
+[bookworm-am64xx-evm]
+    machine = "am64xx-evm"
+    distro_codename = "bookworm"
+    rt_linux = "false"
+
+[bookworm-rt-am64xx-evm]
+    machine = "am64xx-evm"
+    distro_codename = "bookworm"
+    rt_linux = "true"
 
