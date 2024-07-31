@@ -70,6 +70,7 @@ mmdebstrap:
     - pru-pssp
     - parted
     - e2fsprogs
+    - chromium
   mirrors:
     - http://deb.debian.org/debian
   setup-hooks:
