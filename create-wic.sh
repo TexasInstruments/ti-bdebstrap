@@ -96,7 +96,7 @@ fi
 IMAGE=tisdk-debian-${BUILD}.wic
 
 echo "Creating an empty image"
-dd if=/dev/zero of=${BUILDPATH}/${BUILD}/${IMAGE} count=6291456 status=progress
+dd if=/dev/zero of=${BUILDPATH}/${BUILD}/${IMAGE} count=10485760 status=progress
 sync ; sync
 
 cat << END | fdisk ${BUILDPATH}/${BUILD}/${IMAGE}
