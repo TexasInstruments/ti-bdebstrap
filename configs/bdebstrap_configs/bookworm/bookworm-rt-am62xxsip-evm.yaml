@@ -103,6 +103,8 @@ mmdebstrap:
     - 'upload target/weston/weston.socket /etc/systemd/system/weston.socket'
     - 'chroot "$1" mkdir -p /etc/default/'
     - 'upload target/weston/weston /etc/default/weston'
+    - 'chroot "$1" mkdir -p /etc/xdg/weston/'
+    - 'upload target/etc/xdg/weston/weston.ini /etc/xdg/weston/weston.ini'
     - '$BDEBSTRAP_HOOKS/enable-units "$1" weston'
     - 'chroot "$1" echo "export WAYLAND_DISPLAY=wayland-1" >> $1/etc/profile'
       # Enable ssh to root user without password
