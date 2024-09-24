@@ -20,7 +20,7 @@ machine=$3
 
     cd ${topdir}/build/
 
-    ROOTFS_DIR=${topdir}/build/${distro}/tisdk-debian-${distro}}-rootfs
+    ROOTFS_DIR=${topdir}/build/${distro}/tisdk-debian-${distro}-rootfs
 }
 
 function package_and_clean() {
