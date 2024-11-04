@@ -30,7 +30,6 @@ mmdebstrap:
     - sudo
     - vim
     - k3conf
-    - weston
     - alsa-utils
     - libasound2-plugins
     - gstreamer1.0-tools
@@ -50,27 +49,10 @@ mmdebstrap:
     - firmware-cnm-wave
     - libti-rpmsg-char
     - libti-rpmsg-char-dev
-    - libd3dadapter9-mesa-dev
-    - libd3dadapter9-mesa
-    - libegl-mesa0
-    - libegl1-mesa
-    - libgbm1
-    - libgl1-mesa-dri
-    - libgl1-mesa-glx
-    - libglapi-mesa
-    - libgles2-mesa
-    - libglx-mesa0
-    - libosmesa6
-    - libwayland-egl1-mesa
-    - mesa-opencl-icd
-    - mesa-va-drivers
-    - mesa-vdpau-drivers
-    - mesa-vulkan-drivers
     - libpru-pssp-dev
     - pru-pssp
     - parted
     - e2fsprogs
-    - chromium
   mirrors:
     - http://deb.debian.org/debian
   setup-hooks:
@@ -99,14 +81,6 @@ mmdebstrap:
     - 'chroot "$1" apt-get update'
       # Setup .bashrc for clean command-line experience
     - 'chroot "$1" cp /etc/skel/.bashrc ~/.bashrc'
-      # Weston Service and Config Files
-    - 'chroot "$1" mkdir -p /etc/systemd/system/'
-    - 'upload target/weston/weston.service /etc/systemd/system/weston.service'
-    - 'upload target/weston/weston.socket /etc/systemd/system/weston.socket'
-    - 'chroot "$1" mkdir -p /etc/default/'
-    - 'upload target/weston/weston /etc/default/weston'
-    - '$BDEBSTRAP_HOOKS/enable-units "$1" weston'
-    - 'chroot "$1" echo "export WAYLAND_DISPLAY=wayland-1" >> $1/etc/profile'
       # Enable ssh to root user without password
     - 'chroot "$1" echo "PermitRootLogin yes" >> $1/etc/ssh/sshd_config'
     - 'chroot "$1" echo "PermitEmptyPasswords yes" >> $1/etc/ssh/sshd_config'
