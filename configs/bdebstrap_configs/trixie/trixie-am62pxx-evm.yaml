@@ -72,6 +72,7 @@ mmdebstrap:
     - e2fsprogs
     - chromium
     - wpasupplicant
+    - seatd
   mirrors:
     - http://deb.debian.org/debian
   setup-hooks:
@@ -115,6 +116,8 @@ mmdebstrap:
     - 'upload target/systemd-networkd/30-wlan.network /etc/systemd/network/30-wlan.network'
     - 'upload target/systemd-networkd/60-usb.network /etc/systemd/network/60-usb.network'
     - 'chroot "$1" systemctl disable NetworkManager'
+      # Enable seatd service
+    - '$BDEBSTRAP_HOOKS/enable-units "$1" seatd'
       # Enable ssh to root user without password
     - 'chroot "$1" echo "PermitRootLogin yes" >> $1/etc/ssh/sshd_config'
     - 'chroot "$1" echo "PermitEmptyPasswords yes" >> $1/etc/ssh/sshd_config'
