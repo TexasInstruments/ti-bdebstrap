@@ -83,17 +83,21 @@ source ${topdir}/scripts/common.sh
 
 validate_section "Build" ${BUILD} "${topdir}/builds.toml"
 
-if [ ! -f ${topdir}/build/${BUILD}/tisdk-debian-${BUILD}-boot.tar.xz ]; then
+
+distro_codename=($(read_build_config ${BUILD} distro_codename))
+bsp_version=($(read_bsp_config ${distro_codename} bsp_version))
+
+if [ ! -f ${topdir}/build/${BUILD}/tisdk-debian-${BUILD}-${bsp_version}-boot.tar.xz ]; then
     echo "Error: Boot partition tarball not found for ${BUILD}."
     exit -1
 fi
 
-if [ ! -f ${topdir}/build/${BUILD}/tisdk-debian-${BUILD}-rootfs.tar.xz ]; then
+if [ ! -f ${topdir}/build/${BUILD}/tisdk-debian-${BUILD}-${bsp_version}-rootfs.tar.xz ]; then
     echo "Error: RootFS partition tarball not found for ${BUILD}."
     exit -1
 fi
 
-IMAGE=tisdk-debian-${BUILD}.wic
+IMAGE=tisdk-debian-${BUILD}-${bsp_version}.wic
 
 echo "Creating an empty image"
 dd if=/dev/zero of=${BUILDPATH}/${BUILD}/${IMAGE} count=10485760 status=progress
@@ -133,9 +137,9 @@ mount ${LOOPDEV}p1 ./img_boot
 
 echo "Copy Boot Partition files"
 cd ./img_boot
-tar -xf ${BUILDPATH}/${BUILD}/tisdk-debian-${BUILD}-boot.tar.xz
-mv tisdk-debian-${BUILD}-boot/* ./
-rmdir tisdk-debian-${BUILD}-boot
+tar -xf ${BUILDPATH}/${BUILD}/tisdk-debian-${BUILD}-${bsp_version}-boot.tar.xz
+mv tisdk-debian-${BUILD}-${bsp_version}-boot/* ./
+rmdir tisdk-debian-${BUILD}-${bsp_version}-boot
 
 echo "Sync and Unmount Boot Partition"
 cd ${BUILDPATH}/${BUILD}/temp/
@@ -149,9 +153,9 @@ mount ${LOOPDEV}p2 ./img_rootfs
 
 echo "Copy RootFS Partition files"
 cd ./img_rootfs
-tar -xf ${BUILDPATH}/${BUILD}/tisdk-debian-${BUILD}-rootfs.tar.xz
-mv tisdk-debian-${BUILD}-rootfs/* ./
-rmdir tisdk-debian-${BUILD}-rootfs
+tar -xf ${BUILDPATH}/${BUILD}/tisdk-debian-${BUILD}-${bsp_version}-rootfs.tar.xz
+mv tisdk-debian-${BUILD}-${bsp_version}-rootfs/* ./
+rmdir tisdk-debian-${BUILD}-${bsp_version}-rootfs
 
 echo "Sync and Unmount RootFS Partition"
 cd ${BUILDPATH}/${BUILD}/temp/
