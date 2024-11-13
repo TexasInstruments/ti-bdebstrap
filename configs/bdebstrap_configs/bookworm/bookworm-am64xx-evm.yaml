@@ -28,20 +28,20 @@ mmdebstrap:
     - parted
     - e2fsprogs
     - openssh-server
-    -	tmux
+    - tmux
     - vim
-    -	nano
-    -	telnet
-    -	picocom
-    -	wget
-    -	curl
-    -	openssl
-    -	libssl-dev
-    -	libreswan    
+    - nano
+    - telnet
+    - picocom
+    - wget
+    - curl
+    - openssl
+    - libssl-dev
+    - libreswan    
     - python3
     - python3-distutils
-    -	python3-pyinotify
-    -	libpython3-dev
+    - python3-pyinotify
+    - libpython3-dev
     - network-manager
     - firewalld
     - rsync
