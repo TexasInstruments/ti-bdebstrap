@@ -15,8 +15,6 @@ mmdebstrap:
   packages:
     - build-essential
     - gpg
-    - curl
-    - firmware-ti-connectivity
     - init
     - iproute2
     - less
@@ -24,28 +22,49 @@ mmdebstrap:
     - libpam-systemd
     - locales
     - neofetch
-    - network-manager
-    - net-tools
-    - openssh-server
     - sudo
-    - vim
-    - k3conf
-    - weston
-    - linux-image-6.1.83-k3
-    - linux-headers-6.1.83-k3
     - linux-libc-dev
     - cryptodev-linux-dkms
-    - firmware-ti-ipc-am64
-    - firmware-cnm-wave
-    - firmware-ti-prueth-am64
-    - firmware-ti-pruhsr-am64
-    - firmware-ti-prusw-am64
-    - libti-rpmsg-char
-    - libti-rpmsg-char-dev
-    - libpru-pssp-dev
-    - pru-pssp
     - parted
     - e2fsprogs
+    - openssh-server
+    -	tmux
+    - vim
+    -	nano
+    -	telnet
+    -	picocom
+    -	wget
+    -	curl
+    -	openssl
+    -	libssl-dev
+    -	libreswan    
+    - python3
+    - python3-distutils
+    -	python3-pyinotify
+    -	libpython3-dev
+    - network-manager
+    - firewalld
+    - rsync
+    - netcat-openbsd
+    - socat
+    - tcpdump
+    - libcap-ng-utils
+    - strace
+    - net-tools
+    - lm-sensors
+    - gnupg2
+    - binutils-dev
+    - chrony
+    - snmp
+    - libsnmp-dev
+    - dos2unix
+    - logrotate
+    - rsyslog
+    - nethogs
+    - lsof
+    - sysstat
+    - iotop
+    - htop
   mirrors:
     - http://deb.debian.org/debian
   setup-hooks:
