@@ -38,8 +38,8 @@ build=$1
     tar --use-compress-program="pigz --best --recursive | pv" -cf tisdk-debian-${distro}-rootfs.tar.xz tisdk-debian-${distro}-rootfs &>>"${LOG_FILE}"
     rm -rf tisdk-debian-${distro}-rootfs
 
-    tar --use-compress-program="pigz --best --recursive | pv" -cf tisdk-debian-${distro}-boot.tar.xz tisdk-debian-${distro}-boot &>>"${LOG_FILE}"
-    rm -rf tisdk-debian-${distro}-boot
+    # tar --use-compress-program="pigz --best --recursive | pv" -cf tisdk-debian-${distro}-boot.tar.xz tisdk-debian-${distro}-boot &>>"${LOG_FILE}"
+    # rm -rf tisdk-debian-${distro}-boot
 
     rm -rf bsp_sources
 
