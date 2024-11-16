@@ -53,7 +53,7 @@ mmdebstrap:
     - lm-sensors
     - gnupg2
     - binutils-dev
-    - chrony
+    #- chrony
     - snmp
     - libsnmp-dev
     - dos2unix
@@ -74,10 +74,10 @@ mmdebstrap:
     #- 'mkdir -p $1/etc/apt/preferences.d/'
     #- 'printf "Package: *\nPin: origin TexasInstruments.github.io\nPin-Priority: 1001" >> $1/etc/apt/preferences.d/ti-debpkgs'
       # Setup Kernel post-install scripts
-    - 'mkdir -p $1/etc/kernel/postinst.d/'
-    - 'echo "PWD = $PWD"'
-    - 'upload target/kernel/postinst.d/cp-kernel-and-overlays /etc/kernel/postinst.d/cp-kernel-and-overlays'
-    - 'chmod a+x $1/etc/kernel/postinst.d/cp-kernel-and-overlays'
+    #- 'mkdir -p $1/etc/kernel/postinst.d/'
+    #- 'echo "PWD = $PWD"'
+    #- 'upload target/kernel/postinst.d/cp-kernel-and-overlays /etc/kernel/postinst.d/cp-kernel-and-overlays'
+    #- 'chmod a+x $1/etc/kernel/postinst.d/cp-kernel-and-overlays'
   essential-hooks:
     # FIXME: Find a better workaround instead of sleep
     - 'sleep 10' # workaround for /proc resource busy unable to umount issue
