@@ -10,6 +10,12 @@ machine=$3
     cd ${topdir}
 
     log "> Building rootfs .."
+
+    log "> bdebstrap -c ${topdir}/configs/bdebstrap_configs/${distro_codename}/${distro}.yaml --name ${topdir}/build/${distro} \
+        --target tisdk-debian-${distro}-rootfs \
+        --hostname ${machine} \
+        -f"
+ 
     bdebstrap \
         -c ${topdir}/configs/bdebstrap_configs/${distro_codename}/${distro}.yaml \
         --name ${topdir}/build/${distro} \
