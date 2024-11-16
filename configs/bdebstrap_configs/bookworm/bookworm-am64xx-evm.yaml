@@ -69,11 +69,11 @@ mmdebstrap:
     - http://deb.debian.org/debian
   setup-hooks:
       # Setup TI Debian Package Repository
-    - 'mkdir -p $1/etc/apt/sources.list.d/'
-    - 'wget https://raw.githubusercontent.com/TexasInstruments/ti-debpkgs/main/ti-debpkgs.sources -P $1/etc/apt/sources.list.d/'
+    #- 'mkdir -p $1/etc/apt/sources.list.d/'
+    #- 'wget https://raw.githubusercontent.com/TexasInstruments/ti-debpkgs/main/ti-debpkgs.sources -P $1/etc/apt/sources.list.d/'
       # Setup Apt repository preferences
-    - 'mkdir -p $1/etc/apt/preferences.d/'
-    - 'printf "Package: *\nPin: origin TexasInstruments.github.io\nPin-Priority: 1001" >> $1/etc/apt/preferences.d/ti-debpkgs'
+    #- 'mkdir -p $1/etc/apt/preferences.d/'
+    #- 'printf "Package: *\nPin: origin TexasInstruments.github.io\nPin-Priority: 1001" >> $1/etc/apt/preferences.d/ti-debpkgs'
       # Setup Kernel post-install scripts
     - 'mkdir -p $1/etc/kernel/postinst.d/'
     - 'echo "PWD = $PWD"'
