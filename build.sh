@@ -69,7 +69,7 @@ do
     validate_build ${machine} ${bsp_version} ${distro_codename}/${distro}.yaml
 
     generate_rootfs ${distro} ${distro_codename} ${machine}
-    build_bsp ${distro} ${machine} ${bsp_version}
+    # build_bsp ${distro} ${machine} ${bsp_version}
     package_and_clean ${distro}
 
 done
