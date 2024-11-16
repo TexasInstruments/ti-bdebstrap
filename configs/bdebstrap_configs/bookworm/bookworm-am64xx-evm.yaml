@@ -66,7 +66,7 @@ mmdebstrap:
     - htop
   mirrors:
     - http://deb.debian.org/debian
-  setup-hooks:
+  #setup-hooks:
       # Setup TI Debian Package Repository
     #- 'mkdir -p $1/etc/apt/sources.list.d/'
     #- 'wget https://raw.githubusercontent.com/TexasInstruments/ti-debpkgs/main/ti-debpkgs.sources -P $1/etc/apt/sources.list.d/'
