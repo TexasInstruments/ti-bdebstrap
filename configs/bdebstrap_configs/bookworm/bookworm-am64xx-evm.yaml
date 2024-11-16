@@ -24,7 +24,6 @@ mmdebstrap:
     - neofetch
     - sudo
     - linux-libc-dev
-    - cryptodev-linux-dkms
     - parted
     - e2fsprogs
     - openssh-server
@@ -37,7 +36,7 @@ mmdebstrap:
     - curl
     - openssl
     - libssl-dev
-    - libreswan    
+    - libreswan
     - python3
     - python3-distutils
     - python3-pyinotify
