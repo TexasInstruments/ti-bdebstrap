@@ -38,8 +38,8 @@ mmdebstrap:
     - gstreamer1.0-plugins-good
     - gstreamer1.0-plugins-bad
     - i2c-tools
-    - linux-image-6.6.32-k3
-    - linux-headers-6.6.32-k3
+    - linux-image-6.6.44-k3
+    - linux-headers-6.6.44-k3
     - linux-libc-dev
     - cryptodev-linux-dkms
     - ti-img-rogue-driver-am62p-dkms
@@ -71,6 +71,8 @@ mmdebstrap:
     - parted
     - e2fsprogs
     - chromium
+    - wpasupplicant
+    - seatd
   mirrors:
     - http://deb.debian.org/debian
   setup-hooks:
@@ -107,6 +109,15 @@ mmdebstrap:
     - 'upload target/weston/weston /etc/default/weston'
     - '$BDEBSTRAP_HOOKS/enable-units "$1" weston'
     - 'chroot "$1" echo "export WAYLAND_DISPLAY=wayland-1" >> $1/etc/profile'
+      # systemd-networkd Network Files
+    - 'chroot "$1" mkdir -p /etc/systemd/network/'
+    - 'upload target/systemd-networkd/10-eth.network /etc/systemd/network/10-eth.network'
+    - 'upload target/systemd-networkd/15-eth.network /etc/systemd/network/15-eth.network'
+    - 'upload target/systemd-networkd/30-wlan.network /etc/systemd/network/30-wlan.network'
+    - 'upload target/systemd-networkd/60-usb.network /etc/systemd/network/60-usb.network'
+    - 'chroot "$1" systemctl disable NetworkManager'
+      # Enable seatd service
+    - '$BDEBSTRAP_HOOKS/enable-units "$1" seatd'
       # Enable ssh to root user without password
     - 'chroot "$1" echo "PermitRootLogin yes" >> $1/etc/ssh/sshd_config'
     - 'chroot "$1" echo "PermitEmptyPasswords yes" >> $1/etc/ssh/sshd_config'
