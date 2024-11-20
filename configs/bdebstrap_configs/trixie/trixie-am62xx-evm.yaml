@@ -24,7 +24,6 @@ mmdebstrap:
     - libpam-systemd
     - locales
     - neofetch
-    - network-manager
     - net-tools
     - openssh-server
     - sudo
@@ -69,6 +68,11 @@ mmdebstrap:
     - chromium
     - wpasupplicant
     - seatd
+    - cc33xx-target-scripts
+    - cc33xx-fw
+    - cc33calibrator
+    - cc33conf
+    - udhcpc
   mirrors:
     - http://deb.debian.org/debian
   setup-hooks:
@@ -111,7 +115,6 @@ mmdebstrap:
     - 'upload target/systemd-networkd/15-eth.network /etc/systemd/network/15-eth.network'
     - 'upload target/systemd-networkd/30-wlan.network /etc/systemd/network/30-wlan.network'
     - 'upload target/systemd-networkd/60-usb.network /etc/systemd/network/60-usb.network'
-    - 'chroot "$1" systemctl disable NetworkManager'
       # Enable seatd service
     - '$BDEBSTRAP_HOOKS/enable-units "$1" seatd'
       # Enable ssh to root user without password
