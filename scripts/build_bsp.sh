@@ -122,7 +122,7 @@ bsp_version=$2
     fi
 
     log "> optee: building .."
-    make -j`nproc` CROSS_COMPILE64=${cross_compile} CROSS_COMPILE=arm-none-linux-gnueabihf- PLATFORM=${platform} CFG_ARM64_core=y ${make_args} &>>"${LOG_FILE}"
+    make -j`nproc` CROSS_COMPILE64=${cross_compile} CROSS_COMPILE=arm-none-linux-gnueabihf- PLATFORM=${platform} CFG_ARM64_core=y ${make_args[*]} &>>"${LOG_FILE}"
 }
 
 function build_uboot() {
