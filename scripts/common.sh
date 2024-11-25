@@ -12,7 +12,7 @@ function read_config() {
         value=($(toml get common.${param} --toml-path ${config_file}))
     fi
 
-    echo "${value}"
+    echo "${value[*]}"
 }
 
 function read_machine_config() {
