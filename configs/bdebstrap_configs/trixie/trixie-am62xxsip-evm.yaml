@@ -67,6 +67,11 @@ mmdebstrap:
     - parted
     - e2fsprogs
     - seatd
+    - git
+    - dropbear
+    - python3-opencv
+    - bc
+    - linux-perf
   mirrors:
     - http://deb.debian.org/debian
   setup-hooks:
