@@ -1,0 +1,34 @@
+#!/bin/sh
+#
+# Make symbolic links into nexus-build
+#
+test $# != 1 && { echo "Usage: $0 dstdir" >&2; exit 1; }
+DST=$1
+test -d $DST || { echo "$0: $DST does not exist" >&2; exit 2; }
+
+set -e
+cd $(dirname $0)
+
+F=buildiGOSti2.sh
+if [ ! -f "$F" ]; then
+    echo "I: Modifying build.sh into $F"
+    cp -fp build.sh $F
+    sed -e 's/build_distro.sh/build_distroiGOS.sh/' -e 's/generate_rootfs/#&/' < build.sh > $F
+fi
+
+mkdir -p $DST/scripts
+F=scripts/build_distroiGOS.sh
+if [ ! -f "$F" ]; then
+    echo "I: Patching build_distro.sh into $F"
+    cp -fp scripts/build_distro.sh $F
+    patch -p0 -F20 < patches/$F.patch
+fi
+ln -rfvs $F $DST/scripts
+
+rm -rf $DST/configs
+ln -rfvs configs $DST
+ln -rfvs builds.toml $DST
+ln -rfvs create-sdcard.sh $DST
+ln -rfvs scripts/build_bsp.sh $DST/scripts
+ln -rfvs scripts/common.sh $DST/scripts
+ln -rfvs scripts/setup.sh $DST/scripts
