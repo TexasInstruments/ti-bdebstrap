@@ -3,5 +3,6 @@ tools
 *.swp
 logs
 buildiGOSti2.sh
+create-sdcardiGOS.sh
 scripts/build_distroiGOS.sh
 scripts/build_distroiGOS.sh.orig

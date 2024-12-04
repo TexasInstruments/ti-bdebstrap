@@ -1,0 +1,30 @@
+diff --git a/create-sdcardiGOS.sh b/create-sdcardiGOS.sh
+index a1b1190..1beda4e 100755
+--- a/create-sdcardiGOS.sh
++++ b/create-sdcardiGOS.sh
+@@ -182,7 +182,7 @@ populate_3_partitions() {
+         mkdir $PWD/tmp
+ 
+         mount -t vfat ${DRIVE}${P}1 boot
+-        mount -t ext3 ${DRIVE}${P}2 rootfs
++        mount         ${DRIVE}${P}2 rootfs
+         mount -t ext3 ${DRIVE}${P}3 start_here
+ 
+         # Remove any existing content in case the partitions were not
+@@ -673,7 +673,7 @@ mkdir $PATH_TO_SDBOOT
+ mkdir $PATH_TO_SDROOTFS
+ 
+ sudo mount -t vfat ${DRIVE}${P}1 boot/
+-sudo mount -t ext3 ${DRIVE}${P}2 rootfs/
++sudo mount         ${DRIVE}${P}2 rootfs/
+ 
+ 
+ 
+@@ -690,6 +690,7 @@ sync
+ sync
+ sync
+ 
++build=*
+ BOOTFILEPATH="$PARSEPATH/tisdk-debian-${build}-boot.tar.xz"
+ ROOTFILEPATH="$PARSEPATH/tisdk-debian-${build}-rootfs.tar.xz"
+ 
