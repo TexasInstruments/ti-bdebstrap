@@ -24,7 +24,6 @@ mmdebstrap:
     - libpam-systemd
     - locales
     - neofetch
-    - network-manager
     - net-tools
     - openssh-server
     - sudo
@@ -38,8 +37,8 @@ mmdebstrap:
     - gstreamer1.0-plugins-good
     - gstreamer1.0-plugins-bad
     - i2c-tools
-    - linux-image-6.6.44-k3-rt
-    - linux-headers-6.6.44-k3-rt
+    - linux-image-6.6.58-k3-rt
+    - linux-headers-6.6.58-k3-rt
     - linux-libc-dev
     - cryptodev-linux-dkms
     - ti-img-rogue-driver-am62p-dkms
@@ -53,15 +52,11 @@ mmdebstrap:
     - libd3dadapter9-mesa-dev
     - libd3dadapter9-mesa
     - libegl-mesa0
-    - libegl1-mesa
     - libgbm1
     - libgl1-mesa-dri
-    - libgl1-mesa-glx
     - libglapi-mesa
-    - libgles2-mesa
     - libglx-mesa0
     - libosmesa6
-    - libwayland-egl1-mesa
     - mesa-opencl-icd
     - mesa-va-drivers
     - mesa-vdpau-drivers
@@ -73,6 +68,11 @@ mmdebstrap:
     - chromium
     - wpasupplicant
     - seatd
+    - cc33xx-target-scripts
+    - cc33xx-fw
+    - cc33calibrator
+    - cc33conf
+    - udhcpc
   mirrors:
     - http://deb.debian.org/debian
   setup-hooks:
@@ -115,7 +115,6 @@ mmdebstrap:
     - 'upload target/systemd-networkd/15-eth.network /etc/systemd/network/15-eth.network'
     - 'upload target/systemd-networkd/30-wlan.network /etc/systemd/network/30-wlan.network'
     - 'upload target/systemd-networkd/60-usb.network /etc/systemd/network/60-usb.network'
-    - 'chroot "$1" systemctl disable NetworkManager'
       # Enable seatd service
     - '$BDEBSTRAP_HOOKS/enable-units "$1" seatd'
       # Enable ssh to root user without password
