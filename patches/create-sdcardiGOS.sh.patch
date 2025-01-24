@@ -1,7 +1,7 @@
-diff --git a/create-sdcardiGOS.sh b/create-sdcardiGOS.sh
-index a1b1190..1beda4e 100755
---- a/create-sdcardiGOS.sh
-+++ b/create-sdcardiGOS.sh
+diff --git a/create-sdcard.sh b/create-sdcard.sh
+index a1b1190..4f4e953 100755
+--- a/create-sdcard.sh
++++ b/create-sdcard.sh
 @@ -182,7 +182,7 @@ populate_3_partitions() {
          mkdir $PWD/tmp
  
@@ -20,11 +20,20 @@ index a1b1190..1beda4e 100755
  
  
  
-@@ -690,6 +690,7 @@ sync
+@@ -690,8 +690,10 @@ sync
  sync
  sync
  
 +build=*
  BOOTFILEPATH="$PARSEPATH/tisdk-debian-${build}-boot.tar.xz"
  ROOTFILEPATH="$PARSEPATH/tisdk-debian-${build}-rootfs.tar.xz"
++ROOTFSPATH="$PARSEPATH/tisdk-debian-${build}-rootfs/*"
  
+ cat << EOM
+ ################################################################################
+@@ -710,7 +712,7 @@ echo ""
+ sync
+ 
+ echo "Copying rootfs System partition"
+-untar_progress $ROOTFILEPATH $PATH_TO_SDROOTFS
++rsync -aHAX $ROOTFSPATH $PATH_TO_SDROOTFS
