@@ -1,7 +1,7 @@
-diff --git a/create-sdcard.sh b/create-sdcard.sh
+diff --git a/create-sdcardiGOS.sh b/create-sdcardiGOS.sh
 index a1b1190..4f4e953 100755
---- a/create-sdcard.sh
-+++ b/create-sdcard.sh
+--- a/create-sdcardiGOS.sh
++++ b/create-sdcardiGOS.sh
 @@ -182,7 +182,7 @@ populate_3_partitions() {
          mkdir $PWD/tmp
  

@@ -29,7 +29,7 @@ F=create-sdcardiGOS.sh
 if [ ! -f "$F" ]; then
     echo "I: Patching create-sdcard.sh into $F"
     cp -fp create-sdcard.sh $F
-    patch -p1 -F20 < patches/$F.patch
+    patch -p1 < patches/$F.patch
 fi
 ln -rfvs $F $DST
 
