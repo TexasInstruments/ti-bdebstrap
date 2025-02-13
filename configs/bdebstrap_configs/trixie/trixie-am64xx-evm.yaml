@@ -23,7 +23,6 @@ mmdebstrap:
     - libdrm-dev
     - libpam-systemd
     - locales
-    - neofetch
     - network-manager
     - net-tools
     - openssh-server
@@ -31,8 +30,8 @@ mmdebstrap:
     - vim
     - k3conf
     - weston
-    - linux-image-6.6.58-k3
-    - linux-headers-6.6.58-k3
+    - linux-image-6.12.13-k3
+    - linux-headers-6.12.13-k3
     - linux-libc-dev
     - cryptodev-linux-dkms
     - firmware-ti-ipc-am64
