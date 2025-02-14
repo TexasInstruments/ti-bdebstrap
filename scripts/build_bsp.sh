@@ -25,16 +25,16 @@ bsp_version=$3
         log ">> atf: not found. cloning .."
         atf_srcrev=($(read_bsp_config ${bsp_version} atf_srcrev))
 
-        git clone https://git.trustedfirmware.org/TF-A/trusted-firmware-a.git &>>"${LOG_FILE}"
+        git clone https://github.com/TexasInstruments/arm-trusted-firmware.git &>>"${LOG_FILE}"
 
-        cd trusted-firmware-a
+        cd arm-trusted-firmware
         git checkout ${atf_srcrev} &>>"${LOG_FILE}"
         cd ..
         log ">> atf: cloned"
     else
         log ">> atf: available"
     fi
-    TFA_DIR=${topdir}/build/${build}/bsp_sources/trusted-firmware-a
+    TFA_DIR=${topdir}/build/${build}/bsp_sources/arm-trusted-firmware
 
     if [ ! -d optee_os ]; then
         cd ${topdir}/build/${build}/bsp_sources
