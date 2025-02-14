@@ -33,8 +33,11 @@ bsp_version=$2
     cp -ra ../fs/ tisdk-debian-${distro}-${bsp_version}-rootfs
 
     log "> Cleaning up ${build}"
-    tar --use-compress-program="pigz --best --recursive | pv" -cf tisdk-debian-${distro}-${bsp_version}-rootfs.tar.xz tisdk-debian-${distro}-${bsp_version}-rootfs &>>"${LOG_FILE}"
-    rm -rf tisdk-debian-${distro}-rootfs
+#    If we tar file system, it cause to be missing special file capabilities. (by Dennis Kong).
+#    So we will not tar it and copy the folder to SD card directly (Inside "create-sdcardiGOS.sh" line 715)
+#    refer to commit 351c0c1cbc1189fb659295251674e51799dd8be4
+#    tar --use-compress-program="pigz --best --recursive | pv" -cf tisdk-debian-${distro}-${bsp_version}-rootfs.tar.xz tisdk-debian-${distro}-${bsp_version}-rootfs &>>"${LOG_FILE}"
+#    rm -rf tisdk-debian-${distro}-${bsp_version}-rootfs
 
     tar --use-compress-program="pigz --best --recursive | pv" -cf tisdk-debian-${distro}-${bsp_version}-boot.tar.xz tisdk-debian-${distro}-${bsp_version}-boot &>>"${LOG_FILE}"
     rm -rf tisdk-debian-${distro}-${bsp_version}-boot

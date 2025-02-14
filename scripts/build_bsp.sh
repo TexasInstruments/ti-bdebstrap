@@ -1,5 +1,18 @@
 #!/bin/bash
 
+ROOT_DIR=$(dirname $(dirname $0))
+DEFS_FILE=".defs.mk"
+
+. ${ROOT_DIR}/${DEFS_FILE}
+if [ "$BUILDTYPE" = "bookworm-am64xx-evm" ]; then
+    ARM_A_CORE=a53
+elif [ "$BUILDTYPE" = "bookworm-j7200-evm" ]; then
+    ARM_A_CORE=a72
+else
+    echo "=== E: $0: Undefined BUILDTARG:BUILDTYPE ($BUILDTARG:$BUILDTYPE)"
+    exit 1
+fi
+
 function build_bsp() {
 build=$1
 machine=$2
@@ -62,10 +75,10 @@ bsp_version=$3
             --single-branch \
             --depth=1 &>>"${LOG_FILE}"
         log ">> ti-u-boot: cloned"
-        if [ -d ${topdir}/patches/ti-u-boot ]; then
+        if [ -d ${topdir}/ti-bdebstrap/patches/ti-u-boot ]; then
             log ">> ti-u-boot: patching .."
             cd ti-u-boot
-            git apply ${topdir}/patches/ti-u-boot/* &>>"${LOG_FILE}"
+            git apply ${topdir}/ti-bdebstrap/patches/ti-u-boot/* &>>"${LOG_FILE}"
             cd ..
         fi
     else
@@ -131,7 +144,8 @@ bsp_version=$2
 
     uboot_r5_defconfig=($(read_machine_config ${machine} uboot_r5_defconfig ${bsp_version}))
     uboot_r5_defconfig=`echo $uboot_r5_defconfig | tr ',' ' '`
-    uboot_a53_defconfig=($(read_machine_config ${machine} uboot_a53_defconfig ${bsp_version}))
+    uboot_acore_defconfig=($(read_machine_config ${machine} uboot_${ARM_A_CORE}_defconfig ${bsp_version}))
+    platform=($(read_machine_config ${machine} atf_target_board ${bsp_version}))
 
     cd ${UBOOT_DIR}
     log "> uboot-r5: building .."
@@ -140,11 +154,11 @@ bsp_version=$2
     cp ${UBOOT_DIR}/out/r5/tiboot3*.bin ${topdir}/build/${build}/tisdk-debian-${distro}-${bsp_version}-boot/ &>> ${LOG_FILE}
 
     cd ${UBOOT_DIR}
-    log "> uboot-a53: building .."
-    make -j`nproc` ARCH=arm CROSS_COMPILE=${cross_compile} ${uboot_a53_defconfig} O=${UBOOT_DIR}/out/a53 &>>"${LOG_FILE}"
-    make -j`nproc` ARCH=arm CROSS_COMPILE=${cross_compile} BL31=${TFA_DIR}/build/k3/lite/release/bl31.bin TEE=${OPTEE_DIR}/out/arm-plat-k3/core/tee-pager_v2.bin O=${UBOOT_DIR}/out/a53 BINMAN_INDIRS=${topdir}/build/${build}/bsp_sources/ti-linux-firmware &>>"${LOG_FILE}"
-    cp ${UBOOT_DIR}/out/a53/tispl.bin ${topdir}/build/${build}/tisdk-debian-${distro}-${bsp_version}-boot/ &>> ${LOG_FILE}
-    cp ${UBOOT_DIR}/out/a53/u-boot.img ${topdir}/build/${build}/tisdk-debian-${distro}-${bsp_version}-boot/ &>> ${LOG_FILE}
+    log "> uboot-${ARM_A_CORE}: building .."
+    make -j`nproc` ARCH=arm CROSS_COMPILE=${cross_compile} ${uboot_acore_defconfig} O=${UBOOT_DIR}/out/${ARM_A_CORE} &>>"${LOG_FILE}"
+    make -j`nproc` ARCH=arm CROSS_COMPILE=${cross_compile} BL31=${TFA_DIR}/build/k3/${platform}/release/bl31.bin TEE=${OPTEE_DIR}/out/arm-plat-k3/core/tee-pager_v2.bin BINMAN_INDIRS=${FW_DIR} O=${UBOOT_DIR}/out/${ARM_A_CORE} &>>"${LOG_FILE}"
+    cp ${UBOOT_DIR}/out/${ARM_A_CORE}/tispl.bin ${topdir}/build/${build}/tisdk-debian-${distro}-${bsp_version}-boot/ &>> ${LOG_FILE}
+    cp ${UBOOT_DIR}/out/${ARM_A_CORE}/u-boot.img ${topdir}/build/${build}/tisdk-debian-${distro}-${bsp_version}-boot/ &>> ${LOG_FILE}
 
 	case ${machine} in
 		am62pxx-evm | am62xx-evm | am62xx-lp-evm | am62xxsip-evm)
