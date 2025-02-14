@@ -9,33 +9,10 @@ test -d $DST || { echo "$0: $DST does not exist" >&2; exit 2; }
 set -e
 cd $(dirname $0)
 
-F=buildiGOSti2.sh
-if [ ! -f "$F" ]; then
-    echo "I: Modifying build.sh into $F"
-    cp -fp build.sh $F
-    sed -e 's/build_distro.sh/build_distroiGOS.sh/' -e 's/generate_rootfs/#&/' < build.sh > $F
-fi
-
-mkdir -p $DST/scripts
-F=scripts/build_distroiGOS.sh
-if [ ! -f "$F" ]; then
-    echo "I: Patching build_distro.sh into $F"
-    cp -fp scripts/build_distro.sh $F
-    patch -p0 -F20 < patches/$F.patch
-fi
-ln -rfvs $F $DST/scripts
-
-F=create-sdcardiGOS.sh
-if [ ! -f "$F" ]; then
-    echo "I: Patching create-sdcard.sh into $F"
-    cp -fp create-sdcard.sh $F
-    patch -p1 < patches/$F.patch
-fi
-ln -rfvs $F $DST
-
 rm -rf $DST/configs
 ln -rfvs configs $DST
 ln -rfvs builds.toml $DST
-ln -rfvs scripts/build_bsp.sh $DST/scripts
-ln -rfvs scripts/common.sh $DST/scripts
-ln -rfvs scripts/setup.sh $DST/scripts
+ln -rfvs create-sdcardiGOS.sh $DST
+
+rm -rf $DST/scripts
+ln -rfvs scripts $DST
