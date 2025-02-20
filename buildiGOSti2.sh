@@ -47,7 +47,7 @@ do
         distro=${distro_codename}-${machine}
     fi
 
-    bsp_version=($(read_bsp_config ${distro_codename} bsp_version))
+    bsp_version=($(read_bsp_config ${distro} bsp_version))
 
     export host_arch=`uname -m`
     export native_build=false
