@@ -1,0 +1,18 @@
+#!/bin/sh
+#
+# Make symbolic links into nexus-build
+#
+test $# != 1 && { echo "Usage: $0 dstdir" >&2; exit 1; }
+DST=$1
+test -d $DST || { echo "$0: $DST does not exist" >&2; exit 2; }
+
+set -e
+cd $(dirname $0)
+
+rm -rf $DST/configs
+ln -rfvs configs $DST
+ln -rfvs builds.toml $DST
+ln -rfvs create-sdcardiGOS.sh $DST
+
+rm -rf $DST/scripts
+ln -rfvs scripts $DST

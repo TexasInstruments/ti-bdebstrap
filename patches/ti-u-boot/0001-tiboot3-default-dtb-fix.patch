@@ -1,0 +1,34 @@
+diff --git a/arch/arm/dts/k3-j7200-binman.dtsi b/arch/arm/dts/k3-j7200-binman.dtsi
+index a524b246187..52d83be9425 100644
+--- a/arch/arm/dts/k3-j7200-binman.dtsi
++++ b/arch/arm/dts/k3-j7200-binman.dtsi
+@@ -188,6 +188,7 @@
+ &binman {
+ 	tiboot3-j7200_sr2-hs-fs-evm.bin {
+ 		filename = "tiboot3-j7200_sr2-hs-fs-evm.bin";
++		symlink = "tiboot3.bin";
+ 		ti-secure-rom {
+ 			content = <&u_boot_spl_fs>, <&ti_fs_enc_fs>, <&combined_tifs_cfg_fs>,
+ 				<&combined_dm_cfg_fs>, <&sysfw_inner_cert_fs>;
+@@ -233,7 +234,7 @@
+ &binman {
+ 	tiboot3-j7200-gp-evm.bin {
+ 		filename = "tiboot3-j7200-gp-evm.bin";
+-		symlink = "tiboot3.bin";
++		/* symlink = "tiboot3.bin"; */
+ 		ti-secure-rom {
+ 			content = <&u_boot_spl_unsigned>, <&ti_fs_gp>,
+ 				<&combined_tifs_cfg_gp>, <&combined_dm_cfg_gp>;
+diff --git a/board/ti/j721e/evm.c b/board/ti/j721e/evm.c
+index 90d3411e2ff..c6103624b16 100644
+--- a/board/ti/j721e/evm.c
++++ b/board/ti/j721e/evm.c
+@@ -401,7 +401,7 @@ void configure_serdes_sierra(void)
+ static struct ti_fdt_map ti_j721e_evm_fdt_map[] = {
+ 	{"j721e", "k3-j721e-common-proc-board.dtb"},
+ 	{"j721e-sk", "k3-j721e-sk.dtb"},
+-	{"j7200", "k3-j7200-common-proc-board.dtb"},
++	{"j7200", "k3-j7200-evm.dtb"},
+ 	{ /* Sentinel. */ }
+ };
+ static void setup_board_eeprom_env(void)

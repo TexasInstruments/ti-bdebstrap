@@ -2,8 +2,11 @@
 [trixie]
     bsp_version = "10.01.10.04"
 
-[bookworm]
+[bookworm-am64xx-evm]
     bsp_version = "09.02.00.010"
+
+[bookworm-j7200-evm]
+    bsp_version = "09.02.00.011"
 
 # BSP Configurations
 [10.01.10.04]
@@ -18,3 +21,8 @@
     uboot_srcrev = "09.02.00.010"
     linux_fw_srcrev = "09.02.00.010"
 
+[09.02.00.011]
+    atf_srcrev = "58b25570c9ef91753b14c2103f45f4be9dddb696"
+    optee_srcrev = "4.4.0"
+    uboot_srcrev = "10.01.08"
+    linux_fw_srcrev = "ti-linux-firmware"
