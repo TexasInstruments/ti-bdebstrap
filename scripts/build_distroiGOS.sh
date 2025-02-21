@@ -28,6 +28,7 @@ function package_and_clean() {
 build=$1
 bsp_version=$2
 
+    mkdir -p ${topdir}/images/${build}
     cd ${topdir}/build/${build}
     rm -rf tisdk-debian-${distro}-${bsp_version}-rootfs
     cp -ra ../fs/ tisdk-debian-${distro}-${bsp_version}-rootfs
@@ -39,8 +40,15 @@ bsp_version=$2
 #    tar --use-compress-program="pigz --best --recursive | pv" -cf tisdk-debian-${distro}-${bsp_version}-rootfs.tar.xz tisdk-debian-${distro}-${bsp_version}-rootfs &>>"${LOG_FILE}"
 #    rm -rf tisdk-debian-${distro}-${bsp_version}-rootfs
 
-    tar --use-compress-program="pigz --best --recursive | pv" -cf tisdk-debian-${distro}-${bsp_version}-boot.tar.xz tisdk-debian-${distro}-${bsp_version}-boot &>>"${LOG_FILE}"
-    rm -rf tisdk-debian-${distro}-${bsp_version}-boot
+# latest changes to save the boot and rootfs inside squashfs files that preserve capabilites and file attrs and allows portability in burning an sdcard 
+    mksquashfs tisdk-debian-${distro}-${bsp_version}-rootfs tisdk-debian-${distro}-${bsp_version}-rootfs.squashfs -comp xz -noappend  &>>"${LOG_FILE}"
+    mv tisdk-debian-${distro}-${bsp_version}-rootfs.squashfs ${topdir}/images/${build}
+
+#   tar --use-compress-program="pigz --best --recursive | pv" -cf tisdk-debian-${distro}-${bsp_version}-boot.tar.xz tisdk-debian-${distro}-${bsp_version}-boot &>>"${LOG_FILE}"
+#   rm -rf tisdk-debian-${distro}-${bsp_version}-boot
+
+    mksquashfs tisdk-debian-${distro}-${bsp_version}-boot tisdk-debian-${distro}-${bsp_version}-boot.squashfs -comp xz -noappend &>>"${LOG_FILE}"
+    mv tisdk-debian-${distro}-${bsp_version}-boot.squashfs ${topdir}/images/${build}
 
     rm -rf bsp_sources
 

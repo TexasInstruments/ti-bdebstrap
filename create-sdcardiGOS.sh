@@ -48,7 +48,7 @@ EXEPATH="$PWD"/"$EXE"
 clear
 
 build=${1}
-PARSEPATH=./build/${build}
+PARSEPATH=./images/${build}
 
 cat << EOM
 
@@ -691,9 +691,9 @@ sync
 sync
 
 build=*
-BOOTFILEPATH="$PARSEPATH/tisdk-debian-${build}-boot.tar.xz"
-ROOTFILEPATH="$PARSEPATH/tisdk-debian-${build}-rootfs.tar.xz"
-ROOTFSPATH="$PARSEPATH/tisdk-debian-${build}-rootfs/*"
+BOOTFILEPATH="$PARSEPATH/tisdk-debian-${build}-boot.squashfs"
+ROOTFILEPATH="$PARSEPATH/tisdk-debian-${build}-rootfs.squashfs"
+# ROOTFSPATH="$PARSEPATH/tisdk-debian-${build}-rootfs/*"
 
 cat << EOM
 ################################################################################
@@ -706,13 +706,15 @@ Copying boot partition
 EOM
 
 
-untar_progress $BOOTFILEPATH $PATH_TO_SDBOOT
+# untar_progress $BOOTFILEPATH $PATH_TO_SDBOOT
+unsquashfs -d $PATH_TO_SDBOOT $BOOTFILEPATH
 echo ""
 
 sync
 
 echo "Copying rootfs System partition"
-rsync -aHAX $ROOTFSPATH $PATH_TO_SDROOTFS
+# rsync -aHAX $ROOTFSPATH $PATH_TO_SDROOTFS
+unsquashfs -d $PATH_TO_SDROOTFS $ROOTFILEPATH
 
 echo ""
 echo ""
