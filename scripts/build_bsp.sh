@@ -106,7 +106,7 @@ bsp_version=$2
     make_args=($(read_machine_config ${machine} atf_make_args ${bsp_version}))
 
     log "> ATF: building .."
-    make -j`nproc` ARCH=aarch64 CROSS_COMPILE=${cross_compile} PLAT=k3 TARGET_BOARD=${target_board} SPD=opteed ${make_args} &>>"${LOG_FILE}"
+    make -j`nproc` ARCH=aarch64 CROSS_COMPILE=${cross_compile} PLAT=k3 TARGET_BOARD=${target_board} ${make_args} &>>"${LOG_FILE}"
 }
 
 function build_optee() {
