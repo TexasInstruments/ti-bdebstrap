@@ -7,7 +7,7 @@ mmdebstrap:
     - /usr/share/keyrings/debian-archive-keyring.gpg
   suite: trixie
   variant: standard
-  hostname: am64xx-evm
+  hostname: am62lxx-evm
   components:
     - main
     - contrib
@@ -23,28 +23,35 @@ mmdebstrap:
     - libdrm-dev
     - libpam-systemd
     - locales
-    - network-manager
     - net-tools
     - openssh-server
     - sudo
     - vim
     - k3conf
-    - weston
+    - alsa-utils
+    - libasound2-plugins
+    - gstreamer1.0-tools
+    - gstreamer1.0-plugins-base
+    - gstreamer1.0-plugins-good
+    - gstreamer1.0-plugins-bad
     - linux-image-6.12.13-k3
     - linux-headers-6.12.13-k3
     - linux-libc-dev
-    - cryptodev-linux-dkms
-    - firmware-ti-ipc-am64
-    - firmware-cnm-wave
-    - firmware-ti-prueth-am64
-    - firmware-ti-pruhsr-am64
-    - firmware-ti-prusw-am64
     - libti-rpmsg-char
     - libti-rpmsg-char-dev
     - libpru-pssp-dev
     - pru-pssp
     - parted
     - e2fsprogs
+    - wpasupplicant
+    - cc33xx-target-scripts
+    - cc33xx-fw
+    - cc33calibrator
+    - cc33conf
+    - udhcpc
+    - weston
+    - seatd
+    - ti-lvgl-demo
   mirrors:
     - http://deb.debian.org/debian
   setup-hooks:
@@ -71,8 +78,24 @@ mmdebstrap:
     - 'chroot "$1" chmod -R 755 /var/cache/man/'
       # update packages to avoid mandatory update after first boot
     - 'chroot "$1" apt-get update'
+      # systemd-networkd Network Files
+    - 'chroot "$1" mkdir -p /etc/systemd/network/'
+    - 'upload target/systemd-networkd/10-eth.network /etc/systemd/network/10-eth.network'
+    - 'upload target/systemd-networkd/15-eth.network /etc/systemd/network/15-eth.network'
+    - 'upload target/systemd-networkd/30-wlan.network /etc/systemd/network/30-wlan.network'
+    - 'upload target/systemd-networkd/60-usb.network /etc/systemd/network/60-usb.network'
+      # Enable seatd service
+    - '$BDEBSTRAP_HOOKS/enable-units "$1" seatd'
       # Setup .bashrc for clean command-line experience
     - 'chroot "$1" cp /etc/skel/.bashrc ~/.bashrc'
+      # Weston Service and Config Files
+    - 'chroot "$1" mkdir -p /etc/systemd/system/'
+    - 'upload target/weston/weston.service /etc/systemd/system/weston.service'
+    - 'upload target/weston/weston.socket /etc/systemd/system/weston.socket'
+    - 'chroot "$1" mkdir -p /etc/default/'
+    - 'upload target/weston/weston /etc/default/weston'
+    - '$BDEBSTRAP_HOOKS/enable-units "$1" weston'
+    - 'chroot "$1" echo "export WAYLAND_DISPLAY=wayland-1" >> $1/etc/profile'
       # Enable ssh to root user without password
     - 'chroot "$1" echo "PermitRootLogin yes" >> $1/etc/ssh/sshd_config'
     - 'chroot "$1" echo "PermitEmptyPasswords yes" >> $1/etc/ssh/sshd_config'

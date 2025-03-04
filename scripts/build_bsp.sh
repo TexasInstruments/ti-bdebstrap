@@ -25,16 +25,16 @@ bsp_version=$3
         log ">> atf: not found. cloning .."
         atf_srcrev=($(read_bsp_config ${bsp_version} atf_srcrev))
 
-        git clone https://git.trustedfirmware.org/TF-A/trusted-firmware-a.git &>>"${LOG_FILE}"
+        git clone https://github.com/TexasInstruments/arm-trusted-firmware.git &>>"${LOG_FILE}"
 
-        cd trusted-firmware-a
+        cd arm-trusted-firmware
         git checkout ${atf_srcrev} &>>"${LOG_FILE}"
         cd ..
         log ">> atf: cloned"
     else
         log ">> atf: available"
     fi
-    TFA_DIR=${topdir}/build/${build}/bsp_sources/trusted-firmware-a
+    TFA_DIR=${topdir}/build/${build}/bsp_sources/arm-trusted-firmware
 
     if [ ! -d optee_os ]; then
         cd ${topdir}/build/${build}/bsp_sources
@@ -102,11 +102,11 @@ machine=$1
 bsp_version=$2
 
     cd $TFA_DIR
-    target_board=($(read_machine_config ${machine} atf_target_board ${bsp_version}))
+    export target_board=($(read_machine_config ${machine} atf_target_board ${bsp_version}))
     make_args=($(read_machine_config ${machine} atf_make_args ${bsp_version}))
 
     log "> ATF: building .."
-    make -j`nproc` ARCH=aarch64 CROSS_COMPILE=${cross_compile} PLAT=k3 TARGET_BOARD=${target_board} SPD=opteed ${make_args} &>>"${LOG_FILE}"
+    make -j`nproc` ARCH=aarch64 CROSS_COMPILE=${cross_compile} PLAT=k3 TARGET_BOARD=${target_board} ${make_args} &>>"${LOG_FILE}"
 }
 
 function build_optee() {
@@ -133,23 +133,35 @@ bsp_version=$2
     uboot_r5_defconfig=`echo $uboot_r5_defconfig | tr ',' ' '`
     uboot_a53_defconfig=($(read_machine_config ${machine} uboot_a53_defconfig ${bsp_version}))
 
-    cd ${UBOOT_DIR}
-    log "> uboot-r5: building .."
-    make -j`nproc` ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- ${uboot_r5_defconfig} O=${UBOOT_DIR}/out/r5 &>>"${LOG_FILE}"
-    make -j`nproc` ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- O=${UBOOT_DIR}/out/r5 BINMAN_INDIRS=${FW_DIR} &>>"${LOG_FILE}"
-    cp ${UBOOT_DIR}/out/r5/tiboot3*.bin ${topdir}/build/${build}/tisdk-debian-${distro}-${bsp_version}-boot/ &>> ${LOG_FILE}
+    tiboot3_core_dir="a53"
+    if [ ! -z "${uboot_r5_defconfig}" ] ; then
+        cd ${UBOOT_DIR}
+        log "> uboot-r5: building .."
+        make -j`nproc` ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- ${uboot_r5_defconfig} O=${UBOOT_DIR}/out/r5 &>>"${LOG_FILE}"
+        make -j`nproc` ARCH=arm CROSS_COMPILE=arm-none-linux-gnueabihf- O=${UBOOT_DIR}/out/r5 BINMAN_INDIRS=${FW_DIR} &>>"${LOG_FILE}"
+        tiboot3_core_dir="r5"
+#        cp ${UBOOT_DIR}/out/r5/tiboot3*.bin ${topdir}/build/${build}/tisdk-debian-${distro}-${bsp_version}-boot/ &>> ${LOG_FILE}
+    fi
 
     cd ${UBOOT_DIR}
     log "> uboot-a53: building .."
+    bl1_path=""
+    if [[ ${machine} == "am62lxx-evm" ]] ; then
+        bl1_path="BL1=${TFA_DIR}/build/k3/am62l/release/bl1.bin"
+        echo "${bl1_path}"
+    fi
     make -j`nproc` ARCH=arm CROSS_COMPILE=${cross_compile} ${uboot_a53_defconfig} O=${UBOOT_DIR}/out/a53 &>>"${LOG_FILE}"
-    make -j`nproc` ARCH=arm CROSS_COMPILE=${cross_compile} BL31=${TFA_DIR}/build/k3/lite/release/bl31.bin TEE=${OPTEE_DIR}/out/arm-plat-k3/core/tee-pager_v2.bin O=${UBOOT_DIR}/out/a53 BINMAN_INDIRS=${topdir}/build/${build}/bsp_sources/ti-linux-firmware &>>"${LOG_FILE}"
+    make -j`nproc` ARCH=arm CROSS_COMPILE=${cross_compile} BL31=${TFA_DIR}/build/k3/${target_board}/release/bl31.bin ${bl1_path} TEE=${OPTEE_DIR}/out/arm-plat-k3/core/tee-pager_v2.bin O=${UBOOT_DIR}/out/a53 BINMAN_INDIRS=${topdir}/build/${build}/bsp_sources/ti-linux-firmware &>>"${LOG_FILE}"
     cp ${UBOOT_DIR}/out/a53/tispl.bin ${topdir}/build/${build}/tisdk-debian-${distro}-${bsp_version}-boot/ &>> ${LOG_FILE}
+    cp ${UBOOT_DIR}/out/${tiboot3_core_dir}/tiboot3.bin ${topdir}/build/${build}/tisdk-debian-${distro}-${bsp_version}-boot/ &>> ${LOG_FILE}
     cp ${UBOOT_DIR}/out/a53/u-boot.img ${topdir}/build/${build}/tisdk-debian-${distro}-${bsp_version}-boot/ &>> ${LOG_FILE}
 
 	case ${machine} in
 		am62pxx-evm | am62xx-evm | am62xx-lp-evm | am62xxsip-evm)
 			cp ${UBOOT_DIR}/tools/logos/ti_logo_414x97_32bpp.bmp.gz ${topdir}/build/${build}/tisdk-debian-${distro}-${bsp_version}-boot/ &>> ${LOG_FILE}
 			;;
+        am62lxx-evm)
+            cp ${topdir}/target/uEnv/uEnv-am62lxx-evm.txt ${topdir}/build/${build}/tisdk-debian-${distro}-${bsp_version}-boot/uEnv.txt &>> ${LOG_FILE}
 	esac
 }
 
