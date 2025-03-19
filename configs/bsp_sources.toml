@@ -1,16 +1,16 @@
 # BSP selection based on variant of filesystem
 [trixie]
-    bsp_version = "11.00.05.02"
+    bsp_version = "11.00.07.03"
 
 [bookworm]
     bsp_version = "09.02.00.010"
 
 # BSP Configurations
-[11.00.05.02]
-    atf_srcrev = "dd46885ec58f9394b37f0c3d957e79838999b79d"
+[11.00.07.03]
+    atf_srcrev = "2ae655f0f77a540c2b935780cccb1f150350f84f"
     optee_srcrev = "ef1ebdc23034a804a72da2207f1a825ce96a1464"
-    uboot_srcrev = "11.00.05"
-    linux_fw_srcrev = "11.00.05"
+    uboot_srcrev = "11.00.07"
+    linux_fw_srcrev = "11.00.07"
 
 [09.02.00.010]
     atf_srcrev = "00f1ec6b8740ccd403e641131e294aabacf2a48b"
