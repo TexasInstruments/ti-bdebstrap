@@ -110,8 +110,8 @@ mmdebstrap:
     - 'chroot "$1" echo "export WAYLAND_DISPLAY=wayland-1" >> $1/etc/profile'
       # systemd-networkd Network Files
     - 'chroot "$1" mkdir -p /etc/systemd/network/'
-    - 'upload target/systemd-networkd/10-eth.network /etc/systemd/network/10-eth.network'
-    - 'upload target/systemd-networkd/15-eth.network /etc/systemd/network/15-eth.network'
+    - 'upload target/systemd-networkd/10-end.network /etc/systemd/network/10-end.network'
+    - 'upload target/systemd-networkd/15-end.network /etc/systemd/network/15-end.network'
     - 'upload target/systemd-networkd/30-wlan.network /etc/systemd/network/30-wlan.network'
     - 'upload target/systemd-networkd/60-usb.network /etc/systemd/network/60-usb.network'
     - '$BDEBSTRAP_HOOKS/enable-units "$1" systemd-networkd'
