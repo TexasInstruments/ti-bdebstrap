@@ -36,14 +36,6 @@ mmdebstrap:
     - gstreamer1.0-plugins-good
     - gstreamer1.0-plugins-bad
     - i2c-tools
-    - linux-image-6.12.17-k3-rt
-    - linux-headers-6.12.17-k3-rt
-    - linux-libc-dev
-    - cryptodev-linux-dkms
-    - ti-img-rogue-driver-am62p-dkms
-    - ti-img-rogue-firmware-am62p
-    - ti-img-rogue-tools-am62p
-    - ti-img-rogue-umlibs-am62p
     - firmware-ti-ipc-am62p
     - firmware-cnm-wave
     - libti-rpmsg-char
@@ -79,6 +71,12 @@ mmdebstrap:
     - 'mkdir -p $1/etc/apt/sources.list.d/'
     - 'wget https://raw.githubusercontent.com/TexasInstruments/ti-debpkgs/main/ti-debpkgs.sources -P $1/etc/apt/sources.list.d/'
     - 'sed -i "s/bookworm/trixie/g" $1/etc/apt/sources.list.d/ti-debpkgs.sources'
+    - 'printf "Package: *\nPin: origin TexasInstruments.github.io\nPin-Priority: 500" >> $1/etc/apt/preferences.d/ti-debpkgs'
+    - 'mkdir -p $1/root/myrepo'
+    - 'upload target/linux-headers-6.12.17-k3-rt_6.12.17-1_arm64.deb /root/myrepo/linux-headers-6.12.17-k3-rt_6.12.17-1_arm64.deb'
+    - 'upload target/linux-image-6.12.17-k3-rt_6.12.17-1_arm64.deb /root/myrepo/linux-image-6.12.17-k3-rt_6.12.17-1_arm64.deb'
+    - 'upload target/linux-libc-dev_6.12.17-1_arm64.deb /root/myrepo/linux-libc-dev_6.12.17-1_arm64.deb'
+    - 'upload target/Packages /root/myrepo/Packages'
       # Setup Apt repository preferences
     - 'mkdir -p $1/etc/apt/preferences.d/'
     - 'printf "Package: *\nPin: origin TexasInstruments.github.io\nPin-Priority: 1001" >> $1/etc/apt/preferences.d/ti-debpkgs'
@@ -93,6 +91,10 @@ mmdebstrap:
   customize-hooks:
       # Remove passwd for root user
     - 'chroot "$1" passwd --delete root'
+    - 'chroot "$1" dpkg -i /root/myrepo/linux-libc-dev_6.12.17-1_arm64.deb'
+    - 'chroot "$1" dpkg -i /root/myrepo/linux-headers-6.12.17-k3-rt_6.12.17-1_arm64.deb'
+    - 'chroot "$1" dpkg -i /root/myrepo/linux-image-6.12.17-k3-rt_6.12.17-1_arm64.deb'
+    - 'upload target/linux-image-6.12.17-k3-rt_6.12.17-1_arm64.deb /root/myrepo/linux-image-6.12.17-k3-rt_6.12.17-1_arm64.deb'
       # Fix apt install mandb permission issue
     - 'chroot "$1" chown -R man: /var/cache/man/'
     - 'chroot "$1" chmod -R 755 /var/cache/man/'

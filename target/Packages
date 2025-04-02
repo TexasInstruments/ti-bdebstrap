@@ -1,0 +1,75 @@
+Package: linux-headers-6.12.17-k3-rt
+Source: linux-upstream
+Version: 6.12.17-1
+Architecture: arm64
+Maintainer: root <root@7255598cd652>
+Installed-Size: 49897
+Filename: ./linux-headers-6.12.17-k3-rt_6.12.17-1_arm64.deb
+Size: 8322844
+MD5sum: a09c4b4bdab613db35ba753f924751e5
+SHA1: 568269a9e43684eeadcc5af8f6501130092eb271
+SHA256: d3a46b55a4a3d17701b6aaa3022a597b3c39899a862c54c42f71cb9d0309cab6
+Section: kernel
+Priority: optional
+Homepage: https://www.kernel.org/
+Description: Linux kernel headers for 6.12.17-k3-rt on arm64
+ This package provides kernel header files for 6.12.17-k3-rt on arm64
+ .
+ This is useful for people who need to build external modules
+
+Package: linux-image-6.12.17-k3-rt
+Source: linux-upstream
+Version: 6.12.17-1
+Architecture: arm64
+Maintainer: root <root@7255598cd652>
+Installed-Size: 45618
+Filename: ./linux-image-6.12.17-k3-rt_6.12.17-1_arm64.deb
+Size: 13578196
+MD5sum: 2a05cdc2daa78ee396fb867a1299155d
+SHA1: 38af13f78e076421c5da57741169871ef6e3f14d
+SHA256: a84bfb3a8f9c158bb5fa7682e560301c3e4f0635f4203d1133e4c79b86a6bb16
+Section: kernel
+Priority: optional
+Homepage: https://www.kernel.org/
+Description: Linux kernel, version 6.12.17-k3-rt
+ This package contains the Linux kernel, modules and corresponding other
+ files, version: 6.12.17-k3-rt.
+
+Package: linux-image-6.12.17-k3-rt-dbg
+Source: linux-upstream
+Version: 6.12.17-1
+Architecture: arm64
+Maintainer: root <root@7255598cd652>
+Installed-Size: 209520
+Filename: ./linux-image-6.12.17-k3-rt-dbg_6.12.17-1_arm64.deb
+Size: 46449916
+MD5sum: e1cdadf3533e87bd8354675336a29ce2
+SHA1: accf0168408f7035117357fd10da386f95e3d886
+SHA256: 2b2b3a87bcb28b03989b01dfa3116fc8815f9a2581a64f79c0aa7c115d19c64f
+Section: debug
+Priority: optional
+Homepage: https://www.kernel.org/
+Description: Linux kernel debugging symbols for 6.12.17-k3-rt
+ This package will come in handy if you need to debug the kernel. It provides
+ all the necessary debug symbols for the kernel and its modules.
+
+Package: linux-libc-dev
+Source: linux-upstream
+Version: 6.12.17-1
+Architecture: arm64
+Maintainer: root <root@7255598cd652>
+Installed-Size: 7058
+Provides: linux-kernel-headers
+Filename: ./linux-libc-dev_6.12.17-1_arm64.deb
+Size: 1371368
+MD5sum: 307973d7f5fb04e18e87808ff58d436e
+SHA1: 4b00d5c035daf5328077c9289ed4394a157e0543
+SHA256: d31f8b9373da6ded85b2fb6b4049c989073e381fc32343c8fc880e61e4644d82
+Section: devel
+Priority: optional
+Multi-Arch: same
+Homepage: https://www.kernel.org/
+Description: Linux support headers for userspace development
+ This package provides userspaces headers from the Linux kernel.  These headers
+ are used by the installed headers for GNU glibc and other system libraries.
+
