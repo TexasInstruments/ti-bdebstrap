@@ -34,7 +34,7 @@ ConditionPathExists=/dev/tty0
 # Requires systemd-notify.so Weston plugin.
 Type=simple
 EnvironmentFile=/etc/default/weston
-ExecStart=/usr/bin/weston --backend=drm-backend.so --continue-without-input --idle-time=0
+ExecStart=/usr/bin/weston --backend=drm-backend.so --continue-without-input
 
 # Optional watchdog setup
 #TimeoutStartSec=60
