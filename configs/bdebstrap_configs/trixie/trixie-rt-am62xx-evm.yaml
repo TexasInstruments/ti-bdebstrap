@@ -36,8 +36,8 @@ mmdebstrap:
     - gstreamer1.0-plugins-good
     - gstreamer1.0-plugins-bad
     - i2c-tools
-    - linux-image-6.12.17-k3-rt
-    - linux-headers-6.12.17-k3-rt
+    - linux-image-6.12.17rt-00771-gc85877d40f8e
+    - linux-headers-6.12.17rt-00771-gc85877d40f8e
     - linux-libc-dev
     - cryptodev-linux-dkms
     - ti-img-rogue-driver-am62-dkms
