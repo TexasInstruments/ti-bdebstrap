@@ -2,6 +2,8 @@
 
 # Builds for GitHub Actions
 builds = [
+    #"trixie-am62lxx-evm",
+    #"trixie-rt-am62lxx-evm",
     #"trixie-am62pxx-evm",
     #"trixie-rt-am62pxx-evm",
     #"trixie-am62xx-evm",
@@ -25,6 +27,16 @@ builds = [
 ]
 
 # List of all valid trixie builds
+[trixie-am62lxx-evm]
+    machine = "am62lxx-evm"
+    distro_codename = "trixie"
+    rt_linux = "false"
+
+[trixie-rt-am62lxx-evm]
+    machine = "am62lxx-evm"
+    distro_codename = "trixie"
+    rt_linux = "true"
+
 [trixie-am62pxx-evm]
     machine = "am62pxx-evm"
     distro_codename = "trixie"

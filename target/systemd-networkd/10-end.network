@@ -1,0 +1,6 @@
+[Match]
+Name=end0
+KernelCommandLine=!root=/dev/nfs
+
+[Network]
+DHCP=yes

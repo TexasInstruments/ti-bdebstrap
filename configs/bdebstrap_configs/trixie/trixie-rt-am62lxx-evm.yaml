@@ -7,7 +7,7 @@ mmdebstrap:
     - /usr/share/keyrings/debian-archive-keyring.gpg
   suite: trixie
   variant: standard
-  hostname: am62xx-evm
+  hostname: am62lxx-evm
   components:
     - main
     - contrib
@@ -28,50 +28,30 @@ mmdebstrap:
     - sudo
     - vim
     - k3conf
-    - weston
     - alsa-utils
     - libasound2-plugins
     - gstreamer1.0-tools
     - gstreamer1.0-plugins-base
     - gstreamer1.0-plugins-good
     - gstreamer1.0-plugins-bad
-    - i2c-tools
-    - linux-image-6.12.17-00771-gc85877d40f8e
-    - linux-headers-6.12.17-00771-gc85877d40f8e
+    - linux-image-6.12.17rt-00771-gc85877d40f8e
+    - linux-headers-6.12.17rt-00771-gc85877d40f8e
     - linux-libc-dev
-    - cryptodev-linux-dkms
-    - ti-img-rogue-driver-am62-dkms
-    - ti-img-rogue-firmware-am62
-    - ti-img-rogue-tools-am62
-    - ti-img-rogue-umlibs-am62
-    - firmware-ti-ipc-am62
-    - firmware-cnm-wave
     - libti-rpmsg-char
     - libti-rpmsg-char-dev
-    - libd3dadapter9-mesa-dev
-    - libd3dadapter9-mesa
-    - libegl-mesa0
-    - libgbm1
-    - libgl1-mesa-dri
-    - libglapi-mesa
-    - libglx-mesa0
-    - libosmesa6
-    - mesa-opencl-icd
-    - mesa-va-drivers
-    - mesa-vdpau-drivers
-    - mesa-vulkan-drivers
     - libpru-pssp-dev
     - pru-pssp
     - parted
     - e2fsprogs
-    - chromium
     - wpasupplicant
-    - seatd
     - cc33xx-target-scripts
     - cc33xx-fw
     - cc33calibrator
     - cc33conf
     - udhcpc
+    - weston
+    - seatd
+    - ti-lvgl-demo
   mirrors:
     - http://deb.debian.org/debian
   setup-hooks:
@@ -110,11 +90,10 @@ mmdebstrap:
     - 'chroot "$1" echo "export WAYLAND_DISPLAY=wayland-1" >> $1/etc/profile'
       # systemd-networkd Network Files
     - 'chroot "$1" mkdir -p /etc/systemd/network/'
-    - 'upload target/systemd-networkd/10-end.network /etc/systemd/network/10-end.network'
-    - 'upload target/systemd-networkd/15-end.network /etc/systemd/network/15-end.network'
+    - 'upload target/systemd-networkd/10-eth.network /etc/systemd/network/10-eth.network'
+    - 'upload target/systemd-networkd/15-eth.network /etc/systemd/network/15-eth.network'
     - 'upload target/systemd-networkd/30-wlan.network /etc/systemd/network/30-wlan.network'
     - 'upload target/systemd-networkd/60-usb.network /etc/systemd/network/60-usb.network'
-    - '$BDEBSTRAP_HOOKS/enable-units "$1" systemd-networkd'
       # Enable seatd service
     - '$BDEBSTRAP_HOOKS/enable-units "$1" seatd'
       # Enable ssh to root user without password

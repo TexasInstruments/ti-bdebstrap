@@ -68,12 +68,16 @@ jobs:
         run: |
           mkdir -p build
           sudo ./build.sh ${{ matrix.builds }}
+          distro_codename=($(toml get ${{ matrix.builds }}.distro_codename --toml-path ./builds.toml))
+          bsp_version=($(toml get ${distro_codename}.bsp_version --toml-path ./configs/bsp_sources.toml))
+          builds_out="${{ matrix.builds }}-${bsp_version}"
+          echo "builds_out=${builds_out}" >>$GITHUB_ENV
 
-      - name: Upload ${{ matrix.builds }}
+      - name: Upload ${{ env.builds_out }}
         uses: actions/upload-artifact@v3.1.2
         with:
-          path: build/${{ matrix.builds }}.tar.xz
-          name: ${{ matrix.builds }}
+          path: build/${{ env.builds_out }}.tar.xz
+          name: ${{ env.builds_out }}
           if-no-files-found: error
 
       - name: Upload ${{ matrix.builds }}.log
