@@ -53,7 +53,6 @@ mmdebstrap:
     - lm-sensors
     - gnupg2
     - binutils-dev
-    #- chrony
     - snmp
     - libsnmp-dev
     - dos2unix
@@ -80,7 +79,6 @@ mmdebstrap:
     - dbus
     - sqlite3
     - rsync
-    - systemd-timesyncd
     - autoconf
     - automake
     - dh-autoreconf
@@ -162,6 +160,8 @@ mmdebstrap:
     - v4l-utils
     - dmidecode
     - lighttpd
+    #- chrony
+    #- systemd-timesyncd
     - ntpsec
     - ntpsec-ntpdate    
   mirrors:
