@@ -53,7 +53,7 @@ mmdebstrap:
     - lm-sensors
     - gnupg2
     - binutils-dev
-    - chrony
+    #- chrony
     - snmp
     - libsnmp-dev
     - dos2unix
@@ -64,6 +64,106 @@ mmdebstrap:
     - sysstat
     - iotop
     - htop
+    - make
+    - udev
+    - file
+    - ethtool
+    - apt
+    - apt-utils
+    - gcc-11-base
+    - zip
+    - libxml2-dev
+    - liblzma-dev
+    - dpkg
+    - can-utils
+    - fdisk
+    - dbus
+    - sqlite3
+    - rsync
+    - systemd-timesyncd
+    - autoconf
+    - automake
+    - dh-autoreconf
+    - libpcap-dev
+    - bc
+    - bridge-utils
+    - libtool
+    - libncurses5-dev
+    - bison
+    - libelf-dev
+    - libc-bin
+    - dialog
+    - rng-tools-debian
+    - mysql-common
+    - systemd
+    - systemd-sysv
+    - autotools-dev
+    - openssh-client
+    - vlan
+    - ifenslave
+    - mdadm
+    - isc-dhcp-client
+    - i2c-tools
+    - memtool
+    - gettext
+    - patch
+    - systemd-container
+    - rdate
+    - initramfs-tools
+    - mtd-utils
+    - dosfstools
+    - pciutils
+    - iputils-ping
+    - hdparm
+    - psmisc
+    - software-properties-common
+    - libreadline8
+    - bzip2
+    - lz4
+    - bsdmainutils
+    - patchelf
+    - cpuinfo
+    - libssl-dev
+    - ca-certificates
+    - libnl-genl-3-dev
+    - libreadline-dev
+    - libudev-dev
+    - libpam0g-dev
+    - lsb-release
+    - iptables
+    - usbutils
+    - ppp
+    - unzip
+    - usb.ids
+    - util-linux
+    - lshw,keyutils
+    - libsystemd-dev
+    - libxcursor-dev
+    - snmpd
+    - minicom
+    - exfat-fuse
+    - udhcpc
+    - udhcpd
+    - mmc-utils
+    - wpasupplicant
+    - wireless-tools
+    - iw
+    - wireless-regdb
+    - fbset
+    - alsa-utils
+    - zstd
+    - libhugetlbfs0
+    - kexec-tools
+    - flex
+    - rt-tests
+    - linuxptp
+    - mosquitto
+    - bluez
+    - v4l-utils
+    - dmidecode
+    - lighttpd
+    - ntp
+    - ntpdate    
   mirrors:
     - http://deb.debian.org/debian
   #setup-hooks:
