@@ -7,7 +7,7 @@ mmdebstrap:
     - /usr/share/keyrings/debian-archive-keyring.gpg
   suite: bookworm
   variant: standard
-  hostname: am64xx-evm
+  hostname: localhost
   components:
     - main
     - contrib
