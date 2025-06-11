@@ -162,8 +162,8 @@ mmdebstrap:
     - v4l-utils
     - dmidecode
     - lighttpd
-    - ntp
-    - ntpdate    
+    - ntpsec
+    - ntpsec-ntpdate    
   mirrors:
     - http://deb.debian.org/debian
   #setup-hooks:
