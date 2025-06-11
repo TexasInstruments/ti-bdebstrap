@@ -160,7 +160,7 @@ mmdebstrap:
     - v4l-utils
     - dmidecode
     - lighttpd
-    - chrony
+    #- chrony
     #- systemd-timesyncd
     #- ntpsec
     #- ntpsec-ntpdate    
