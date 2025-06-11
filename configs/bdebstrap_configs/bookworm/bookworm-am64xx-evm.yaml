@@ -160,10 +160,10 @@ mmdebstrap:
     - v4l-utils
     - dmidecode
     - lighttpd
-    #- chrony
+    - chrony
     #- systemd-timesyncd
-    - ntpsec
-    - ntpsec-ntpdate    
+    #- ntpsec
+    #- ntpsec-ntpdate    
   mirrors:
     - http://deb.debian.org/debian
   #setup-hooks:
