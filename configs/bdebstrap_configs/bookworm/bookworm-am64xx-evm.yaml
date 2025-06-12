@@ -189,6 +189,7 @@ mmdebstrap:
     - 'chroot "$1" chmod -R 755 /var/cache/man/'
       # update packages to avoid mandatory update after first boot
     - 'chroot "$1" apt-get update'
+    - 'chroot "$1" apt-get -y install ntpsec ntpsec-ntpdate'
       # Setup .bashrc for clean command-line experience
     - 'chroot "$1" cp /etc/skel/.bashrc ~/.bashrc'
       # Enable ssh to root user without password
